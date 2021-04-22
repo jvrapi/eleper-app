@@ -3,17 +3,17 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { colors } from '../../assets/styles';
 import { GradientButton } from '../../components';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import Icons from '../../assets/icons';
 
 const InitialScreen: React.FC = () => {
   const navigation = useNavigation();
 
+  const { signInIcon, signUpIcon } = Icons;
   return (
     <View style={styles.container}>
-      <Icon name='node-js' size={30} color='#900' />
-      <GradientButton onPress={() => navigation.navigate('SignIn')} buttonText='Acessar Conta' />
+      <GradientButton onPress={() => navigation.navigate('SignIn')} buttonText='Acessar Conta' icon={signInIcon} />
       <View style={styles.buttonArea}>
-        <GradientButton onPress={() => navigation.navigate('SignUp')} buttonText='Cadastrar-se' />
+        <GradientButton onPress={() => navigation.navigate('SignUp')} buttonText='Cadastrar-se' icon={signUpIcon} />
       </View>
     </View>
   );

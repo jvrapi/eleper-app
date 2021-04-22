@@ -7,6 +7,7 @@ import { colors, globalStyles } from '../../assets/styles';
 import { GradientButton, InputComponent } from '../../components';
 import AuthContext from '../../contexts/auth';
 import { Auth } from '../../interfaces/user';
+import Icons from '../../assets/icons';
 
 const validationSchema = Yup.object().shape({
   username: Yup.string().email('Digite um e-mail válido').required('Preencha o campo de e-mail'),
@@ -19,6 +20,8 @@ const SignIn: React.FC = () => {
   const { auth } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
+
+  const { emailIcon, passwordIcon, signInIcon } = Icons;
 
   async function handleSubmitForm(values: Auth) {
     setLoading(true);
@@ -43,6 +46,8 @@ const SignIn: React.FC = () => {
                 onChangeText={handleChange('username')}
                 errors={touched.username && errors.username ? errors.username : ''}
                 onBlur={() => setFieldTouched('username')}
+                icon={emailIcon}
+                editable={!loading}
               />
 
               <InputComponent
@@ -52,12 +57,15 @@ const SignIn: React.FC = () => {
                 onChangeText={handleChange('password')}
                 errors={touched.password && errors.password ? errors.password : ''}
                 onBlur={() => setFieldTouched('password')}
+                icon={passwordIcon}
+                editable={!loading}
               />
             </View>
-            <GradientButton loading={loading} onPress={() => handleSubmit()} buttonText='Acessar' />
+            <GradientButton loading={loading} onPress={() => handleSubmit()} buttonText='Acessar' icon={signInIcon} />
           </>
         )}
       </Form>
+
       <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')} style={styles.forgotPasswordButton}>
         <Text style={styles.forgotPasswordButtonText}>Esqueci minha senha</Text>
       </TouchableOpacity>
@@ -90,7 +98,6 @@ const styles = StyleSheet.create({
     color: colors.blue,
     fontFamily: 'Poppins-SemiBold',
   },
-
-})
+});
 
 export default SignIn;

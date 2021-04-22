@@ -1,6 +1,6 @@
 import React from 'react';
 import { colors } from '../../assets/styles';
-import { ActivityIndicator, SafeAreaView, StyleSheet } from 'react-native'
+import { ActivityIndicator, SafeAreaView, StyleSheet } from 'react-native';
 
 export default () => (
   <SafeAreaView style={styles.container}>
@@ -11,5 +11,5 @@ export default () => (
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'transparent',
-  }
-})
+  },
+});

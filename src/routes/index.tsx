@@ -12,7 +12,13 @@ const Routes: React.FC = () => {
     return <LoadingComponent />;
   }
 
-  return user ? <SafeAreaView><AppRoutes /></SafeAreaView> : <AuthRoutes />;
+  return user ? (
+    <SafeAreaView>
+      <AppRoutes />
+    </SafeAreaView>
+  ) : (
+    <AuthRoutes />
+  );
 };
 
 export default Routes;

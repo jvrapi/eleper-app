@@ -12,6 +12,7 @@ import { storageItems } from '../../services/storage';
 import { signUp } from '../../services/user';
 import { brDateFormatter, enDateFormatter } from '../../utils/formatter';
 import { cpfMask } from '../../utils/mask';
+import Icons from '../../assets/icons';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Preencha o campo nome'),
@@ -34,6 +35,8 @@ const SignUp: React.FC = () => {
 
   const { setUser } = useContext(AuthContext);
 
+  const { userIcon, emailIcon, cpfIcon, dateIcon, passwordIcon, signUpIcon } = Icons;
+
   async function handleSubmitForm(values: NewUser) {
     setLoading(true);
     try {
@@ -46,10 +49,11 @@ const SignUp: React.FC = () => {
       setUser(data.user);
     } catch (error) {
       showMessage({
-        message: error.response.data,
+        message: error.response.data.error,
         type: 'danger',
         icon: 'danger',
       });
+      setLoading(false);
     }
   }
   return (
@@ -69,6 +73,8 @@ const SignUp: React.FC = () => {
                     onChangeText={handleChange('name')}
                     errors={touched.name && errors.name ? errors.name : ''}
                     onBlur={() => setFieldTouched('name')}
+                    icon={userIcon}
+                    editable={!loading}
                   />
 
                   <InputComponent
@@ -78,6 +84,8 @@ const SignUp: React.FC = () => {
                     onChangeText={handleChange('email')}
                     errors={touched.email && errors.email ? errors.email : ''}
                     onBlur={() => setFieldTouched('email')}
+                    icon={emailIcon}
+                    editable={!loading}
                   />
 
                   <InputComponent
@@ -87,6 +95,8 @@ const SignUp: React.FC = () => {
                     keyboardType='numeric'
                     errors={touched.cpf && errors.cpf ? errors.cpf : ''}
                     onBlur={() => setFieldTouched('cpf')}
+                    icon={cpfIcon}
+                    editable={!loading}
                   />
 
                   <InputComponent
@@ -96,6 +106,8 @@ const SignUp: React.FC = () => {
                     onBlur={() => setFieldTouched('birth')}
                     keyboardType='numeric'
                     onChangeText={e => setFieldValue('birth', brDateFormatter(e))}
+                    icon={dateIcon}
+                    editable={!loading}
                   />
 
                   <InputComponent
@@ -105,9 +117,11 @@ const SignUp: React.FC = () => {
                     onChangeText={handleChange('password')}
                     errors={touched.password && errors.password ? errors.password : ''}
                     onBlur={() => setFieldTouched('password')}
+                    icon={passwordIcon}
+                    editable={!loading}
                   />
                 </View>
-                <GradientButton loading={loading} onPress={() => handleSubmit()} buttonText='Cadastrar-se' />
+                <GradientButton loading={loading} onPress={() => handleSubmit()} buttonText='Cadastrar-se' icon={signUpIcon} />
               </>
             )}
           </Form>
@@ -131,14 +145,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 25,
     fontFamily: 'Poppins-SemiBold',
-    color: colors.black
+    color: colors.black,
   },
   subTitle: {
     fontFamily: 'Poppins-SemiBold',
-    color: colors.black
-  }
-})
-
-
+    color: colors.black,
+  },
+});
 
 export default SignUp;
