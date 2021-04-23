@@ -7,27 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* PHRTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* PHRTests.m */; };
+		00E356F31AD99517003FC87E /* eleperTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* eleperTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		32E74B55DF654775B6DADCFF /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 56F806EDFC6F4A0A87F1E58C /* AntDesign.ttf */; };
-		2B6C75B5C5CC4058B308E8AF /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D5A179639302462BB3A9B0C8 /* Entypo.ttf */; };
-		99E4F056FF154354910891CD /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 54C61B6C5CCD4F2D8015184D /* EvilIcons.ttf */; };
-		A5CB290C973944EEA7829758 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E34113EDDA9A493EBD5E88A6 /* Feather.ttf */; };
-		BBFC8D9C088D49F89E065D27 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A3B696939CCE4155B0409790 /* FontAwesome.ttf */; };
-		AC6B684CBE674B3AA48070EC /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6835A83FF24F47FBA9C1BB1D /* FontAwesome5_Brands.ttf */; };
-		2B273BDBBAB44D4C9D9E64B0 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 14E95CD739004EDF8EC09569 /* FontAwesome5_Regular.ttf */; };
-		A3F95B415EAB49FAB2F85C8B /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 238C422F24A9409F9DCCEBBD /* FontAwesome5_Solid.ttf */; };
-		F59AF5721BD6406D8D6678C3 /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D13FF14BE5D847B9B162A2B9 /* Fontisto.ttf */; };
-		9048E160A8314092B6C94E55 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F3CA98D15ED44E7F9113524F /* Foundation.ttf */; };
-		1ADFA3555DA84A85B22ADD65 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 73EF2239F798465398AD2CF1 /* Ionicons.ttf */; };
-		BEA3659792DC4EA885FADFCB /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0775696C82545D4AE4EFB73 /* MaterialCommunityIcons.ttf */; };
-		64A9545E423A4D58BE11A3E7 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 856057770520487090FA7FAC /* MaterialIcons.ttf */; };
-		8206D08382E842E48E4105B9 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 37C609BE43724EDDAD88C650 /* Octicons.ttf */; };
-		A8C8F2613DE640BBB909BF24 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7B8CBC4D44724D97B2E1C002 /* SimpleLineIcons.ttf */; };
-		C37F60E2305F49538C410211 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 095E864410A74CF2A0CF180A /* Zocial.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,38 +20,22 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = PHR;
+			remoteInfo = eleper;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00E356EE1AD99517003FC87E /* PHRTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PHRTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* eleperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = eleperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* PHRTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PHRTests.m; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* PHR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PHR.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = PHR/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = PHR/AppDelegate.m; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = PHR/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = PHR/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = PHR/main.m; sourceTree = "<group>"; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = PHR/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* eleperTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = eleperTests.m; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* eleper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = eleper.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = eleper/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = eleper/AppDelegate.m; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = eleper/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = eleper/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = eleper/main.m; sourceTree = "<group>"; };
+		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = eleper/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		56F806EDFC6F4A0A87F1E58C /* AntDesign.ttf */ = {isa = PBXFileReference; name = "AntDesign.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		D5A179639302462BB3A9B0C8 /* Entypo.ttf */ = {isa = PBXFileReference; name = "Entypo.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		54C61B6C5CCD4F2D8015184D /* EvilIcons.ttf */ = {isa = PBXFileReference; name = "EvilIcons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		E34113EDDA9A493EBD5E88A6 /* Feather.ttf */ = {isa = PBXFileReference; name = "Feather.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		A3B696939CCE4155B0409790 /* FontAwesome.ttf */ = {isa = PBXFileReference; name = "FontAwesome.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		6835A83FF24F47FBA9C1BB1D /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; name = "FontAwesome5_Brands.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		14E95CD739004EDF8EC09569 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; name = "FontAwesome5_Regular.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		238C422F24A9409F9DCCEBBD /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; name = "FontAwesome5_Solid.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		D13FF14BE5D847B9B162A2B9 /* Fontisto.ttf */ = {isa = PBXFileReference; name = "Fontisto.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		F3CA98D15ED44E7F9113524F /* Foundation.ttf */ = {isa = PBXFileReference; name = "Foundation.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		73EF2239F798465398AD2CF1 /* Ionicons.ttf */ = {isa = PBXFileReference; name = "Ionicons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		C0775696C82545D4AE4EFB73 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; name = "MaterialCommunityIcons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		856057770520487090FA7FAC /* MaterialIcons.ttf */ = {isa = PBXFileReference; name = "MaterialIcons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		37C609BE43724EDDAD88C650 /* Octicons.ttf */ = {isa = PBXFileReference; name = "Octicons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		7B8CBC4D44724D97B2E1C002 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; name = "SimpleLineIcons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		095E864410A74CF2A0CF180A /* Zocial.ttf */ = {isa = PBXFileReference; name = "Zocial.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,13 +56,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* PHRTests */ = {
+		00E356EF1AD99517003FC87E /* eleperTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* PHRTests.m */,
+				00E356F21AD99517003FC87E /* eleperTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = PHRTests;
+			path = eleperTests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -105,7 +73,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* PHR */ = {
+		13B07FAE1A68108700A75B9A /* eleper */ = {
 			isa = PBXGroup;
 			children = (
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -115,7 +83,7 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = PHR;
+			name = eleper;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -136,12 +104,11 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* PHR */,
+				13B07FAE1A68108700A75B9A /* eleper */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* PHRTests */,
+				00E356EF1AD99517003FC87E /* eleperTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				1B56BBE751544DAD9248E251 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -151,42 +118,18 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* PHR.app */,
-				00E356EE1AD99517003FC87E /* PHRTests.xctest */,
+				13B07F961A680F5B00A75B9A /* eleper.app */,
+				00E356EE1AD99517003FC87E /* eleperTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		1B56BBE751544DAD9248E251 /* Resources */ = {
-			isa = "PBXGroup";
-			children = (
-				56F806EDFC6F4A0A87F1E58C /* AntDesign.ttf */,
-				D5A179639302462BB3A9B0C8 /* Entypo.ttf */,
-				54C61B6C5CCD4F2D8015184D /* EvilIcons.ttf */,
-				E34113EDDA9A493EBD5E88A6 /* Feather.ttf */,
-				A3B696939CCE4155B0409790 /* FontAwesome.ttf */,
-				6835A83FF24F47FBA9C1BB1D /* FontAwesome5_Brands.ttf */,
-				14E95CD739004EDF8EC09569 /* FontAwesome5_Regular.ttf */,
-				238C422F24A9409F9DCCEBBD /* FontAwesome5_Solid.ttf */,
-				D13FF14BE5D847B9B162A2B9 /* Fontisto.ttf */,
-				F3CA98D15ED44E7F9113524F /* Foundation.ttf */,
-				73EF2239F798465398AD2CF1 /* Ionicons.ttf */,
-				C0775696C82545D4AE4EFB73 /* MaterialCommunityIcons.ttf */,
-				856057770520487090FA7FAC /* MaterialIcons.ttf */,
-				37C609BE43724EDDAD88C650 /* Octicons.ttf */,
-				7B8CBC4D44724D97B2E1C002 /* SimpleLineIcons.ttf */,
-				095E864410A74CF2A0CF180A /* Zocial.ttf */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-			path = "";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* PHRTests */ = {
+		00E356ED1AD99517003FC87E /* eleperTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "PHRTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "eleperTests" */;
 			buildPhases = (
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
@@ -197,14 +140,14 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = PHRTests;
-			productName = PHRTests;
-			productReference = 00E356EE1AD99517003FC87E /* PHRTests.xctest */;
+			name = eleperTests;
+			productName = eleperTests;
+			productReference = 00E356EE1AD99517003FC87E /* eleperTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* PHR */ = {
+		13B07F861A680F5B00A75B9A /* eleper */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "PHR" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "eleper" */;
 			buildPhases = (
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
@@ -216,9 +159,9 @@
 			);
 			dependencies = (
 			);
-			name = PHR;
-			productName = PHR;
-			productReference = 13B07F961A680F5B00A75B9A /* PHR.app */;
+			name = eleper;
+			productName = eleper;
+			productReference = 13B07F961A680F5B00A75B9A /* eleper.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -238,7 +181,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "PHR" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "eleper" */;
 			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -251,8 +194,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* PHR */,
-				00E356ED1AD99517003FC87E /* PHRTests */,
+				13B07F861A680F5B00A75B9A /* eleper */,
+				00E356ED1AD99517003FC87E /* eleperTests */,
 			);
 		};
 /* End PBXProject section */
@@ -271,22 +214,6 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				32E74B55DF654775B6DADCFF /* AntDesign.ttf in Resources */,
-				2B6C75B5C5CC4058B308E8AF /* Entypo.ttf in Resources */,
-				99E4F056FF154354910891CD /* EvilIcons.ttf in Resources */,
-				A5CB290C973944EEA7829758 /* Feather.ttf in Resources */,
-				BBFC8D9C088D49F89E065D27 /* FontAwesome.ttf in Resources */,
-				AC6B684CBE674B3AA48070EC /* FontAwesome5_Brands.ttf in Resources */,
-				2B273BDBBAB44D4C9D9E64B0 /* FontAwesome5_Regular.ttf in Resources */,
-				A3F95B415EAB49FAB2F85C8B /* FontAwesome5_Solid.ttf in Resources */,
-				F59AF5721BD6406D8D6678C3 /* Fontisto.ttf in Resources */,
-				9048E160A8314092B6C94E55 /* Foundation.ttf in Resources */,
-				1ADFA3555DA84A85B22ADD65 /* Ionicons.ttf in Resources */,
-				BEA3659792DC4EA885FADFCB /* MaterialCommunityIcons.ttf in Resources */,
-				64A9545E423A4D58BE11A3E7 /* MaterialIcons.ttf in Resources */,
-				8206D08382E842E48E4105B9 /* Octicons.ttf in Resources */,
-				A8C8F2613DE640BBB909BF24 /* SimpleLineIcons.ttf in Resources */,
-				C37F60E2305F49538C410211 /* Zocial.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -333,7 +260,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* PHRTests.m in Sources */,
+				00E356F31AD99517003FC87E /* eleperTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -351,7 +278,7 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* PHR */;
+			target = 13B07F861A680F5B00A75B9A /* eleper */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -365,7 +292,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = PHRTests/Info.plist;
+				INFOPLIST_FILE = eleperTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -379,7 +306,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PHR.app/PHR";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/eleper.app/eleper";
 			};
 			name = Debug;
 		};
@@ -388,7 +315,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				INFOPLIST_FILE = PHRTests/Info.plist;
+				INFOPLIST_FILE = eleperTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -402,7 +329,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PHR.app/PHR";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/eleper.app/eleper";
 			};
 			name = Release;
 		};
@@ -413,7 +340,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = PHR/Info.plist;
+				INFOPLIST_FILE = eleper/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -424,7 +351,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = PHR;
+				PRODUCT_NAME = eleper;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -437,7 +364,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				INFOPLIST_FILE = PHR/Info.plist;
+				INFOPLIST_FILE = eleper/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -448,7 +375,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = PHR;
+				PRODUCT_NAME = eleper;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -578,7 +505,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "PHRTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "eleperTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -587,7 +514,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "PHR" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "eleper" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -596,7 +523,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "PHR" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "eleper" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
