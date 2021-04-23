@@ -250,7 +250,7 @@ const styles = (textToLong: boolean) =>
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: colors.white,
+      backgroundColor: colors.screenColor,
       padding: 15,
     },
     title: {

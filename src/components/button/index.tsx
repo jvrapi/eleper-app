@@ -1,6 +1,6 @@
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import LoadingComponent from '../loading';
+import LoadingComponent from '../Loading';
 import { colors } from '../../assets/styles';
 import { TouchableOpacity, TouchableOpacityProps, Text, StyleSheet, View } from 'react-native';
 

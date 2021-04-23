@@ -8,6 +8,7 @@ export const colors = {
   white: '#FFFFFF',
   gradientColors: ['#43D4FF', '#38ABFD', '#2974FA'],
   blue: '#2974fa',
+  screenColor: '#FFFFFF',
 };
 
 export const globalStyles = StyleSheet.create({

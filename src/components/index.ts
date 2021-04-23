@@ -1,3 +1,4 @@
-export { default as LoadingComponent } from './loading';
-export { default as InputComponent } from './form/input';
-export { default as GradientButton } from './button';
+export { default as LoadingComponent } from './Loading';
+export { default as InputComponent } from './Form/Input';
+export { default as GradientButton } from './Button';
+export { default as CustomTabBar } from './TabBar';

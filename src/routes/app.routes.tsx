@@ -1,12 +1,13 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Home from '../screens/Home';
+import { CustomTabBar } from '../components';
 
-const AuthStack = createStackNavigator();
+const AuthStack = createBottomTabNavigator();
 
 const AppRoutes: React.FC = () => (
-  <AuthStack.Navigator screenOptions={{ headerShown: false }}>
+  <AuthStack.Navigator tabBar={props => <CustomTabBar {...props} />}>
     <AuthStack.Screen name='Home' component={Home} />
   </AuthStack.Navigator>
 );

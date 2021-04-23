@@ -32,7 +32,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         setUser(JSON.parse(storagedUser));
       }
       setLoading(false);
-      api.defaults.headers.Authorization = `Baerer ${storagedToken}`;
+      api.defaults.headers.Authorization = `Bearer ${storagedToken}`;
     }
 
     loadStorageData();
@@ -42,6 +42,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     try {
       const { data } = await signIn(credentials);
       setUser(data.user);
+
       await storageItems(data);
     } catch (error) {
       showMessage({
