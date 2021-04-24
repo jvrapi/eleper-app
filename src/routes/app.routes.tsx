@@ -1,21 +1,19 @@
+import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
-import Home from '../screens/Home';
 import Annotations from '../screens/Annotations';
-import Treatment from '../screens/Treatment';
 import Profile from '../screens/Profile';
-import { CustomTabBar } from '../components';
+import Treatment from '../screens/Treatment';
+import Home from './home.routes';
 
-const AuthStack = createBottomTabNavigator();
+const AppBottomRoutes = createStackNavigator();
 
 const AppRoutes: React.FC = () => (
-  <AuthStack.Navigator tabBar={props => <CustomTabBar {...props} />}>
-    <AuthStack.Screen name='Home' component={Home} />
-    <AuthStack.Screen name='Annotations' component={Annotations} />
-    <AuthStack.Screen name='Treatment' component={Treatment} />
-    <AuthStack.Screen name='Profile' component={Profile} />
-  </AuthStack.Navigator>
+  <AppBottomRoutes.Navigator screenOptions={{ headerShown: false }}>
+    <AppBottomRoutes.Screen name='Home' component={Home} />
+    <AppBottomRoutes.Screen name='Annotations' component={Annotations} />
+    <AppBottomRoutes.Screen name='Treatment' component={Treatment} />
+    <AppBottomRoutes.Screen name='Profile' component={Profile} />
+  </AppBottomRoutes.Navigator>
 );
 
 export default AppRoutes;

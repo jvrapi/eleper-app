@@ -11,6 +11,7 @@ const CustomTabBar = ({ state, navigation }: BottomTabBarProps<BottomTabBarOptio
   const goTo = (screenName: string) => {
     navigation.navigate(screenName);
   };
+
   return (
     <View style={[styles.container, styles.shadow]}>
       <View style={styles.tabItem}>
