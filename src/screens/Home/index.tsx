@@ -19,12 +19,12 @@ const Home: React.FC = () => {
       const { data } = await getUserDiseases(user?.id as string);
       if (data.length > 0) {
         setShowTabBar(true);
+        setLoading(false);
       } else {
         navigation.reset({ routes: [{ name: 'NewUser' }] });
       }
     } catch (error) {
       setHasError(true);
-    } finally {
       setLoading(false);
     }
   }

@@ -11,7 +11,7 @@ const InitialScreen: React.FC = () => {
   const { signInIcon, signUpIcon } = Icons;
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Eleper</Text>
+      <Text style={styles.title}>Eliper</Text>
       <View style={styles.buttonArea}>
         <GradientButton onPress={() => navigation.navigate('SignIn')} buttonText='Acessar Conta' icon={signInIcon} />
       </View>
