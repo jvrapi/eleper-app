@@ -8,7 +8,9 @@ export const colors = {
   white: '#FFFFFF',
   gradientColors: ['#43D4FF', '#38ABFD', '#2974FA'],
   blue: '#2974fa',
-  screenColor: '#FFFFFF',
+  screenColor: '#c3e5fe',
+  iconInactive: '#748c94',
+  iconFocused: '#2974fa',
 };
 
 export const globalStyles = StyleSheet.create({

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, SafeAreaView } from 'react-native';
 import { colors } from '../../assets/styles';
 import { LoadingComponent } from '../../components';
 import AuthContext from '../../contexts/auth';
@@ -25,7 +25,7 @@ const Home: React.FC = () => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {!loading && (
         <>
           <Text>HomePage</Text>
@@ -35,7 +35,7 @@ const Home: React.FC = () => {
         </>
       )}
       {loading && <LoadingComponent />}
-    </View>
+    </SafeAreaView>
   );
 };
 
