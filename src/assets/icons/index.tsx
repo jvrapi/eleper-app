@@ -5,6 +5,7 @@ import FaIcons from 'react-native-vector-icons/FontAwesome';
 import FaIcons5 from 'react-native-vector-icons/FontAwesome5';
 import IonicIcon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Feather from 'react-native-vector-icons/Feather';
 
 const icons = {
   emailIcon: <EntypoIcons name='email' size={25} color='#000000' />,
@@ -17,6 +18,7 @@ const icons = {
   sendEmailIcon: <MaterialCommunityIcons name='email-check-outline' size={30} color='#000000' />,
   signInIcon: <FaIcons name='sign-in' size={30} color='#000000' />,
   signUpIcon: <FaIcons name='pencil-square-o' size={30} color='#000000' />,
+  checkIcon: <Feather name='check' size={30} color='#000000' />,
 };
 
 export default icons;

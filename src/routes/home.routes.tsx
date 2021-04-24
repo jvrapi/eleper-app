@@ -5,15 +5,15 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { CustomTabBar } from '../components';
 import BottomTabBarContext from '../contexts/bottomTabBar';
 
-const AuthStack = createBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
 const HomeRoutes: React.FC = () => {
   const { showTabBar } = useContext(BottomTabBarContext);
 
   return (
-    <AuthStack.Navigator tabBar={props => showTabBar && <CustomTabBar {...props} />}>
-      <AuthStack.Screen name='Home' component={Home} options={{ tabBarVisible: false }} />
-    </AuthStack.Navigator>
+    <Tab.Navigator tabBar={props => showTabBar && <CustomTabBar {...props} />}>
+      <Tab.Screen name='Home' component={Home} options={{ tabBarVisible: false }} />
+    </Tab.Navigator>
   );
 };
 

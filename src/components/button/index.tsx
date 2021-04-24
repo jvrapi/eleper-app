@@ -10,13 +10,20 @@ interface Props extends TouchableOpacityProps {
   icon?: JSX.Element;
 }
 
-const GradientButton: React.FC<Props> = ({ loading, buttonText, icon, ...rest }) => {
+const GradientButton: React.FC<Props> = ({ loading, buttonText, icon, ...props }) => {
+  const stylesProps = StyleSheet.create({
+    textColor: { color: props.disabled ? '#516267' : colors.black },
+  });
   const IconComponent = icon;
   return (
-    <TouchableOpacity disabled={loading} style={styles.button} {...rest}>
-      <LinearGradient start={{ x: 0, y: 0 }} colors={colors.gradientColors} style={styles.linearGrandient}>
+    <TouchableOpacity disabled={loading} style={styles.button} {...props}>
+      <LinearGradient
+        start={{ x: 0, y: 0 }}
+        colors={props.disabled ? colors.gradientColorsDisable : colors.gradientColorsActive}
+        style={styles.linearGrandient}
+      >
         {IconComponent && !loading && <View style={styles.iconContainer}>{IconComponent}</View>}
-        {!loading && <Text style={styles.text}>{buttonText}</Text>}
+        {!loading && <Text style={[styles.text, stylesProps.textColor]}>{buttonText}</Text>}
         {loading && <LoadingComponent />}
       </LinearGradient>
     </TouchableOpacity>
@@ -30,7 +37,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: 'Poppins-SemiBold',
-    color: colors.black,
     fontSize: 18,
   },
   linearGrandient: {

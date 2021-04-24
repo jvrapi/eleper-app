@@ -8,7 +8,7 @@ interface BottomTabBarContextData {
 const BottomTabBarContext = createContext<BottomTabBarContextData>({} as BottomTabBarContextData);
 
 export const BottomTabBarProvider: React.FC = ({ children }) => {
-  const [showTabBar, setShowTabBar] = useState(true);
+  const [showTabBar, setShowTabBar] = useState(false);
   return <BottomTabBarContext.Provider value={{ showTabBar, setShowTabBar }}>{children}</BottomTabBarContext.Provider>;
 };
 

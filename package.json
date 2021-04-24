@@ -11,10 +11,12 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.15.3",
+    "@react-native-community/checkbox": "^0.5.7",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/bottom-tabs": "^5.11.10",
     "@react-navigation/native": "^5.9.4",
     "@react-navigation/stack": "^5.14.4",
+    "add": "^2.0.6",
     "axios": "^0.21.1",
     "formik": "^2.2.6",
     "react": "17.0.1",
@@ -26,6 +28,7 @@
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "^3.1.1",
     "react-native-vector-icons": "^8.1.0",
+    "yarn": "^1.22.10",
     "yup": "^0.32.9"
   },
   "devDependencies": {
