@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useContext, useState } from 'react';
 import CheckBox from '@react-native-community/checkbox';
+import { useNavigation } from '@react-navigation/native';
+import { StyleSheet, Text, TouchableOpacity, SafeAreaView, View } from 'react-native';
+import Icons from '../../assets/icons';
 import { colors } from '../../assets/styles';
 import { GradientButton } from '../../components';
 import AuthContext from '../../contexts/auth';
-import Icons from '../../assets/icons';
-import { useNavigation } from '@react-navigation/native';
 
 const NewUser = () => {
   const { user } = useContext(AuthContext);
@@ -19,7 +19,7 @@ const NewUser = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {showInitialScreen && (
         <>
           <Text style={styles.title}>
@@ -44,7 +44,6 @@ const NewUser = () => {
           </TouchableOpacity>
           <View style={styles.checkBoxArea}>
             <CheckBox
-              disabled={false}
               value={checkBox}
               onValueChange={newValue => setCheckBox(newValue)}
               tintColors={{ true: colors.darkBlue, false: colors.blue }}
@@ -52,11 +51,11 @@ const NewUser = () => {
             <Text style={styles.acceptUseTermText}>Li e aceito os termos de uso</Text>
           </View>
           <View style={styles.buttonArea}>
-            <GradientButton buttonText='Continuar' disabled={!checkBox} onPress={goToRegisterDiseases} />
+            <GradientButton buttonText='Continuar' disabled={!checkBox} onPress={goToRegisterDiseases} icon={checkIcon} />
           </View>
         </>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 

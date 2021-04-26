@@ -1,6 +1,6 @@
 import { Formik as Form } from 'formik';
 import React, { useContext, useState } from 'react';
-import { View, StyleSheet, ScrollView, Text } from 'react-native';
+import { View, StyleSheet, ScrollView, Text, SafeAreaView } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import * as Yup from 'yup';
 import { colors, globalStyles } from '../../assets/styles';
@@ -59,7 +59,7 @@ const SignUp: React.FC = () => {
   return (
     <>
       <ScrollView style={styles.scroll}>
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
           <Text style={styles.title}> Seja bem-vindo</Text>
           <Text style={styles.subTitle}>Informe os dados para realizar o cadastro</Text>
 
@@ -125,7 +125,7 @@ const SignUp: React.FC = () => {
               </>
             )}
           </Form>
-        </View>
+        </SafeAreaView>
       </ScrollView>
     </>
   );

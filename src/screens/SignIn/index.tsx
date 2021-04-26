@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { Formik as Form } from 'formik';
 import React, { useContext, useState } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import * as Yup from 'yup';
 import { colors, globalStyles } from '../../assets/styles';
 import { GradientButton, InputComponent } from '../../components';
@@ -32,7 +32,7 @@ const SignIn: React.FC = () => {
     }
   }
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.title}> Seja bem-vindo de volta</Text>
       <Text style={styles.subTitle}>Para continuar, informe o seu e-mail e a sua senha</Text>
       <Form initialValues={initialValues} onSubmit={handleSubmitForm} validationSchema={validationSchema} validateOnChange={false}>
@@ -69,7 +69,7 @@ const SignIn: React.FC = () => {
       <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')} style={styles.forgotPasswordButton}>
         <Text style={styles.forgotPasswordButtonText}>Esqueci minha senha</Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 

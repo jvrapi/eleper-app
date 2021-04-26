@@ -6,6 +6,7 @@ import FaIcons5 from 'react-native-vector-icons/FontAwesome5';
 import IonicIcon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Feather from 'react-native-vector-icons/Feather';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const icons = {
   emailIcon: <EntypoIcons name='email' size={25} color='#000000' />,
@@ -16,9 +17,11 @@ const icons = {
   recoveryCodeIcon: <MaterialCommunityIcons name='file-restore-outline' size={30} color='#000000' />,
   redefinePasswordIcon: <MaterialCommunityIcons name='lock-reset' size={30} color='#000000' />,
   sendEmailIcon: <MaterialCommunityIcons name='email-check-outline' size={30} color='#000000' />,
-  signInIcon: <FaIcons name='sign-in' size={30} color='#000000' />,
-  signUpIcon: <FaIcons name='pencil-square-o' size={30} color='#000000' />,
-  checkIcon: <Feather name='check' size={30} color='#000000' />,
+  signInIcon: <FaIcons name='sign-in' size={30} color='#FFFFFF' />,
+  signUpIcon: <FaIcons name='pencil-square-o' size={30} color='#FFFFFF' />,
+  checkIcon: <Feather name='check' size={30} color='#FFFFFF' />,
+  searchIcon: <MaterialIcons name='search' size={30} color='#a9a9a9' />,
+  continueIcon: <Feather name='arrow-right' size={30} color='#FFFFFF' />,
 };
 
 export default icons;

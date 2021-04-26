@@ -12,7 +12,7 @@ interface Props extends TouchableOpacityProps {
 
 const GradientButton: React.FC<Props> = ({ loading, buttonText, icon, ...props }) => {
   const stylesProps = StyleSheet.create({
-    textColor: { color: props.disabled ? '#516267' : colors.black },
+    textColor: { color: props.disabled ? '#516267' : colors.white },
   });
   const IconComponent = icon;
   return (
