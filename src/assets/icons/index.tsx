@@ -22,6 +22,7 @@ const icons = {
   checkIcon: <Feather name='check' size={30} color='#FFFFFF' />,
   searchIcon: <MaterialIcons name='search' size={30} color='#a9a9a9' />,
   continueIcon: <Feather name='arrow-right' size={30} color='#FFFFFF' />,
+  diseaseIcon: <FaIcons5 name='disease' size={30} color='#000000' />,
 };
 
 export default icons;
