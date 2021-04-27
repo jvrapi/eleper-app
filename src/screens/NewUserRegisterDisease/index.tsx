@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { colors } from '../../assets/styles';
 import { ErrorComponent, GradientButton, InputComponent, LoadingComponent, ModalComponent, MultiSelect } from '../../components';
 import { MultiSelectItems } from '../../components/MultiSelect';
-import { getAll, save } from '../../services/disease';
+import * as DiseaseService from '../../services/disease';
+import * as UserDiseaseService from '../../services/user.disease';
 import Icons from '../../assets/icons';
 import { Formik as Form } from 'formik';
 import * as Yup from 'yup';
-import { Disease, DiseaseSave } from '../../interfaces/disease';
+import { DiseaseSave } from '../../interfaces/disease';
+import { useNavigation } from '@react-navigation/native';
+import AuthContext from '../../contexts/auth';
 
 const initialValues = {
   name: '',
@@ -24,11 +27,14 @@ const NewUserRegisterDisease = () => {
   const [hasError, setHasError] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [savingDisease, setSavingDisease] = useState(false);
+  const [loadingText, setLoadingText] = useState('Estou preparando algumas coisas, por favor aguarde');
   const { checkIcon, diseaseIcon } = Icons;
+  const navigation = useNavigation();
+  const { user } = useContext(AuthContext);
 
   async function getDiseases() {
     try {
-      const { data } = await getAll();
+      const { data } = await DiseaseService.getAll();
       const formattedData = data.map(disease => ({ ...disease, selected: false }));
       setItems(formattedData);
     } catch (error) {
@@ -54,8 +60,33 @@ const NewUserRegisterDisease = () => {
     setItems(arrayFormatted);
   }
 
-  function registerDiseasesTerminated() {
-    const itemsSelected = items.filter(item => item.selected);
+  async function registerDiseasesTerminated() {
+    setLoading(true);
+    setLoadingText('Estou cadastrando essas informações, aguarde alguns instantes');
+    const itemsSelected = items
+      .filter(item => item.selected)
+      .map(disease => ({
+        userId: user?.id as string,
+        diseaseId: disease.id,
+      }));
+    if (itemsSelected.length === 0) {
+      showMessage({
+        message: 'Ops! Você precisa selecionar alguma doença para continuar',
+        type: 'warning',
+        icon: 'warning',
+      });
+    }
+    try {
+      await UserDiseaseService.saveMany(itemsSelected);
+      navigation.reset({ routes: [{ name: 'Home' }] });
+    } catch (error) {
+      setLoading(false);
+      showMessage({
+        message: 'Ops! Ocorreu algum erro quando eu tentei cadastrar seus dados. Pode tentar de novo?',
+        type: 'danger',
+        icon: 'danger',
+      });
+    }
   }
 
   function changeModalVisibility() {
@@ -65,7 +96,7 @@ const NewUserRegisterDisease = () => {
   async function handleSubmitForm(formValues: DiseaseSave) {
     setSavingDisease(true);
     try {
-      await save(formValues);
+      await DiseaseService.save(formValues);
       setShowModal(false);
       await getDiseases();
       showMessage({
@@ -111,7 +142,12 @@ const NewUserRegisterDisease = () => {
           </TouchableOpacity>
         </View>
       )}
-      {loading && <LoadingComponent />}
+      {loading && (
+        <>
+          <Text style={styles.loadingText}>{loadingText}</Text>
+          <LoadingComponent />
+        </>
+      )}
       {hasError && <ErrorComponent />}
       {showModal && (
         <ModalComponent showModal={showModal} close={changeModalVisibility}>
@@ -189,6 +225,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Poppins-Regular',
     fontSize: 16,
+  },
+  loadingText: {
+    fontFamily: 'Poppins-Regular',
+    fontSize: 17,
+    textAlign: 'center',
+    marginHorizontal: 10,
   },
 });
 
