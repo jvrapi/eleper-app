@@ -40,7 +40,12 @@ const CustomTabBar = ({ state, navigation }: BottomTabBarProps<BottomTabBarOptio
 
       <View style={styles.tabItem}>
         <TouchableOpacity style={styles.button}>
-          <FontAwesome5Icons name='briefcase-medical' size={30} color={state.index === 2 ? colors.iconFocused : colors.iconInactive} />
+          <FontAwesome5Icons
+            name='briefcase-medical'
+            size={30}
+            color={state.index === 2 ? colors.iconFocused : colors.iconInactive}
+            onPress={() => goTo('Treatment')}
+          />
           <Text style={[styles.screenTitle, { color: state.index === 2 ? colors.iconFocused : colors.iconInactive }]}>Tratamentos</Text>
         </TouchableOpacity>
       </View>
@@ -51,6 +56,7 @@ const CustomTabBar = ({ state, navigation }: BottomTabBarProps<BottomTabBarOptio
             name='account-settings-outline'
             size={30}
             color={state.index === 3 ? colors.iconFocused : colors.iconInactive}
+            onPress={() => goTo('Profile')}
           />
           <Text style={[styles.screenTitle, { color: state.index === 3 ? colors.iconFocused : colors.iconInactive }]}>Perfil</Text>
         </TouchableOpacity>

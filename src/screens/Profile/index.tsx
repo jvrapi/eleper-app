@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { SafeAreaView, Text, StyleSheet } from 'react-native';
 import { colors } from '../../assets/styles';
+import AuthContext from '../../contexts/auth';
 
 const Profile = () => {
+  const { signOut } = useContext(AuthContext);
+
+  useEffect(() => {
+    signOut();
+  }, []);
   return (
     <SafeAreaView style={styles.container}>
       <Text>Profile Screen</Text>
