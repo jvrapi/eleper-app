@@ -23,6 +23,9 @@ const icons = {
   searchIcon: <MaterialIcons name='search' size={30} color='#a9a9a9' />,
   continueIcon: <Feather name='arrow-right' size={30} color='#FFFFFF' />,
   diseaseIcon: <FaIcons5 name='disease' size={30} color='#000000' />,
+  myExamsIcon: <FaIcons5 name='file-medical' size={40} color='#000000' />,
+  myRecordIcon: <FaIcons5 name='book-medical' size={40} color='#000000' />,
+  infoIcon: <Feather name='info' size={20} color='#a9a9a9' />,
 };
 
 export default icons;

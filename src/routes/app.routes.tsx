@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React, { useContext } from 'react';
 import { CustomTabBar } from '../components';
 import BottomTabBarContext from '../contexts/bottomTabBar';
-import Profile from '../screens/Profile';
+import Profile from './profile.routes';
 import Treatment from '../screens/Treatment';
 import Annotations from './annotations.routes';
 import Home from './home.routes';
