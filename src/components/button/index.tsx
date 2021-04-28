@@ -16,7 +16,7 @@ const GradientButton: React.FC<Props> = ({ loading, buttonText, icon, ...props }
   });
   const IconComponent = icon;
   return (
-    <TouchableOpacity disabled={loading} style={styles.button} {...props}>
+    <TouchableOpacity disabled={loading} {...props} style={[styles.button, props.style]}>
       <LinearGradient
         start={{ x: 0, y: 0 }}
         colors={props.disabled ? colors.gradientColorsDisable : colors.gradientColorsActive}

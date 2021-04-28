@@ -2,21 +2,21 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { colors } from '../../assets/styles';
-import { GradientButton } from '../../components';
-import Icons from '../../assets/icons';
+import { Button } from '../../components';
+import { buttonIcons } from '../../assets/icons';
 
 const InitialScreen: React.FC = () => {
   const navigation = useNavigation();
 
-  const { signInIcon, signUpIcon } = Icons;
+  const { signInIcon, signUpIcon } = buttonIcons;
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Eliper</Text>
       <View style={styles.buttonArea}>
-        <GradientButton onPress={() => navigation.navigate('SignIn')} buttonText='Acessar Conta' icon={signInIcon} />
+        <Button onPress={() => navigation.navigate('SignIn')} buttonText='Acessar Conta' icon={signInIcon} />
       </View>
       <View style={styles.buttonArea}>
-        <GradientButton onPress={() => navigation.navigate('SignUp')} buttonText='Cadastrar-se' icon={signUpIcon} />
+        <Button onPress={() => navigation.navigate('SignUp')} buttonText='Cadastrar-se' icon={signUpIcon} />
       </View>
     </View>
   );

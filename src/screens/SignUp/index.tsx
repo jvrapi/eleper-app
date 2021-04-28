@@ -1,10 +1,10 @@
 import { Formik as Form } from 'formik';
 import React, { useContext, useState } from 'react';
-import { View, StyleSheet, ScrollView, Text, SafeAreaView } from 'react-native';
+import { View, StyleSheet, Text, SafeAreaView } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import * as Yup from 'yup';
 import { colors, globalStyles } from '../../assets/styles';
-import { InputComponent, GradientButton } from '../../components';
+import { InputComponent, Button } from '../../components';
 
 import AuthContext from '../../contexts/auth';
 import { NewUser } from '../../interfaces/user';
@@ -12,7 +12,7 @@ import { storageItems } from '../../services/storage';
 import { signUp } from '../../services/user';
 import { brDateFormatter, enDateFormatter } from '../../utils/formatter';
 import { cpfMask } from '../../utils/mask';
-import Icons from '../../assets/icons';
+import { buttonIcons, inputIcons } from '../../assets/icons';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Preencha o campo nome'),
@@ -35,7 +35,8 @@ const SignUp: React.FC = () => {
 
   const { setUser } = useContext(AuthContext);
 
-  const { userIcon, emailIcon, cpfIcon, dateIcon, passwordIcon, signUpIcon } = Icons;
+  const { signUpIcon } = buttonIcons;
+  const { userIcon, emailIcon, cpfIcon, dateIcon, passwordIcon } = inputIcons;
 
   async function handleSubmitForm(values: NewUser) {
     setLoading(true);
@@ -58,75 +59,79 @@ const SignUp: React.FC = () => {
   }
   return (
     <>
-      <ScrollView style={styles.scroll}>
-        <SafeAreaView style={styles.container}>
-          <Text style={styles.title}> Seja bem-vindo</Text>
-          <Text style={styles.subTitle}>Informe os dados para realizar o cadastro</Text>
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.title}> Seja bem-vindo</Text>
+        <Text style={styles.subTitle}>Informe os dados para realizar o cadastro</Text>
 
-          <Form initialValues={initialValues} onSubmit={handleSubmitForm} validationSchema={validationSchema} validateOnChange={false}>
-            {({ values, handleChange, handleSubmit, errors, setFieldTouched, touched, setFieldValue }) => (
-              <>
-                <View style={globalStyles.inputArea}>
-                  <InputComponent
-                    value={values.name}
-                    label='Nome'
-                    onChangeText={handleChange('name')}
-                    errors={touched.name && errors.name ? errors.name : ''}
-                    onBlur={() => setFieldTouched('name')}
-                    icon={userIcon}
-                    editable={!loading}
-                  />
+        <Form initialValues={initialValues} onSubmit={handleSubmitForm} validationSchema={validationSchema} validateOnChange={false}>
+          {({ values, handleChange, handleSubmit, errors, setFieldTouched, touched, setFieldValue }) => (
+            <>
+              <View style={globalStyles.inputArea}>
+                <InputComponent
+                  value={values.name}
+                  label='Nome'
+                  onChangeText={handleChange('name')}
+                  errors={touched.name && errors.name ? errors.name : ''}
+                  onBlur={() => setFieldTouched('name')}
+                  icon={userIcon}
+                  editable={!loading}
+                />
 
-                  <InputComponent
-                    value={values.email}
-                    label='Email'
-                    keyboardType='email-address'
-                    onChangeText={handleChange('email')}
-                    errors={touched.email && errors.email ? errors.email : ''}
-                    onBlur={() => setFieldTouched('email')}
-                    icon={emailIcon}
-                    editable={!loading}
-                  />
+                <InputComponent
+                  value={values.email}
+                  label='Email'
+                  keyboardType='email-address'
+                  onChangeText={handleChange('email')}
+                  errors={touched.email && errors.email ? errors.email : ''}
+                  onBlur={() => setFieldTouched('email')}
+                  icon={emailIcon}
+                  editable={!loading}
+                />
 
-                  <InputComponent
-                    value={values.cpf}
-                    label='CPF'
-                    onChangeText={e => setFieldValue('cpf', cpfMask(e))}
-                    keyboardType='numeric'
-                    errors={touched.cpf && errors.cpf ? errors.cpf : ''}
-                    onBlur={() => setFieldTouched('cpf')}
-                    icon={cpfIcon}
-                    editable={!loading}
-                  />
+                <InputComponent
+                  value={values.cpf}
+                  label='CPF'
+                  onChangeText={e => setFieldValue('cpf', cpfMask(e))}
+                  keyboardType='numeric'
+                  errors={touched.cpf && errors.cpf ? errors.cpf : ''}
+                  onBlur={() => setFieldTouched('cpf')}
+                  icon={cpfIcon}
+                  editable={!loading}
+                />
 
-                  <InputComponent
-                    value={values.birth}
-                    label='Data de nascimento'
-                    errors={touched.birth && errors.birth ? errors.birth : ''}
-                    onBlur={() => setFieldTouched('birth')}
-                    keyboardType='numeric'
-                    onChangeText={e => setFieldValue('birth', brDateFormatter(e))}
-                    icon={dateIcon}
-                    editable={!loading}
-                  />
+                <InputComponent
+                  value={values.birth}
+                  label='Data de nascimento'
+                  errors={touched.birth && errors.birth ? errors.birth : ''}
+                  onBlur={() => setFieldTouched('birth')}
+                  keyboardType='numeric'
+                  onChangeText={e => setFieldValue('birth', brDateFormatter(e))}
+                  icon={dateIcon}
+                  editable={!loading}
+                />
 
-                  <InputComponent
-                    value={values.password}
-                    label='Senha'
-                    password={true}
-                    onChangeText={handleChange('password')}
-                    errors={touched.password && errors.password ? errors.password : ''}
-                    onBlur={() => setFieldTouched('password')}
-                    icon={passwordIcon}
-                    editable={!loading}
-                  />
-                </View>
-                <GradientButton loading={loading} onPress={() => handleSubmit()} buttonText='Cadastrar-se' icon={signUpIcon} />
-              </>
-            )}
-          </Form>
-        </SafeAreaView>
-      </ScrollView>
+                <InputComponent
+                  value={values.password}
+                  label='Senha'
+                  password={true}
+                  onChangeText={handleChange('password')}
+                  errors={touched.password && errors.password ? errors.password : ''}
+                  onBlur={() => setFieldTouched('password')}
+                  icon={passwordIcon}
+                  editable={!loading}
+                />
+              </View>
+              <Button
+                loading={loading}
+                onPress={() => handleSubmit()}
+                buttonText='Cadastrar-se'
+                icon={signUpIcon}
+                style={styles.submitButton}
+              />
+            </>
+          )}
+        </Form>
+      </SafeAreaView>
     </>
   );
 };
@@ -150,6 +155,9 @@ const styles = StyleSheet.create({
   subTitle: {
     fontFamily: 'Poppins-SemiBold',
     color: colors.black,
+  },
+  submitButton: {
+    marginTop: 40,
   },
 });
 

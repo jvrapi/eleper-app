@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useContext, useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import Icons from '../../assets/icons';
+import { pageIcons } from '../../assets/icons';
 import { colors } from '../../assets/styles';
 import { Card, ErrorComponent, LoadingComponent } from '../../components';
 import AuthContext from '../../contexts/auth';
@@ -16,7 +16,7 @@ const Home: React.FC = () => {
   const { setShowTabBar } = useContext(BottomTabBarContext);
   const [loading, setLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
-  const { infoIcon } = Icons;
+  const { infoIcon } = pageIcons;
   const navigation = useNavigation();
 
   async function getData() {

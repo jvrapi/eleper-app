@@ -11,3 +11,7 @@ export function enDateFormatter(value: string) {
 
   return `${dateFormatted[2]}-${dateFormatted[1]}-${dateFormatted[0]}`;
 }
+
+export function fileNameFormatter(fileName: string) {
+  return fileName.replace(/(\d{13})-/g, '');
+}

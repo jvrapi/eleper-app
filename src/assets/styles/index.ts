@@ -17,6 +17,6 @@ export const colors = {
 
 export const globalStyles = StyleSheet.create({
   inputArea: {
-    padding: 40,
+    paddingHorizontal: 10,
   },
 });

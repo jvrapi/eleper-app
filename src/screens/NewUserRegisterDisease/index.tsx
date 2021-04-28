@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { colors } from '../../assets/styles';
-import { ErrorComponent, GradientButton, InputComponent, LoadingComponent, ModalComponent, MultiSelect } from '../../components';
+import { ErrorComponent, Button, InputComponent, LoadingComponent, ModalComponent, MultiSelect } from '../../components';
 import { MultiSelectItems } from '../../components/MultiSelect';
 import * as DiseaseService from '../../services/disease';
 import * as UserDiseaseService from '../../services/user.disease';
-import Icons from '../../assets/icons';
+import { inputIcons, buttonIcons } from '../../assets/icons';
 import { Formik as Form } from 'formik';
 import * as Yup from 'yup';
 import { DiseaseSave } from '../../interfaces/disease';
@@ -28,7 +28,8 @@ const NewUserRegisterDisease = () => {
   const [showModal, setShowModal] = useState(false);
   const [savingDisease, setSavingDisease] = useState(false);
   const [loadingText, setLoadingText] = useState('Estou preparando algumas coisas, por favor aguarde');
-  const { checkIcon, diseaseIcon } = Icons;
+  const { checkIcon } = buttonIcons;
+  const { diseaseIcon } = inputIcons;
   const navigation = useNavigation();
   const { user } = useContext(AuthContext);
 
@@ -132,8 +133,8 @@ const NewUserRegisterDisease = () => {
           <View style={styles.scroll}>
             <MultiSelect listItems={items} inputLabelText='Toque aqui para listar as doenças' onSelectedItem={onSelectedItem} />
           </View>
-          <View style={styles.gradientButton}>
-            <GradientButton buttonText='Finalizei!' icon={checkIcon} onPress={registerDiseasesTerminated} />
+          <View style={styles.Button}>
+            <Button buttonText='Finalizei!' icon={checkIcon} onPress={registerDiseasesTerminated} style={styles.submitButton} />
           </View>
           <TouchableOpacity>
             <Text style={styles.diseaseNotFoundButtonText} onPress={() => setShowModal(true)}>
@@ -167,7 +168,13 @@ const NewUserRegisterDisease = () => {
                     onBlur={() => setFieldTouched('name')}
                     editable={!savingDisease}
                   />
-                  <GradientButton buttonText='Finalizado' icon={checkIcon} loading={savingDisease} onPress={() => handleSubmit()} />
+                  <Button
+                    buttonText='Finalizado'
+                    icon={checkIcon}
+                    loading={savingDisease}
+                    onPress={() => handleSubmit()}
+                    style={styles.submitButton}
+                  />
                 </>
               )}
             </Form>
@@ -210,7 +217,7 @@ const styles = StyleSheet.create({
     color: colors.blue,
     fontFamily: 'Poppins-SemiBold',
   },
-  gradientButton: {
+  Button: {
     marginBottom: 30,
     width: '100%',
     alignItems: 'center',
@@ -231,6 +238,9 @@ const styles = StyleSheet.create({
     fontSize: 17,
     textAlign: 'center',
     marginHorizontal: 10,
+  },
+  submitButton: {
+    marginTop: 40,
   },
 });
 

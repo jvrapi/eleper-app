@@ -5,11 +5,11 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import * as Yup from 'yup';
 import { colors } from '../../assets/styles';
-import { GradientButton, InputComponent, LoadingComponent } from '../../components';
+import { Button, InputComponent, LoadingComponent } from '../../components';
 import { SendMail } from '../../interfaces/email';
 import { RedefinePassword } from '../../interfaces/user';
 import { redefinePassword, sendRedefineCode } from '../../services/user';
-import Icons from '../../assets/icons';
+import { buttonIcons, inputIcons } from '../../assets/icons';
 
 /* initial values */
 const initialEmailValue: SendMail = {
@@ -33,7 +33,7 @@ const validationEmailSchema = Yup.object().shape({
 });
 
 const validationRedefinePasswordSchema = Yup.object().shape({
-  code: Yup.string().required('Preencha o campo código').min(11).max(11),
+  code: Yup.string().required('Preencha o campo código').min(5).max(11),
 
   password: Yup.string().required('Preencha o campo senha').min(3),
 });
@@ -47,8 +47,9 @@ const ForgotPassword: React.FC = () => {
   const [titles, setTitles] = useState(initialTitlesValues);
   const [email, setEmail] = useState('');
 
-  const { container, title, subTitle, notReceivedCode, notReceivedCodeText } = styles(titles.subTitle.length > 20);
-  const { emailIcon, passwordIcon, recoveryCodeIcon, redefinePasswordIcon, sendEmailIcon } = Icons;
+  const { container, title, subTitle, notReceivedCode, notReceivedCodeText, submitButton } = styles(titles.subTitle.length > 20);
+  const { sendEmailIcon, redefinePasswordIcon } = buttonIcons;
+  const { emailIcon, passwordIcon, recoveryCodeIcon } = inputIcons;
 
   const handleSubmitEmailForm = async (values: SendMail) => {
     setLoading(true);
@@ -188,7 +189,7 @@ const ForgotPassword: React.FC = () => {
                       editable={!loading}
                     />
                   </View>
-                  <GradientButton onPress={() => handleSubmit()} buttonText='Pronto' icon={sendEmailIcon} />
+                  <Button onPress={() => handleSubmit()} buttonText='Pronto' icon={sendEmailIcon} style={submitButton} />
                 </>
               )}
             </Form>
@@ -225,7 +226,13 @@ const ForgotPassword: React.FC = () => {
                     editable={!loading}
                   />
                 </View>
-                <GradientButton onPress={() => handleSubmit()} buttonText='RedefinirSenha' loading={loading} icon={redefinePasswordIcon} />
+                <Button
+                  onPress={() => handleSubmit()}
+                  buttonText='RedefinirSenha'
+                  loading={loading}
+                  icon={redefinePasswordIcon}
+                  style={submitButton}
+                />
 
                 <TouchableOpacity onPress={reSendCode} style={notReceivedCode}>
                   <Text style={notReceivedCodeText}>Não recebi o código</Text>
@@ -267,6 +274,9 @@ const styles = (textToLong: boolean) =>
     },
     notReceivedCode: { marginTop: 30 },
     notReceivedCodeText: { fontSize: 17, color: colors.blue, fontFamily: 'Poppins-SemiBold' },
+    submitButton: {
+      marginTop: 40,
+    },
   });
 
 export default ForgotPassword;

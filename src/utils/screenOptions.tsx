@@ -1,15 +1,15 @@
-import Icons from '../assets/icons';
+import { pageIcons } from '../assets/icons';
 
 export const homeOptions = [
   {
     title: 'Meus exames',
-    icon: Icons.myExamsIcon,
+    icon: pageIcons.myExamsIcon,
     info: 'Nessa opção, você pode gerenciar todos os seus exames.',
     route: { name: 'Exam' },
   },
   {
     title: 'Meu registro',
-    icon: Icons.myRecordIcon,
+    icon: pageIcons.myRecordIcon,
     info: 'Aqui você verá um resumo do seu registro pessoal.',
     route: { name: 'Profile', screen: 'MyRecord' },
   },

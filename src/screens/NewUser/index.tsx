@@ -2,15 +2,15 @@ import React, { useContext, useState } from 'react';
 import CheckBox from '@react-native-community/checkbox';
 import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, Text, TouchableOpacity, SafeAreaView, View } from 'react-native';
-import Icons from '../../assets/icons';
+import { buttonIcons } from '../../assets/icons';
 import { colors } from '../../assets/styles';
-import { GradientButton } from '../../components';
+import { Button } from '../../components';
 import AuthContext from '../../contexts/auth';
 
 const NewUser = () => {
   const { user } = useContext(AuthContext);
   const navigation = useNavigation();
-  const { checkIcon } = Icons;
+  const { checkIcon } = buttonIcons;
   const [showInitialScreen, setShowInitialScreen] = useState(true);
   const [checkBox, setCheckBox] = useState(false);
 
@@ -32,7 +32,7 @@ const NewUser = () => {
             seu aplicativo pessoal de registros médicos
           </Text>
           <View style={styles.buttonArea}>
-            <GradientButton buttonText='Olá Eliper' icon={checkIcon} onPress={() => setShowInitialScreen(false)} />
+            <Button buttonText='Olá Eliper' icon={checkIcon} onPress={() => setShowInitialScreen(false)} />
           </View>
         </>
       )}
@@ -51,7 +51,13 @@ const NewUser = () => {
             <Text style={styles.acceptUseTermText}>Li e aceito os termos de uso</Text>
           </View>
           <View style={styles.buttonArea}>
-            <GradientButton buttonText='Continuar' disabled={!checkBox} onPress={goToRegisterDiseases} icon={checkIcon} />
+            <Button
+              buttonText='Continuar'
+              disabled={!checkBox}
+              onPress={goToRegisterDiseases}
+              icon={checkIcon}
+              style={styles.submitButton}
+            />
           </View>
         </>
       )}
@@ -103,6 +109,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     marginTop: 20,
+  },
+  submitButton: {
+    marginTop: 40,
   },
 });
 

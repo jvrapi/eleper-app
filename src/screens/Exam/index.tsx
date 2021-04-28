@@ -4,18 +4,19 @@ import { showMessage } from 'react-native-flash-message';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../../assets/styles';
 import AuthContext from '../../contexts/auth';
-import { Exams } from '../../interfaces/exam';
+import { Exam } from '../../interfaces/exam';
 import { getAll } from '../../services/exam';
 import { Card, ErrorComponent, LoadingComponent } from '../../components';
 import { DateTimeToBrDate } from '../../utils/function';
-import Icons from '../../assets/icons';
+import { pageIcons } from '../../assets/icons';
 import { useNavigation } from '@react-navigation/native';
-const Exam = () => {
+
+const ExamScreen = () => {
   const { user } = useContext(AuthContext);
-  const [exams, setExams] = useState<Exams[]>([]);
+  const [exams, setExams] = useState<Exam[]>([]);
   const [loading, setLoading] = useState(false);
-  const [hasErrors, setHasErrors] = useState(false);
-  const { myExamsIcon } = Icons;
+  const [hasError, setHasError] = useState(false);
+  const { myExamsIcon } = pageIcons;
   const navigation = useNavigation();
 
   async function getData() {
@@ -28,7 +29,7 @@ const Exam = () => {
         type: 'danger',
         icon: 'danger',
       });
-      setHasErrors(true);
+      setHasError(true);
     } finally {
       setLoading(false);
     }
@@ -48,20 +49,24 @@ const Exam = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Meus exames</Text>
-      <ScrollView style={styles.scroll} refreshControl={<RefreshControl refreshing={loading} onRefresh={onRefresh} />}>
-        {exams.map((exam, i) => (
-          <Card key={i} style={[styles.card, styles.shadow]} onPress={() => onPressCard(exam.id)}>
-            <View style={styles.textContainer}>
-              <Text style={styles.examName}>{exam.name}</Text>
-              <Text style={styles.examDate}>{DateTimeToBrDate(exam.createdAt)}</Text>
-            </View>
-            {myExamsIcon}
-          </Card>
-        ))}
-      </ScrollView>
+      {!loading && !hasError && (
+        <>
+          <Text style={styles.title}>Meus exames</Text>
+          <ScrollView style={styles.scroll} refreshControl={<RefreshControl refreshing={loading} onRefresh={onRefresh} />}>
+            {exams.map((exam, i) => (
+              <Card key={i} style={[styles.card, styles.shadow]} onPress={() => onPressCard(exam.id)}>
+                <View style={styles.textContainer}>
+                  <Text style={styles.examName}>{exam.name}</Text>
+                  <Text style={styles.examDate}>{DateTimeToBrDate(exam.createdAt)}</Text>
+                </View>
+                {myExamsIcon}
+              </Card>
+            ))}
+          </ScrollView>
+        </>
+      )}
       {loading && <LoadingComponent />}
-      {hasErrors && <ErrorComponent />}
+      {hasError && <ErrorComponent />}
     </SafeAreaView>
   );
 };
@@ -122,4 +127,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Exam;
+export default ExamScreen;

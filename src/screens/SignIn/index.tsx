@@ -4,10 +4,10 @@ import React, { useContext, useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import * as Yup from 'yup';
 import { colors, globalStyles } from '../../assets/styles';
-import { GradientButton, InputComponent } from '../../components';
+import { Button, InputComponent } from '../../components';
 import AuthContext from '../../contexts/auth';
 import { Auth } from '../../interfaces/user';
-import Icons from '../../assets/icons';
+import { inputIcons, buttonIcons } from '../../assets/icons';
 
 const validationSchema = Yup.object().shape({
   username: Yup.string().email('Digite um e-mail válido').required('Preencha o campo de e-mail'),
@@ -21,7 +21,8 @@ const SignIn: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
-  const { emailIcon, passwordIcon, signInIcon } = Icons;
+  const { emailIcon, passwordIcon } = inputIcons;
+  const { signInIcon } = buttonIcons;
 
   async function handleSubmitForm(values: Auth) {
     setLoading(true);
@@ -61,7 +62,7 @@ const SignIn: React.FC = () => {
                 editable={!loading}
               />
             </View>
-            <GradientButton loading={loading} onPress={() => handleSubmit()} buttonText='Acessar' icon={signInIcon} />
+            <Button loading={loading} onPress={() => handleSubmit()} buttonText='Acessar' icon={signInIcon} style={styles.submitButton} />
           </>
         )}
       </Form>
@@ -97,6 +98,9 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: colors.blue,
     fontFamily: 'Poppins-SemiBold',
+  },
+  submitButton: {
+    marginTop: 40,
   },
 });
 
