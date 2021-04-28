@@ -3,7 +3,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import AntDesignIcons from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import FontAwesome5Icons from 'react-native-vector-icons/FontAwesome5';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 import { colors } from '../../assets/styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -40,13 +40,13 @@ const CustomTabBar = ({ state, navigation }: BottomTabBarProps<BottomTabBarOptio
 
       <View style={styles.tabItem}>
         <TouchableOpacity style={styles.button}>
-          <FontAwesome5Icons
-            name='briefcase-medical'
+          <Fontisto
+            name='drug-pack'
             size={30}
             color={state.index === 2 ? colors.iconFocused : colors.iconInactive}
             onPress={() => goTo('Treatment')}
           />
-          <Text style={[styles.screenTitle, { color: state.index === 2 ? colors.iconFocused : colors.iconInactive }]}>Tratamentos</Text>
+          <Text style={[styles.screenTitle, { color: state.index === 2 ? colors.iconFocused : colors.iconInactive }]}>Remédios</Text>
         </TouchableOpacity>
       </View>
 
@@ -68,16 +68,13 @@ const CustomTabBar = ({ state, navigation }: BottomTabBarProps<BottomTabBarOptio
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    bottom: 25,
-    left: 20,
-    right: 20,
+    bottom: 0,
     elevation: 0,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 15,
+    backgroundColor: '#1c557e',
     height: 90,
     flexDirection: 'row',
-
     padding: 10,
+    width: '100%',
   },
 
   shadow: {

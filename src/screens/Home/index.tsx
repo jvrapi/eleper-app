@@ -50,11 +50,11 @@ const Home: React.FC = () => {
           <Text style={styles.text}>
             Olá, {cutName(user?.name as string)}
             {'\n'}
-            Em que posso lhe ajudar?
+            Em que posso ajudar?
           </Text>
           <ScrollView style={styles.scroll}>
             {homeOptions.map((option, i) => (
-              <Card key={i} style={styles.card} onPress={() => goTo(option.route)} activeOpacity={0.5}>
+              <Card key={i} style={[styles.card, styles.shadow]} onPress={() => goTo(option.route)} activeOpacity={0.5}>
                 <View style={styles.textContainer}>
                   <Text style={styles.cardText}>{option.title}</Text>
 
@@ -103,6 +103,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     padding: 20,
+  },
+
+  shadow: {
+    shadowColor: '#2974FA',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+
+    elevation: 8,
   },
 
   cardText: {

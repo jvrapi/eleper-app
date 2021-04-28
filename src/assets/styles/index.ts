@@ -11,8 +11,8 @@ export const colors = {
   blue: '#2974fa',
   darkBlue: '#0558eb',
   screenColor: '#c3e5fe',
-  iconInactive: '#748c94',
-  iconFocused: '#2974fa',
+  iconInactive: '#8595b1',
+  iconFocused: '#ffffff',
 };
 
 export const globalStyles = StyleSheet.create({
