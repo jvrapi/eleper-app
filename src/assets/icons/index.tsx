@@ -13,6 +13,7 @@ export const pageIcons = {
   myExamsIcon: <FaIcons5 name='file-medical' size={40} color='#000000' />,
   myRecordIcon: <FaIcons5 name='book-medical' size={40} color='#000000' />,
   infoIcon: <Feather name='info' size={20} color='#a9a9a9' />,
+  examDetailsIcon: <FaIcons5 name='laptop-medical' size={100} color='#000000' />,
 };
 
 export const inputIcons = {
@@ -23,6 +24,8 @@ export const inputIcons = {
   cpfIcon: <IonicIcon name='md-card-outline' size={30} color='#000000' />,
   recoveryCodeIcon: <MaterialCommunityIcons name='file-restore-outline' size={30} color='#000000' />,
   diseaseIcon: <FaIcons5 name='disease' size={30} color='#000000' />,
+  nameIcon: <MaterialIcons name='drive-file-rename-outline' size={30} color='#000000' />,
+  myExamsIcon: <FaIcons5 name='file-medical' size={30} color='#000000' />,
 };
 
 export const buttonIcons = {

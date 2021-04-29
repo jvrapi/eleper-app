@@ -10,7 +10,7 @@ import { Formik as Form } from 'formik';
 import * as Yup from 'yup';
 import { colors, globalStyles } from '../../assets/styles';
 import { fileNameFormatter } from '../../utils/formatter';
-import { pageIcons } from '../../assets/icons';
+import { inputIcons, pageIcons } from '../../assets/icons';
 
 type RootStackParamList = {
   ExamDetails: { id: string };
@@ -39,7 +39,8 @@ const ExamDetails: React.FC<Props> = ({ route }) => {
   const [exam, setExam] = useState<Exam>(initialValues);
   const [loading, setLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
-  const { myExamsIcon } = pageIcons;
+  const { nameIcon, myExamsIcon } = inputIcons;
+  const { examDetailsIcon } = pageIcons;
 
   useEffect(() => {
     getData();
@@ -69,6 +70,10 @@ const ExamDetails: React.FC<Props> = ({ route }) => {
     <SafeAreaView style={styles.container}>
       {!loading && !hasError && (
         <>
+          <View>
+            {examDetailsIcon}
+            <Text>Detalhes do Exame</Text>
+          </View>
           <Form
             enableReinitialize
             initialValues={exam}
@@ -85,11 +90,14 @@ const ExamDetails: React.FC<Props> = ({ route }) => {
                     value={values.name}
                     onChangeText={handleChange('name')}
                     onBlur={() => setFieldTouched('name')}
+                    icon={nameIcon}
                   />
                 </View>
                 <View style={styles.fileContainer}>
-                  {myExamsIcon}
-                  <Text style={styles.fileName}>{fileNameFormatter(exam.path)}</Text>
+                  <View style={styles.fileCard}>
+                    {myExamsIcon}
+                    <Text style={styles.fileName}>{fileNameFormatter(exam.path)}</Text>
+                  </View>
                 </View>
                 <Button loading={loading} onPress={() => handleSubmit()} buttonText='Acessar' style={styles.submitButton} />
               </>
@@ -113,15 +121,26 @@ const styles = StyleSheet.create({
   fileContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     width: '100%',
     paddingHorizontal: 20,
     marginTop: 10,
   },
+  fileCard: {
+    width: '100%',
+    backgroundColor: '#fff',
+    height: 60,
+    flexDirection: 'row',
+    borderRadius: 30,
+    paddingHorizontal: 15,
+    borderColor: '#000000',
+    borderStyle: 'solid',
+    borderWidth: 2,
+    alignItems: 'center',
+  },
   fileName: {
     fontFamily: 'Poppins-Regular',
-    marginRight: 20,
-    marginTop: 10,
+    marginLeft: 10,
   },
   submitButton: {
     marginTop: 40,

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import CheckBox from '@react-native-community/checkbox';
 import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
-import Icons from '../../assets/icons';
+import { pageIcons } from '../../assets/icons';
 import { colors } from '../../assets/styles';
 
 export interface MultiSelectItems {
@@ -17,7 +17,7 @@ interface Props {
 }
 
 const MultiSelectComponent: React.FC<Props> = ({ listItems, inputLabelText, onSelectedItem }) => {
-  const { searchIcon } = Icons;
+  const { searchIcon } = pageIcons;
   const [inputValue, setInputValue] = useState('');
   const [items, setItems] = useState(listItems);
 
