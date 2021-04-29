@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, RefreshControl } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, RefreshControl, Linking } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../../assets/styles';
 import AuthContext from '../../contexts/auth';
 import { Exam } from '../../interfaces/exam';
 import { getAll, downloadExam } from '../../services/exam';
+import api from '../../services/api';
 import { Button, Card, ErrorComponent, LoadingComponent, ModalComponent } from '../../components';
 import { DateTimeToBrDate } from '../../utils/function';
 import { pageIcons, buttonIcons } from '../../assets/icons';
@@ -15,7 +16,7 @@ const ExamScreen = () => {
   const { user } = useContext(AuthContext);
   const [exams, setExams] = useState<Exam[]>([]);
   const [selectedExam, setSelectedExam] = useState<Exam>({} as Exam);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const { myExamsIcon } = pageIcons;
@@ -56,23 +57,25 @@ const ExamScreen = () => {
   async function onDownloadButtonPressed() {
     setShowModal(false);
     setLoading(true);
-    try {
-      await downloadExam(selectedExam.id, selectedExam.name);
+    buildUri();
+    /* await downloadExam(selectedExam.id, selectedExam.name);
+    setLoading(false); */
+  }
 
-      showMessage({
-        message: 'Arquivo baixado com sucesso. Verifique na sua pasta de downloads',
-        type: 'success',
-        icon: 'success',
-      });
-    } catch (error) {
-      const errorMessage = error.response.data.error;
-      showMessage({
-        message: errorMessage ? errorMessage : 'Ocorreu um erro ao tentar baixar o arquivo',
-        type: 'danger',
-        icon: 'danger',
-      });
-    } finally {
+  async function buildUri() {
+    const serverUrl = api.defaults.baseURL;
+    const token = api.defaults.headers.Authorization;
+    const url = `${serverUrl}/exam/examFile?id=${selectedExam.id}&authorization=${token}`;
+    try {
+      await Linking.canOpenURL(url);
+      Linking.openURL(url);
       setLoading(false);
+    } catch (error) {
+      showMessage({
+        message: 'Desculpe, não consegui abrir o link para o download',
+        icon: 'danger',
+        type: 'danger',
+      });
     }
   }
 
@@ -114,9 +117,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: colors.screenColor,
-    paddingTop: 70,
   },
+
   title: {
     fontFamily: 'Poppins-SemiBold',
     fontSize: 20,
