@@ -5,18 +5,21 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../../assets/styles';
 import AuthContext from '../../contexts/auth';
 import { Exam } from '../../interfaces/exam';
-import { getAll } from '../../services/exam';
-import { Card, ErrorComponent, LoadingComponent } from '../../components';
+import { getAll, downloadExam } from '../../services/exam';
+import { Button, Card, ErrorComponent, LoadingComponent, ModalComponent } from '../../components';
 import { DateTimeToBrDate } from '../../utils/function';
-import { pageIcons } from '../../assets/icons';
+import { pageIcons, buttonIcons } from '../../assets/icons';
 import { useNavigation } from '@react-navigation/native';
 
 const ExamScreen = () => {
   const { user } = useContext(AuthContext);
   const [exams, setExams] = useState<Exam[]>([]);
+  const [selectedExam, setSelectedExam] = useState<Exam>({} as Exam);
   const [loading, setLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const { myExamsIcon } = pageIcons;
+  const { editExamIcon, downloadIcon } = buttonIcons;
   const navigation = useNavigation();
 
   async function getData() {
@@ -24,8 +27,9 @@ const ExamScreen = () => {
       const { data } = await getAll(user?.id as string);
       setExams(data);
     } catch (error) {
+      const errorMessage = error.response.data.error;
       showMessage({
-        message: error.response.data.error,
+        message: errorMessage ? errorMessage : 'Ocorreu um erro ao tentar listar os exames',
         type: 'danger',
         icon: 'danger',
       });
@@ -39,8 +43,37 @@ const ExamScreen = () => {
     getData();
   }
 
-  function onPressCard(id: string) {
-    navigation.navigate('ExamDetails', { id });
+  function onPressCard(exam: Exam) {
+    setSelectedExam(exam);
+    setShowModal(true);
+  }
+
+  function onEditButtonPressed() {
+    setShowModal(false);
+    navigation.navigate('ExamDetails', { id: selectedExam.id });
+  }
+
+  async function onDownloadButtonPressed() {
+    setShowModal(false);
+    setLoading(true);
+    try {
+      await downloadExam(selectedExam.id, selectedExam.name);
+
+      showMessage({
+        message: 'Arquivo baixado com sucesso. Verifique na sua pasta de downloads',
+        type: 'success',
+        icon: 'success',
+      });
+    } catch (error) {
+      const errorMessage = error.response.data.error;
+      showMessage({
+        message: errorMessage ? errorMessage : 'Ocorreu um erro ao tentar baixar o arquivo',
+        type: 'danger',
+        icon: 'danger',
+      });
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -54,7 +87,7 @@ const ExamScreen = () => {
           <Text style={styles.title}>Meus exames</Text>
           <ScrollView style={styles.scroll} refreshControl={<RefreshControl refreshing={loading} onRefresh={onRefresh} />}>
             {exams.map((exam, i) => (
-              <Card key={i} style={[styles.card, styles.shadow]} onPress={() => onPressCard(exam.id)}>
+              <Card key={i} style={[styles.card, styles.shadow]} onPress={() => onPressCard(exam)}>
                 <View style={styles.textContainer}>
                   <Text style={styles.examName}>{exam.name}</Text>
                   <Text style={styles.examDate}>{DateTimeToBrDate(exam.createdAt)}</Text>
@@ -63,6 +96,12 @@ const ExamScreen = () => {
               </Card>
             ))}
           </ScrollView>
+          <ModalComponent showModal={showModal} close={() => setShowModal(false)}>
+            <View style={styles.modalContainer}>
+              <Button buttonText='Baixar Exame' icon={downloadIcon} onPress={onDownloadButtonPressed} />
+              <Button buttonText='Editar Exame' icon={editExamIcon} style={styles.lastButton} onPress={onEditButtonPressed} />
+            </View>
+          </ModalComponent>
         </>
       )}
       {loading && <LoadingComponent />}
@@ -124,6 +163,14 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
     fontSize: 13,
     marginLeft: 5,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  lastButton: {
+    marginTop: 20,
   },
 });
 

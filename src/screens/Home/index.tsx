@@ -44,7 +44,7 @@ const Home: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {!loading && (
+      {!loading && !hasError && (
         <>
           <Text style={styles.title}>Eliper</Text>
           <Text style={styles.text}>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, SafeAreaView, StyleSheet, View } from 'react-native';
+import { Text, SafeAreaView, StyleSheet, View, TouchableOpacity } from 'react-native';
 
 import { RouteProp } from '@react-navigation/native';
 import { ErrorComponent, Button, InputComponent, LoadingComponent } from '../../components';
@@ -11,6 +11,7 @@ import * as Yup from 'yup';
 import { colors, globalStyles } from '../../assets/styles';
 import { fileNameFormatter } from '../../utils/formatter';
 import { inputIcons, pageIcons } from '../../assets/icons';
+import DocumentPicker from 'react-native-document-picker';
 
 type RootStackParamList = {
   ExamDetails: { id: string };
@@ -66,13 +67,33 @@ const ExamDetails: React.FC<Props> = ({ route }) => {
     return;
   }
 
+  async function pickFile() {
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.pdf],
+      });
+      console.log(
+        res.uri,
+        res.type, // mime type
+        res.name,
+        res.size,
+      );
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        // User cancelled the picker, exit any dialogs or menus and move on
+      } else {
+        throw err;
+      }
+    }
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       {!loading && !hasError && (
         <>
-          <View>
+          <View style={styles.header}>
             {examDetailsIcon}
-            <Text>Detalhes do Exame</Text>
+            <Text style={styles.title}>Detalhes do Exame</Text>
           </View>
           <Form
             enableReinitialize
@@ -94,10 +115,10 @@ const ExamDetails: React.FC<Props> = ({ route }) => {
                   />
                 </View>
                 <View style={styles.fileContainer}>
-                  <View style={styles.fileCard}>
+                  <TouchableOpacity style={styles.fileCard} onPress={pickFile} activeOpacity={0.5}>
                     {myExamsIcon}
                     <Text style={styles.fileName}>{fileNameFormatter(exam.path)}</Text>
-                  </View>
+                  </TouchableOpacity>
                 </View>
                 <Button loading={loading} onPress={() => handleSubmit()} buttonText='Acessar' style={styles.submitButton} />
               </>
@@ -117,6 +138,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: colors.screenColor,
+  },
+  header: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  title: {
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: 20,
+    marginTop: 10,
   },
   fileContainer: {
     flexDirection: 'row',

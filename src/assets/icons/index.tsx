@@ -34,6 +34,8 @@ export const buttonIcons = {
   checkIcon: <Feather name='check' size={30} color='#FFFFFF' />,
   continueIcon: <Feather name='arrow-right' size={30} color='#FFFFFF' />,
   uploadIcon: <FaIcons5 name='upload' size={30} color='#FFFFFF' />,
+  downloadIcon: <FaIcons5 name='file-download' size={30} color='#FFFFFF' />,
   sendEmailIcon: <MaterialCommunityIcons name='email-check-outline' size={30} color='#FFFFFF' />,
   redefinePasswordIcon: <MaterialCommunityIcons name='lock-reset' size={30} color='#FFFFFF' />,
+  editExamIcon: <MaterialCommunityIcons name='file-document-edit-outline' size={30} color='#FFFFFF' />,
 };
