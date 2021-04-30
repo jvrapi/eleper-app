@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Text, SafeAreaView, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { Text, SafeAreaView, StyleSheet, View, TouchableOpacity, Platform } from 'react-native';
 
 import { RouteProp } from '@react-navigation/native';
 import { ErrorComponent, Button, InputComponent, LoadingComponent } from '../../components';
-import { getById } from '../../services/exam';
+import { getById, updateExam } from '../../services/exam';
 import { Exam } from '../../interfaces/exam';
 import { showMessage } from 'react-native-flash-message';
 import { Formik as Form } from 'formik';
 import * as Yup from 'yup';
 import { colors, globalStyles } from '../../assets/styles';
-import { fileNameFormatter } from '../../utils/formatter';
 import { inputIcons, pageIcons } from '../../assets/icons';
 import DocumentPicker from 'react-native-document-picker';
+import mime from 'mime';
 
 type RootStackParamList = {
   ExamDetails: { id: string };
@@ -42,6 +42,7 @@ const ExamDetails: React.FC<Props> = ({ route }) => {
   const [hasError, setHasError] = useState(false);
   const { nameIcon, myExamsIcon } = inputIcons;
   const { examDetailsIcon } = pageIcons;
+  const [uriFile, setUriFile] = useState('');
 
   useEffect(() => {
     getData();
@@ -54,7 +55,7 @@ const ExamDetails: React.FC<Props> = ({ route }) => {
     } catch (error) {
       setHasError(true);
       showMessage({
-        message: error.response.data.error,
+        message: 'Não consegui recuperar as informações do exame',
         type: 'danger',
         icon: 'danger',
       });
@@ -63,27 +64,58 @@ const ExamDetails: React.FC<Props> = ({ route }) => {
     }
   }
 
-  async function handleSubmitForm() {
-    return;
-  }
-
   async function pickFile() {
     try {
-      const res = await DocumentPicker.pick({
+      const { uri, name } = await DocumentPicker.pick({
         type: [DocumentPicker.types.pdf],
       });
-      console.log(
-        res.uri,
-        res.type, // mime type
-        res.name,
-        res.size,
-      );
+      setUriFile(uri);
+      setExam({ ...exam, path: name });
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
-        // User cancelled the picker, exit any dialogs or menus and move on
+        showMessage({
+          message: 'Não consegui carregar o arquivo que você escolheu, pode tentar de novo?',
+          type: 'danger',
+          icon: 'danger',
+        });
       } else {
         throw err;
       }
+    }
+  }
+
+  async function handleSubmitForm(values: Exam) {
+    const multiFormData = new FormData();
+
+    const newImageUri = 'file:///' + uriFile.split('file:/').join('');
+
+    const pdfFile = {
+      uri: Platform.OS === 'android' ? uriFile : uriFile.replace('file:/', ''),
+      type: mime.getType(newImageUri),
+      name: values.name + '.pdf',
+    };
+
+    multiFormData.append('exam', pdfFile);
+
+    multiFormData.append('name', values.name);
+    multiFormData.append('id', values.id);
+    setLoading(true);
+    try {
+      const { data } = await updateExam(multiFormData);
+      setExam(data);
+      showMessage({
+        message: 'Exame atualizado com sucesso',
+        type: 'success',
+        icon: 'success',
+      });
+    } catch (error) {
+      showMessage({
+        message: 'Não consegui atualizar o exame. Pode tentar de novo?',
+        type: 'danger',
+        icon: 'danger',
+      });
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -117,7 +149,7 @@ const ExamDetails: React.FC<Props> = ({ route }) => {
                 <View style={styles.fileContainer}>
                   <TouchableOpacity style={styles.fileCard} onPress={pickFile} activeOpacity={0.5}>
                     {myExamsIcon}
-                    <Text style={styles.fileName}>{fileNameFormatter(exam.path)}</Text>
+                    <Text style={styles.fileName}>{exam.path}</Text>
                   </TouchableOpacity>
                 </View>
                 <Button loading={loading} onPress={() => handleSubmit()} buttonText='Acessar' style={styles.submitButton} />

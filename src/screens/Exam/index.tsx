@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../../assets/styles';
 import AuthContext from '../../contexts/auth';
 import { Exam } from '../../interfaces/exam';
-import { getAll, downloadExam } from '../../services/exam';
+import { getAll } from '../../services/exam';
 import api from '../../services/api';
 import { Button, Card, ErrorComponent, LoadingComponent, ModalComponent } from '../../components';
 import { DateTimeToBrDate } from '../../utils/function';
