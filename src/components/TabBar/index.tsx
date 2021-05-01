@@ -1,19 +1,24 @@
 import { BottomTabBarProps, BottomTabBarOptions } from '@react-navigation/bottom-tabs';
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import AntDesignIcons from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
+import Feather from 'react-native-vector-icons/Feather';
 import { colors } from '../../assets/styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import BottomTabBarContext from '../../contexts/bottomTabBar';
 
 const CustomTabBar = ({ state, navigation }: BottomTabBarProps<BottomTabBarOptions>) => {
-  const goTo = (screenName: string) => {
+  const { showPlusButton, plusButtonRoute, setShowPlusButton } = useContext(BottomTabBarContext);
+
+  function goTo(screenName: string) {
     navigation.navigate(screenName);
-  };
+    setShowPlusButton(false);
+  }
 
   return (
-    <View style={[styles.container, styles.shadow]}>
+    <View style={styles.container}>
       <View style={styles.tabItem}>
         <TouchableOpacity style={styles.button}>
           <AntDesignIcons
@@ -37,6 +42,12 @@ const CustomTabBar = ({ state, navigation }: BottomTabBarProps<BottomTabBarOptio
           <Text style={[styles.screenTitle, { color: state.index === 1 ? colors.iconFocused : colors.iconInactive }]}>Anotações</Text>
         </TouchableOpacity>
       </View>
+
+      {showPlusButton && (
+        <View style={styles.tabCenterItem}>
+          <Feather name='plus' size={40} color='#1c557e' onPress={() => goTo(plusButtonRoute)} />
+        </View>
+      )}
 
       <View style={styles.tabItem}>
         <TouchableOpacity style={styles.button}>
@@ -77,17 +88,6 @@ const styles = StyleSheet.create({
     width: '100%',
   },
 
-  shadow: {
-    shadowColor: '#2974FA',
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 50,
-    elevation: 10,
-  },
-
   tabItem: {
     flex: 1,
     justifyContent: 'center',
@@ -104,6 +104,18 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: 'Poppins-SemiBold',
     marginTop: 5,
+  },
+  tabCenterItem: {
+    width: 70,
+    height: 70,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 35,
+    borderColor: '#1c557e',
+    borderWidth: 3,
+    borderStyle: 'solid',
+    marginTop: -20,
   },
 });
 

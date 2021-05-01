@@ -11,9 +11,11 @@ import { Button, Card, ErrorComponent, LoadingComponent, ModalComponent } from '
 import { DateTimeToBrDate } from '../../utils/function';
 import { pageIcons, buttonIcons } from '../../assets/icons';
 import { useNavigation } from '@react-navigation/native';
+import BottomTabBarContext from '../../contexts/bottomTabBar';
 
 const ExamScreen = () => {
   const { user } = useContext(AuthContext);
+  const { setPlusButtonRoute, setShowPlusButton } = useContext(BottomTabBarContext);
   const [exams, setExams] = useState<Exam[]>([]);
   const [selectedExam, setSelectedExam] = useState<Exam>({} as Exam);
   const [loading, setLoading] = useState(true);
@@ -57,12 +59,10 @@ const ExamScreen = () => {
   async function onDownloadButtonPressed() {
     setShowModal(false);
     setLoading(true);
-    buildUri();
-    /* await downloadExam(selectedExam.id, selectedExam.name);
-    setLoading(false); */
+    downloadFile();
   }
 
-  async function buildUri() {
+  async function downloadFile() {
     const serverUrl = api.defaults.baseURL;
     const token = api.defaults.headers.Authorization;
     const url = `${serverUrl}/exam/examFile?id=${selectedExam.id}&authorization=${token}`;
@@ -80,7 +80,9 @@ const ExamScreen = () => {
   }
 
   useEffect(() => {
+    setShowPlusButton(true);
     getData();
+    setPlusButtonRoute('NewExam');
   }, []);
 
   return (

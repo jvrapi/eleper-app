@@ -9,8 +9,8 @@ const AuthStack = createStackNavigator();
 const ProfileRoutes: React.FC = () => {
   return (
     <AuthStack.Navigator screenOptions={{ headerShown: false }}>
-      <AuthStack.Screen name='Profile' component={Profile} />
       <AuthStack.Screen name='MyRecord' component={MyRecord} />
+      <AuthStack.Screen name='Profile' component={Profile} />
     </AuthStack.Navigator>
   );
 };
