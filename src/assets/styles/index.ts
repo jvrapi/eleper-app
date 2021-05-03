@@ -1,13 +1,16 @@
 import { StyleSheet } from 'react-native';
 
 export const colors = {
-  error: '#ec392f',
-  warning: '',
-  successful: '',
+  danger: '#ec392f',
+  warning: '#2fec39',
+  successful: '#ec982f',
   black: '#000000',
   white: '#FFFFFF',
   gradientColorsActive: ['#43D4FF', '#38ABFD', '#2974FA'],
   gradientColorsDisable: ['#d5dcde', '#aab0b1', '#959a9b'],
+  gradientColorsSuccess: ['#97f59c', '#43ed4c', '#2fec39'],
+  gradientColorsDanger: ['#f59c97', '#ed4c43', '#ec392f'],
+  gradientColorsWarning: ['#f5cb97', '#eda243', '#ec982f'],
   blue: '#2974fa',
   darkBlue: '#0558eb',
   screenColor: '#c3e5fe',

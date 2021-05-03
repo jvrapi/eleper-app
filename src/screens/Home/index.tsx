@@ -35,13 +35,7 @@ const Home: React.FC = () => {
   }
 
   function goTo(route: Route) {
-    navigation.reset({
-      routes: [
-        {
-          name: route.name,
-        },
-      ],
-    });
+    navigation.navigate(route.name, { screen: route.screen });
   }
 
   useEffect(() => {

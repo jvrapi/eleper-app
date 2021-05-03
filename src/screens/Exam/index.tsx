@@ -11,18 +11,16 @@ import { Button, Card, ErrorComponent, LoadingComponent, ModalComponent } from '
 import { DateTimeToBrDate } from '../../utils/function';
 import { pageIcons, buttonIcons } from '../../assets/icons';
 import { useNavigation } from '@react-navigation/native';
-import BottomTabBarContext from '../../contexts/bottomTabBar';
 
 const ExamScreen = () => {
   const { user } = useContext(AuthContext);
-  const { setPlusButtonRoute, setShowPlusButton } = useContext(BottomTabBarContext);
   const [exams, setExams] = useState<Exam[]>([]);
   const [selectedExam, setSelectedExam] = useState<Exam>({} as Exam);
   const [loading, setLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const { myExamsIcon } = pageIcons;
-  const { editExamIcon, downloadIcon } = buttonIcons;
+  const { examEditIcon, downloadIcon } = buttonIcons;
   const navigation = useNavigation();
 
   async function getData() {
@@ -42,8 +40,13 @@ const ExamScreen = () => {
     }
   }
 
-  function onRefresh() {
-    getData();
+  async function onRefresh() {
+    await getData();
+    showMessage({
+      message: 'Lista atualizada!',
+      type: 'success',
+      icon: 'success',
+    });
   }
 
   function onPressCard(exam: Exam) {
@@ -80,9 +83,7 @@ const ExamScreen = () => {
   }
 
   useEffect(() => {
-    setShowPlusButton(true);
     getData();
-    setPlusButtonRoute('NewExam');
   }, []);
 
   return (
@@ -104,7 +105,7 @@ const ExamScreen = () => {
           <ModalComponent showModal={showModal} close={() => setShowModal(false)}>
             <View style={styles.modalContainer}>
               <Button buttonText='Baixar Exame' icon={downloadIcon} onPress={onDownloadButtonPressed} />
-              <Button buttonText='Editar Exame' icon={editExamIcon} style={styles.lastButton} onPress={onEditButtonPressed} />
+              <Button buttonText='Editar Exame' icon={examEditIcon} style={styles.lastButton} onPress={onEditButtonPressed} />
             </View>
           </ModalComponent>
         </>

@@ -1,10 +1,15 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, Text } from 'react-native';
-
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { colors } from '../../assets/styles';
+import { pageIcons } from '../../assets/icons';
 const NewExam = () => {
+  const { newExamIcon } = pageIcons;
   return (
-    <SafeAreaView>
-      <Text>New Exam</Text>
+    <SafeAreaView style={styles.container}>
+      <View>
+        {newExamIcon}
+        <Text>Novo Exam</Text>
+      </View>
     </SafeAreaView>
   );
 };
@@ -14,6 +19,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: colors.screenColor,
   },
 });
 

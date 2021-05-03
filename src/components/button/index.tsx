@@ -8,18 +8,33 @@ interface Props extends TouchableOpacityProps {
   loading?: boolean;
   buttonText: string;
   icon?: JSX.Element;
+  colorType?: 'success' | 'danger' | 'waning';
 }
 
-const GradientButton: React.FC<Props> = ({ loading, buttonText, icon, ...props }) => {
+const GradientButton: React.FC<Props> = ({ loading, buttonText, icon, colorType, ...props }) => {
   const stylesProps = StyleSheet.create({
     textColor: { color: props.disabled ? '#516267' : colors.white },
   });
+
   const IconComponent = icon;
+
+  function defineButtonColors() {
+    if (colorType === 'success') {
+      return colors.gradientColorsSuccess;
+    } else if (colorType === 'danger') {
+      return colors.gradientColorsDanger;
+    } else if (colorType === 'waning') {
+      return colors.gradientColorsWarning;
+    } else {
+      return colors.gradientColorsActive;
+    }
+  }
+
   return (
     <TouchableOpacity disabled={loading} {...props} style={[styles.button, props.style]}>
       <LinearGradient
         start={{ x: 0, y: 0 }}
-        colors={props.disabled ? colors.gradientColorsDisable : colors.gradientColorsActive}
+        colors={props.disabled ? colors.gradientColorsDisable : defineButtonColors()}
         style={styles.linearGrandient}
       >
         {IconComponent && !loading && <View style={styles.iconContainer}>{IconComponent}</View>}
@@ -47,7 +62,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   iconContainer: {
-    marginRight: 20,
+    marginRight: 30,
   },
 });
 

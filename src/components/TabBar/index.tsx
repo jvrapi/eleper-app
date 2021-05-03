@@ -10,11 +10,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import BottomTabBarContext from '../../contexts/bottomTabBar';
 
 const CustomTabBar = ({ state, navigation }: BottomTabBarProps<BottomTabBarOptions>) => {
-  const { showPlusButton, plusButtonRoute, setShowPlusButton } = useContext(BottomTabBarContext);
-
   function goTo(screenName: string) {
     navigation.navigate(screenName);
-    setShowPlusButton(false);
   }
 
   return (
@@ -42,12 +39,6 @@ const CustomTabBar = ({ state, navigation }: BottomTabBarProps<BottomTabBarOptio
           <Text style={[styles.screenTitle, { color: state.index === 1 ? colors.iconFocused : colors.iconInactive }]}>Anotações</Text>
         </TouchableOpacity>
       </View>
-
-      {showPlusButton && (
-        <View style={styles.tabCenterItem}>
-          <Feather name='plus' size={40} color='#1c557e' onPress={() => goTo(plusButtonRoute)} />
-        </View>
-      )}
 
       <View style={styles.tabItem}>
         <TouchableOpacity style={styles.button}>

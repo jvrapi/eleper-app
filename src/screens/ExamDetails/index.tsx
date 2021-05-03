@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Text, SafeAreaView, StyleSheet, View, TouchableOpacity, Platform } from 'react-native';
 
-import { RouteProp } from '@react-navigation/native';
-import { ErrorComponent, Button, InputComponent, LoadingComponent } from '../../components';
-import { getById, updateExam } from '../../services/exam';
+import { RouteProp, useNavigation } from '@react-navigation/native';
+import { ErrorComponent, Button, InputComponent, LoadingComponent, ModalComponent } from '../../components';
+import { getById, updateExam, deleteExam } from '../../services/exam';
 import { Exam } from '../../interfaces/exam';
 import { showMessage } from 'react-native-flash-message';
 import { Formik as Form } from 'formik';
 import * as Yup from 'yup';
 import { colors, globalStyles } from '../../assets/styles';
-import { inputIcons, pageIcons } from '../../assets/icons';
+import { inputIcons, pageIcons, buttonIcons } from '../../assets/icons';
 import DocumentPicker from 'react-native-document-picker';
 import mime from 'mime';
 
@@ -37,11 +37,14 @@ const validationSchema = Yup.object().shape({
 
 const ExamDetails: React.FC<Props> = ({ route }) => {
   const { id } = route.params;
+  const navigation = useNavigation();
   const [exam, setExam] = useState<Exam>(initialValues);
   const [loading, setLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
-  const { nameIcon, myExamsIcon } = inputIcons;
+  const [showModal, setShowModal] = useState(false);
+  const { nameIcon, pdfIcon } = inputIcons;
   const { examDetailsIcon } = pageIcons;
+  const { terminatedEditExamIcon, deleteExamIcon, checkIcon, cancelIcon } = buttonIcons;
   const [uriFile, setUriFile] = useState('');
 
   useEffect(() => {
@@ -119,12 +122,33 @@ const ExamDetails: React.FC<Props> = ({ route }) => {
     }
   }
 
+  async function onPressYesButton() {
+    setShowModal(false);
+    setLoading(true);
+    try {
+      await deleteExam(id);
+      showMessage({
+        message: 'Exame excluído com sucesso',
+        type: 'success',
+        icon: 'success',
+      });
+      navigation.reset({ routes: [{ name: 'Exam' }] });
+    } catch (error) {
+      showMessage({
+        message: 'Não consegui excluir esse exame, pode tentar de novo?',
+        type: 'danger',
+        icon: 'danger',
+      });
+      setLoading(false);
+    }
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       {!loading && !hasError && (
         <>
           <View style={styles.header}>
-            {examDetailsIcon}
+            <View style={styles.iconContainer}>{examDetailsIcon}</View>
             <Text style={styles.title}>Detalhes do Exame</Text>
           </View>
           <Form
@@ -148,14 +172,53 @@ const ExamDetails: React.FC<Props> = ({ route }) => {
                 </View>
                 <View style={styles.fileContainer}>
                   <TouchableOpacity style={styles.fileCard} onPress={pickFile} activeOpacity={0.5}>
-                    {myExamsIcon}
+                    {pdfIcon}
                     <Text style={styles.fileName}>{exam.path}</Text>
                   </TouchableOpacity>
                 </View>
-                <Button loading={loading} onPress={() => handleSubmit()} buttonText='Acessar' style={styles.submitButton} />
+                <Button
+                  loading={loading}
+                  onPress={() => handleSubmit()}
+                  buttonText='Atualizar'
+                  style={styles.submitButton}
+                  icon={terminatedEditExamIcon}
+                />
+                <Button
+                  loading={loading}
+                  onPress={() => setShowModal(true)}
+                  buttonText='Excluir'
+                  style={styles.deleteButton}
+                  icon={deleteExamIcon}
+                  colorType='danger'
+                />
               </>
             )}
           </Form>
+          <ModalComponent showModal={showModal} close={() => setShowModal(false)}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalHeaderText}>Atenção!</Text>
+              <Text style={styles.modalBodyText}>Quer realmente excluir esse exame?</Text>
+              <View style={styles.modalButtonsContainer}>
+                <Button
+                  loading={loading}
+                  onPress={() => onPressYesButton()}
+                  buttonText='Sim'
+                  style={[styles.modalButton, styles.firstModalButton]}
+                  icon={checkIcon}
+                  colorType='danger'
+                />
+
+                <Button
+                  loading={loading}
+                  onPress={() => setShowModal(false)}
+                  buttonText='Não'
+                  style={styles.modalButton}
+                  icon={cancelIcon}
+                  colorType='success'
+                />
+              </View>
+            </View>
+          </ModalComponent>
         </>
       )}
       {loading && <LoadingComponent />}
@@ -174,6 +237,16 @@ const styles = StyleSheet.create({
   header: {
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  iconContainer: {
+    borderRadius: 100,
+    borderWidth: 7,
+    borderColor: '#000000',
+    backgroundColor: '#ddd',
+    width: 190,
+    height: 190,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
     fontFamily: 'Poppins-SemiBold',
@@ -205,7 +278,41 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   submitButton: {
-    marginTop: 40,
+    marginTop: 20,
+  },
+  deleteButton: {
+    marginTop: 10,
+  },
+
+  modalContent: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+
+  modalHeaderText: {
+    fontFamily: 'Poppins-SemiBold',
+    textAlign: 'center',
+    fontSize: 27,
+    marginVertical: 20,
+    color: colors.danger,
+  },
+  modalBodyText: {
+    fontFamily: 'Poppins-Regular',
+    textAlign: 'center',
+    fontSize: 20,
+    marginVertical: 20,
+  },
+  modalButtonsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalButton: {
+    width: 170,
+  },
+  firstModalButton: {
+    marginRight: 20,
   },
 });
 export default ExamDetails;
