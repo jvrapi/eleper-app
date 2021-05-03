@@ -7,7 +7,7 @@ import AuthContext from '../../contexts/auth';
 import { Exam } from '../../interfaces/exam';
 import { getAll } from '../../services/exam';
 import api from '../../services/api';
-import { Button, Card, ErrorComponent, LoadingComponent, ModalComponent } from '../../components';
+import { Button, Card, ErrorComponent, FloatButton, LoadingComponent, ModalComponent } from '../../components';
 import { DateTimeToBrDate } from '../../utils/function';
 import { pageIcons, buttonIcons } from '../../assets/icons';
 import { useNavigation } from '@react-navigation/native';
@@ -20,7 +20,7 @@ const ExamScreen = () => {
   const [hasError, setHasError] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const { myExamsIcon } = pageIcons;
-  const { examEditIcon, downloadIcon } = buttonIcons;
+  const { examEditIcon, downloadIcon, newExamIcon } = buttonIcons;
   const navigation = useNavigation();
 
   async function getData() {
@@ -82,6 +82,10 @@ const ExamScreen = () => {
     }
   }
 
+  function onPressFloatButton() {
+    navigation.navigate('NewExam');
+  }
+
   useEffect(() => {
     getData();
   }, []);
@@ -91,17 +95,21 @@ const ExamScreen = () => {
       {!loading && !hasError && (
         <>
           <Text style={styles.title}>Meus exames</Text>
-          <ScrollView style={styles.scroll} refreshControl={<RefreshControl refreshing={loading} onRefresh={onRefresh} />}>
-            {exams.map((exam, i) => (
-              <Card key={i} style={[styles.card, styles.shadow]} onPress={() => onPressCard(exam)}>
-                <View style={styles.textContainer}>
-                  <Text style={styles.examName}>{exam.name}</Text>
-                  <Text style={styles.examDate}>{DateTimeToBrDate(exam.createdAt)}</Text>
-                </View>
-                {myExamsIcon}
-              </Card>
-            ))}
-          </ScrollView>
+          <View style={styles.scrollContainer}>
+            <ScrollView style={styles.scroll} refreshControl={<RefreshControl refreshing={loading} onRefresh={onRefresh} />}>
+              {exams.map((exam, i) => (
+                <Card key={i} style={[styles.card, styles.shadow]} onPress={() => onPressCard(exam)}>
+                  <View style={styles.textContainer}>
+                    <Text style={styles.examName}>{exam.name}</Text>
+                    <Text style={styles.examDate}>{DateTimeToBrDate(exam.createdAt)}</Text>
+                  </View>
+                  {myExamsIcon}
+                </Card>
+              ))}
+            </ScrollView>
+          </View>
+
+          <FloatButton icon={newExamIcon} style={styles.floatButton} colorType='success' onPress={onPressFloatButton} />
           <ModalComponent showModal={showModal} close={() => setShowModal(false)}>
             <View style={styles.modalContainer}>
               <Button buttonText='Baixar Exame' icon={downloadIcon} onPress={onDownloadButtonPressed} />
@@ -120,7 +128,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: colors.screenColor,
   },
 
@@ -132,11 +139,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    height: 450,
+    height: '72%',
   },
   scroll: {
     width: '100%',
-    height: '50%',
     padding: 10,
   },
 
@@ -178,6 +184,11 @@ const styles = StyleSheet.create({
   },
   lastButton: {
     marginTop: 20,
+  },
+
+  floatButton: {
+    bottom: 100,
+    right: 30,
   },
 });
 

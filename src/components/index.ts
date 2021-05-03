@@ -6,3 +6,4 @@ export { default as CustomTabBar } from './TabBar';
 export { default as MultiSelect } from './MultiSelect';
 export { default as ModalComponent } from './Modal';
 export { default as Card } from './Card';
+export { default as FloatButton } from './FloatButton';

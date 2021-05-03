@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Animated, Dimensions, Keyboard, StyleSheet, View } from 'react-native';
+import FaIcons from 'react-native-vector-icons/FontAwesome';
+
 interface Props {
   showModal: boolean;
   close(): void;
 }
 const { height } = Dimensions.get('window');
 
-const ModalComponent: React.FC<Props> = ({ showModal, children }) => {
+const ModalComponent: React.FC<Props> = ({ showModal, close, children }) => {
   const [state, setState] = useState({
     opacity: new Animated.Value(0),
     container: new Animated.Value(height),
@@ -15,7 +17,7 @@ const ModalComponent: React.FC<Props> = ({ showModal, children }) => {
 
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
-  const { container, modal, indicator } = styles(isKeyboardVisible);
+  const { container, modal, indicatorContainer, indicator, header, icon } = styles(isKeyboardVisible);
 
   function openModal() {
     Animated.sequence([
@@ -31,6 +33,7 @@ const ModalComponent: React.FC<Props> = ({ showModal, children }) => {
       Animated.timing(state.opacity, { toValue: 0, duration: 300, useNativeDriver: true }),
       Animated.timing(state.container, { toValue: height, duration: 100, useNativeDriver: true }),
     ]).start();
+    close();
   }
 
   useEffect(() => {
@@ -66,7 +69,12 @@ const ModalComponent: React.FC<Props> = ({ showModal, children }) => {
       ]}
     >
       <Animated.View style={[modal, { transform: [{ translateY: state.modal }] }]}>
-        <View style={indicator} />
+        <View style={header}>
+          <View style={indicatorContainer}>
+            <View style={indicator} />
+          </View>
+          <FaIcons name='times-circle-o' size={30} color='#000000' style={icon} onPress={closeModal} />
+        </View>
 
         {children}
       </Animated.View>
@@ -93,6 +101,14 @@ const styles = (isKeyboardVisible: boolean) =>
       borderRadius: 20,
       paddingHorizontal: 25,
     },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-around',
+    },
+    indicatorContainer: {
+      width: '100%',
+    },
     indicator: {
       width: 50,
       height: 5,
@@ -101,7 +117,9 @@ const styles = (isKeyboardVisible: boolean) =>
       alignSelf: 'center',
       marginTop: 5,
     },
-
+    icon: {
+      marginTop: 5,
+    },
     btn: {
       width: '100%',
       height: 50,

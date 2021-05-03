@@ -44,4 +44,5 @@ export const buttonIcons = {
   examEditIcon: <MaterialCommunityIcons name='file-document-edit-outline' size={30} color='#FFFFFF' />,
   terminatedEditExamIcon: <MaterialCommunityIcons name='file-check-outline' size={30} color='#FFFFFF' />,
   deleteExamIcon: <MaterialCommunityIcons name='file-remove-outline' size={30} color='#FFFFFF' />,
+  newExamIcon: <Feather name='file-plus' size={30} color='#FFFFFF' />,
 };
