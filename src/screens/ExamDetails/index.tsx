@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Text, SafeAreaView, StyleSheet, View, TouchableOpacity, Platform } from 'react-native';
+import { Text, SafeAreaView, StyleSheet, View, Platform } from 'react-native';
 
 import { RouteProp, useNavigation } from '@react-navigation/native';
-import { ErrorComponent, Button, InputComponent, LoadingComponent, ModalComponent } from '../../components';
+import { ErrorComponent, Button, InputComponent, LoadingComponent, ModalComponent, PickFile } from '../../components';
 import { getById, updateExam, deleteExam } from '../../services/exam';
 import { Exam } from '../../interfaces/exam';
 import { showMessage } from 'react-native-flash-message';
@@ -12,6 +12,7 @@ import { colors, globalStyles } from '../../assets/styles';
 import { inputIcons, pageIcons, buttonIcons } from '../../assets/icons';
 import DocumentPicker from 'react-native-document-picker';
 import mime from 'mime';
+import { FileProps } from '../../components/PickFile';
 
 type RootStackParamList = {
   ExamDetails: { id: string };
@@ -42,10 +43,11 @@ const ExamDetails: React.FC<Props> = ({ route }) => {
   const [loading, setLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
   const { nameIcon, pdfIcon } = inputIcons;
   const { examDetailsIcon } = pageIcons;
   const { terminatedEditExamIcon, deleteExamIcon, checkIcon, cancelIcon } = buttonIcons;
-  const [uriFile, setUriFile] = useState('');
+  const [fileProps, setFileProps] = useState<FileProps>({} as FileProps);
 
   useEffect(() => {
     getData();
@@ -67,44 +69,22 @@ const ExamDetails: React.FC<Props> = ({ route }) => {
     }
   }
 
-  async function pickFile() {
-    try {
-      const { uri, name } = await DocumentPicker.pick({
-        type: [DocumentPicker.types.pdf],
-      });
-      setUriFile(uri);
-      setExam({ ...exam, path: name });
-    } catch (err) {
-      if (DocumentPicker.isCancel(err)) {
-        showMessage({
-          message: 'Não consegui carregar o arquivo que você escolheu, pode tentar de novo?',
-          type: 'danger',
-          icon: 'danger',
-        });
-      } else {
-        throw err;
-      }
-    }
-  }
-
   async function handleSubmitForm(values: Exam) {
     const multiFormData = new FormData();
 
-    const newImageUri = 'file:///' + uriFile.split('file:/').join('');
-
     const pdfFile = {
-      uri: Platform.OS === 'android' ? uriFile : uriFile.replace('file:/', ''),
-      type: mime.getType(newImageUri),
+      uri: Platform.OS === 'android' ? fileProps.uri : fileProps.uri.replace('file:/', ''),
+      type: mime.getType(fileProps.uri + '/' + fileProps.name),
       name: values.name + '.pdf',
     };
 
     multiFormData.append('exam', pdfFile);
 
     multiFormData.append('name', values.name);
+
     multiFormData.append('id', values.id);
 
-    console.log(pdfFile);
-    setLoading(true);
+    setSubmitLoading(true);
     try {
       const { data } = await updateExam(multiFormData);
       setExam(data);
@@ -120,7 +100,7 @@ const ExamDetails: React.FC<Props> = ({ route }) => {
         icon: 'danger',
       });
     } finally {
-      setLoading(false);
+      setSubmitLoading(false);
     }
   }
 
@@ -160,7 +140,7 @@ const ExamDetails: React.FC<Props> = ({ route }) => {
             validationSchema={validationSchema}
             validateOnChange={false}
           >
-            {({ values, handleChange, handleSubmit, errors, setFieldTouched, touched }) => (
+            {({ values, handleChange, handleSubmit, errors, setFieldTouched, touched, setFieldValue }) => (
               <>
                 <View style={globalStyles.inputArea}>
                   <InputComponent
@@ -170,23 +150,28 @@ const ExamDetails: React.FC<Props> = ({ route }) => {
                     onChangeText={handleChange('name')}
                     onBlur={() => setFieldTouched('name')}
                     icon={nameIcon}
+                    editable={!submitLoading}
                   />
                 </View>
-                <View style={styles.fileContainer}>
-                  <TouchableOpacity style={styles.fileCard} onPress={pickFile} activeOpacity={0.5}>
-                    {pdfIcon}
-                    <Text style={styles.fileName}>{exam.path}</Text>
-                  </TouchableOpacity>
-                </View>
+                <PickFile
+                  onFileSelected={fileProps => {
+                    setFieldValue('path', fileProps.name);
+                    setFileProps(fileProps);
+                  }}
+                  fileName={values.path}
+                  errors={touched.path && errors.path ? errors.path : ''}
+                  onBlur={() => setFieldTouched('path')}
+                  disabled={submitLoading}
+                />
                 <Button
-                  loading={loading}
+                  loading={submitLoading}
                   onPress={() => handleSubmit()}
                   buttonText='Atualizar'
                   style={styles.submitButton}
                   icon={terminatedEditExamIcon}
                 />
                 <Button
-                  loading={loading}
+                  loading={submitLoading}
                   onPress={() => setShowModal(true)}
                   buttonText='Excluir'
                   style={styles.deleteButton}

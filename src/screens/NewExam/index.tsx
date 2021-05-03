@@ -86,7 +86,7 @@ const NewExam = () => {
                 onChangeText={handleChange('name')}
                 onBlur={() => setFieldTouched('name')}
                 icon={nameIcon}
-                editable={loading}
+                editable={!loading}
               />
             </View>
 
