@@ -111,7 +111,7 @@ const ExamDetails: React.FC<Props> = ({ route }) => {
         type: 'success',
         icon: 'success',
       });
-    } catch (error) {
+    } catch {
       showMessage({
         message: 'Não consegui atualizar o exame. Pode tentar de novo?',
         type: 'danger',

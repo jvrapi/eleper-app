@@ -23,7 +23,7 @@ export async function updateExam(exam: FormData): Promise<AxiosResponse<Exam>> {
   return response;
 }
 
-export async function deleteExam(examId: string): Promise<AxiosResponse<{ string: string }>> {
+export async function deleteExam(examId: string) {
   const response = await api.delete(`${baseUrl}/${examId}`);
   return response;
 }
