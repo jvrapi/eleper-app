@@ -14,8 +14,8 @@ export const pageIcons = {
   myExamsIcon: <FaIcons5 name='file-medical' size={40} color='#000000' />,
   myRecordIcon: <FaIcons5 name='book-medical' size={40} color='#000000' />,
   infoIcon: <Feather name='info' size={20} color='#A9A9A9' />,
-  examDetailsIcon: <MaterialCommunityIcons name='file-document-edit-outline' size={120} color='#000000' />,
-  newExamIcon: <Feather name='file-plus' size={100} color='#000000' />,
+  examDetailsIcon: <MaterialCommunityIcons name='file-document-edit-outline' size={100} color='#000000' />,
+  newExamIcon: <Feather name='file-plus' size={80} color='#000000' />,
 };
 
 export const inputIcons = {

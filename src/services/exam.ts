@@ -1,4 +1,4 @@
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { Exam } from '../interfaces/exam';
 import api from './api';
 
@@ -25,5 +25,15 @@ export async function updateExam(exam: FormData): Promise<AxiosResponse<Exam>> {
 
 export async function deleteExam(examId: string) {
   const response = await api.delete(`${baseUrl}/${examId}`);
+  return response;
+}
+
+export async function save(exam: FormData) {
+  const response = await api.post(`${baseUrl}/`, exam, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
   return response;
 }

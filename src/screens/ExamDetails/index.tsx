@@ -102,6 +102,8 @@ const ExamDetails: React.FC<Props> = ({ route }) => {
 
     multiFormData.append('name', values.name);
     multiFormData.append('id', values.id);
+
+    console.log(pdfFile);
     setLoading(true);
     try {
       const { data } = await updateExam(multiFormData);
@@ -148,7 +150,7 @@ const ExamDetails: React.FC<Props> = ({ route }) => {
       {!loading && !hasError && (
         <>
           <View style={styles.header}>
-            <View style={styles.iconContainer}>{examDetailsIcon}</View>
+            <View style={globalStyles.iconContainer}>{examDetailsIcon}</View>
             <Text style={styles.title}>Detalhes do Exame</Text>
           </View>
           <Form
@@ -238,16 +240,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  iconContainer: {
-    borderRadius: 100,
-    borderWidth: 7,
-    borderColor: '#000000',
-    backgroundColor: '#ddd',
-    width: 190,
-    height: 190,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+
   title: {
     fontFamily: 'Poppins-SemiBold',
     fontSize: 20,

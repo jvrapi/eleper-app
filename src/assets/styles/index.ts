@@ -22,4 +22,14 @@ export const globalStyles = StyleSheet.create({
   inputArea: {
     paddingHorizontal: 10,
   },
+  iconContainer: {
+    borderRadius: 100,
+    borderWidth: 7,
+    borderColor: '#000000',
+    backgroundColor: '#ddd',
+    width: 150,
+    height: 150,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
