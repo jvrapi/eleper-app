@@ -7,6 +7,7 @@ import Treatment from '../screens/Treatment';
 import Annotations from './annotations.routes';
 import Home from './home.routes';
 import Exam from './exam.routes';
+import Disease from './disease.routes';
 const Tab = createBottomTabNavigator();
 const AppRoutes: React.FC = () => {
   const { showTabBar } = useContext(BottomTabBarContext);
@@ -17,6 +18,7 @@ const AppRoutes: React.FC = () => {
       <Tab.Screen name='Treatment' component={Treatment} />
       <Tab.Screen name='Profile' component={Profile} />
       <Tab.Screen name='Exam' component={Exam} />
+      <Tab.Screen name='Disease' component={Disease} />
     </Tab.Navigator>
   );
 };

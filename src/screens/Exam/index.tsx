@@ -109,7 +109,7 @@ const ExamScreen = () => {
             </ScrollView>
           </View>
 
-          <FloatButton icon={newExamIcon} style={styles.floatButton} colorType='success' onPress={onPressFloatButton} />
+          <FloatButton icon={newExamIcon} style={styles.floatButton} onPress={onPressFloatButton} />
           <ModalComponent showModal={showModal} close={() => setShowModal(false)}>
             <View style={styles.modalContainer}>
               <Button buttonText='Baixar Exame' icon={downloadIcon} onPress={onDownloadButtonPressed} />

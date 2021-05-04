@@ -13,6 +13,7 @@ export const pageIcons = {
   searchIcon: <MaterialIcons name='search' size={30} color='#A9A9A9' />,
   myExamsIcon: <FaIcons5 name='file-medical' size={40} color='#000000' />,
   myRecordIcon: <FaIcons5 name='book-medical' size={40} color='#000000' />,
+  diseaseIcon: <FaIcons5 name='disease' size={40} color='#000000' />,
   infoIcon: <Feather name='info' size={20} color='#A9A9A9' />,
   examDetailsIcon: <MaterialCommunityIcons name='file-document-edit-outline' size={100} color='#000000' />,
   newExamIcon: <Feather name='file-plus' size={80} color='#000000' />,
@@ -45,4 +46,5 @@ export const buttonIcons = {
   terminatedEditExamIcon: <MaterialCommunityIcons name='file-check-outline' size={30} color='#FFFFFF' />,
   deleteExamIcon: <MaterialCommunityIcons name='file-remove-outline' size={30} color='#FFFFFF' />,
   newExamIcon: <Feather name='file-plus' size={30} color='#FFFFFF' />,
+  newDiseaseIcon: <MaterialCommunityIcons name='thermometer-plus' size={30} color='#FFFFFF' />,
 };

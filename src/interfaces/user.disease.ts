@@ -1,3 +1,6 @@
+import { Disease } from './disease';
+import { User } from './user';
+
 export interface Save {
   userId: string;
   diseaseId: string;
@@ -6,8 +9,8 @@ export interface Save {
 }
 
 export interface UserDisease {
-  userId: string;
-  diseaseId: string;
+  user: User;
+  disease: Disease;
   active?: boolean;
-  diagnosisDate?: Date;
+  diagnosisDate?: string;
 }
