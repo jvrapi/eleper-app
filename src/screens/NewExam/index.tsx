@@ -1,22 +1,20 @@
+import { Formik as Form, FormikHelpers } from 'formik';
+import mime from 'mime';
 import React, { useContext, useState } from 'react';
 import { Platform, SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import { colors, globalStyles } from '../../assets/styles';
-import { pageIcons, inputIcons, buttonIcons } from '../../assets/icons';
-import { Exam } from '../../interfaces/exam';
-import * as Yup from 'yup';
-import { Formik as Form, FormikHelpers } from 'formik';
-import { Button, InputComponent, PickFile } from '../../components';
-import mime from 'mime';
 import { showMessage } from 'react-native-flash-message';
+import * as Yup from 'yup';
+import { buttonIcons, inputIcons, pageIcons } from '../../assets/icons';
+import { colors, globalStyles } from '../../assets/styles';
+import { Button, InputComponent, PickFile } from '../../components';
 import { FileProps } from '../../components/PickFile';
-import { save } from '../../services/exam';
 import AuthContext from '../../contexts/auth';
-import { brDateFormatter, enDateFormatter } from '../../utils/formatter';
+import { Exam } from '../../interfaces/exam';
+import { save } from '../../services/exam';
 
 const initialValues: Exam = {
   id: '',
   name: '',
-  date: '',
   userId: '',
   createdAt: '',
   path: '',
@@ -30,7 +28,7 @@ const validationSchema = Yup.object().shape({
 const NewExam = () => {
   const { user } = useContext(AuthContext);
   const { newExamIcon } = pageIcons;
-  const { nameIcon, dateIcon } = inputIcons;
+  const { nameIcon } = inputIcons;
   const { terminatedEditExamIcon } = buttonIcons;
   const [fileProps, setFileProps] = useState<FileProps>({} as FileProps);
   const [loading, setLoading] = useState(false);
@@ -47,8 +45,6 @@ const NewExam = () => {
     multiFormData.append('exam', pdfFile);
 
     multiFormData.append('name', values.name);
-
-    multiFormData.append('date', enDateFormatter(values.date));
 
     multiFormData.append('userId', user?.id);
 
@@ -90,17 +86,6 @@ const NewExam = () => {
                 onChangeText={handleChange('name')}
                 onBlur={() => setFieldTouched('name')}
                 icon={nameIcon}
-                editable={!loading}
-              />
-
-              <InputComponent
-                value={values.date}
-                label='Data do exame'
-                errors={touched.date && errors.date ? errors.date : ''}
-                onBlur={() => setFieldTouched('date')}
-                keyboardType='numeric'
-                onChangeText={e => setFieldValue('date', brDateFormatter(e))}
-                icon={dateIcon}
                 editable={!loading}
               />
             </View>

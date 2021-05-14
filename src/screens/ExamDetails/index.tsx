@@ -1,18 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { Text, SafeAreaView, StyleSheet, View, Platform } from 'react-native';
-
 import { RouteProp, useNavigation } from '@react-navigation/native';
-import { ErrorComponent, Button, InputComponent, LoadingComponent, ModalComponent, PickFile } from '../../components';
-import { getById, updateExam, deleteExam } from '../../services/exam';
-import { Exam } from '../../interfaces/exam';
-import { showMessage } from 'react-native-flash-message';
 import { Formik as Form } from 'formik';
-import * as Yup from 'yup';
-import { colors, globalStyles } from '../../assets/styles';
-import { inputIcons, pageIcons, buttonIcons } from '../../assets/icons';
 import mime from 'mime';
+import React, { useEffect, useState } from 'react';
+import { Platform, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { showMessage } from 'react-native-flash-message';
+import * as Yup from 'yup';
+import { buttonIcons, inputIcons, pageIcons } from '../../assets/icons';
+import { colors, globalStyles } from '../../assets/styles';
+import { Button, ErrorComponent, InputComponent, LoadingComponent, ModalComponent, PickFile } from '../../components';
 import { FileProps } from '../../components/PickFile';
-import { brDateFormatter } from '../../utils/formatter';
+import { Exam } from '../../interfaces/exam';
+import { deleteExam, getById, updateExam } from '../../services/exam';
 
 type RootStackParamList = {
   ExamDetails: { id: string };
@@ -29,7 +27,6 @@ const initialValues: Exam = {
   name: '',
   userId: '',
   createdAt: '',
-  date: '',
   path: '',
 };
 
@@ -45,7 +42,7 @@ const ExamDetails: React.FC<Props> = ({ route }) => {
   const [hasError, setHasError] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
-  const { nameIcon, dateIcon } = inputIcons;
+  const { nameIcon } = inputIcons;
   const { examDetailsIcon } = pageIcons;
   const { terminatedEditExamIcon, deleteExamIcon, checkIcon, cancelIcon } = buttonIcons;
   const [fileProps, setFileProps] = useState<FileProps>({} as FileProps);
@@ -71,21 +68,22 @@ const ExamDetails: React.FC<Props> = ({ route }) => {
   }
 
   async function handleSubmitForm(values: Exam) {
-    const multiFormData = new FormData();
-
     const pdfFile = {
       uri: Platform.OS === 'android' ? fileProps.uri : fileProps.uri.replace('file:/', ''),
       type: mime.getType(fileProps.uri + '/' + fileProps.name),
       name: values.name + '.pdf',
     };
 
-    multiFormData.append('exam', pdfFile);
+    const multiFormData = new FormData();
+
+    pdfFile.uri ? multiFormData.append('exam', pdfFile) : null;
 
     multiFormData.append('name', values.name);
 
     multiFormData.append('id', values.id);
 
     setSubmitLoading(true);
+
     try {
       const { data } = await updateExam(multiFormData);
       setExam(data);
@@ -94,7 +92,7 @@ const ExamDetails: React.FC<Props> = ({ route }) => {
         type: 'success',
         icon: 'success',
       });
-    } catch {
+    } catch (error) {
       showMessage({
         message: 'Não consegui atualizar o exame. Pode tentar de novo?',
         type: 'danger',
@@ -152,16 +150,6 @@ const ExamDetails: React.FC<Props> = ({ route }) => {
                     onBlur={() => setFieldTouched('name')}
                     icon={nameIcon}
                     editable={!submitLoading}
-                  />
-                  <InputComponent
-                    value={brDateFormatter(values.date)}
-                    label='Data do exame'
-                    errors={touched.date && errors.date ? errors.date : ''}
-                    onBlur={() => setFieldTouched('date')}
-                    keyboardType='numeric'
-                    onChangeText={e => setFieldValue('date', brDateFormatter(e))}
-                    icon={dateIcon}
-                    editable={!loading}
                   />
                 </View>
                 <PickFile

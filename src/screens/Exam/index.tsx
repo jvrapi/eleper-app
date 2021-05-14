@@ -104,7 +104,7 @@ const ExamScreen = () => {
                 <Card key={i} style={[styles.card, styles.shadow]} onPress={() => onPressCard(exam)}>
                   <View style={styles.textContainer}>
                     <Text style={styles.examName}>{exam.name}</Text>
-                    <Text style={styles.examDate}>{DateTimeToBrDate(exam.date)}</Text>
+                    <Text style={styles.examDate}>Criado em: {DateTimeToBrDate(exam.createdAt)}</Text>
                   </View>
                   {myExamsIcon}
                 </Card>
