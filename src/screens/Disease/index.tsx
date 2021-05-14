@@ -15,7 +15,7 @@ const Disease: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [userDiseases, setUserDiseases] = useState<UserDisease[]>([]);
-  const { navigate } = useNavigation();
+  const navigation = useNavigation();
 
   async function getData() {
     setLoading(true);
@@ -44,11 +44,14 @@ const Disease: React.FC = () => {
   }
 
   function onPressFloatButton() {
-    navigate('New Disease');
+    navigation.navigate('NewDisease');
   }
 
   useEffect(() => {
     getData();
+    navigation.addListener('focus', () => {
+      getData();
+    });
   }, []);
   return (
     <SafeAreaView style={styles.container}>

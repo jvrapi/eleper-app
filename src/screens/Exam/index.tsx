@@ -68,7 +68,7 @@ const ExamScreen = () => {
   async function downloadFile() {
     const serverUrl = api.defaults.baseURL;
     const token = api.defaults.headers.Authorization;
-    const url = `${serverUrl}/exam/examFile?id=${selectedExam.id}&authorization=${token}`;
+    const url = `${serverUrl}/exam/examFile/${selectedExam.id}?authorization=${token}`;
     try {
       await Linking.canOpenURL(url);
       Linking.openURL(url);

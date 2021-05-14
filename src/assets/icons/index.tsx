@@ -17,6 +17,7 @@ export const pageIcons = {
   infoIcon: <Feather name='info' size={20} color='#A9A9A9' />,
   examDetailsIcon: <MaterialCommunityIcons name='file-document-edit-outline' size={100} color='#000000' />,
   newExamIcon: <Feather name='file-plus' size={80} color='#000000' />,
+  newDiseaseIcon: <MaterialCommunityIcons name='thermometer-plus' size={80} color='#000000' />,
 };
 
 export const inputIcons = {
