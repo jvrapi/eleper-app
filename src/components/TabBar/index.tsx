@@ -1,13 +1,12 @@
-import { BottomTabBarProps, BottomTabBarOptions } from '@react-navigation/bottom-tabs';
-import React, { useContext } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import AntDesignIcons from 'react-native-vector-icons/AntDesign';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Fontisto from 'react-native-vector-icons/Fontisto';
-import Feather from 'react-native-vector-icons/Feather';
-import { colors } from '../../assets/styles';
+import React from 'react';
+import { BottomTabBarOptions, BottomTabBarProps } from '@react-navigation/bottom-tabs';
+import { StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import BottomTabBarContext from '../../contexts/bottomTabBar';
+import AntDesignIcons from 'react-native-vector-icons/AntDesign';
+import Fontisto from 'react-native-vector-icons/Fontisto';
+import FaIcons5 from 'react-native-vector-icons/FontAwesome5';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { colors } from '../../assets/styles';
 
 const CustomTabBar = ({ state, navigation }: BottomTabBarProps<BottomTabBarOptions>) => {
   function goTo(screenName: string) {
@@ -30,13 +29,13 @@ const CustomTabBar = ({ state, navigation }: BottomTabBarProps<BottomTabBarOptio
 
       <View style={styles.tabItem}>
         <TouchableOpacity style={styles.button}>
-          <MaterialCommunityIcons
-            name='notebook-outline'
+          <FaIcons5
+            name='file-medical'
             size={30}
             color={state.index === 1 ? colors.iconFocused : colors.iconInactive}
-            onPress={() => goTo('Annotations')}
+            onPress={() => goTo('Exam')}
           />
-          <Text style={[styles.screenTitle, { color: state.index === 1 ? colors.iconFocused : colors.iconInactive }]}>Anotações</Text>
+          <Text style={[styles.screenTitle, { color: state.index === 1 ? colors.iconFocused : colors.iconInactive }]}>Exames</Text>
         </TouchableOpacity>
       </View>
 

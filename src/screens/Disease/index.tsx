@@ -22,7 +22,6 @@ const Disease: React.FC = () => {
     try {
       const { data } = await getUserDiseases(user?.id as string);
       setUserDiseases(data);
-      console.log(data);
     } catch {
       setHasError(true);
       showMessage({

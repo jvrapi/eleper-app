@@ -10,9 +10,9 @@ import { Formik as Form } from 'formik';
 import * as Yup from 'yup';
 import { colors, globalStyles } from '../../assets/styles';
 import { inputIcons, pageIcons, buttonIcons } from '../../assets/icons';
-import DocumentPicker from 'react-native-document-picker';
 import mime from 'mime';
 import { FileProps } from '../../components/PickFile';
+import { brDateFormatter } from '../../utils/formatter';
 
 type RootStackParamList = {
   ExamDetails: { id: string };
@@ -29,6 +29,7 @@ const initialValues: Exam = {
   name: '',
   userId: '',
   createdAt: '',
+  date: '',
   path: '',
 };
 
@@ -44,7 +45,7 @@ const ExamDetails: React.FC<Props> = ({ route }) => {
   const [hasError, setHasError] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
-  const { nameIcon, pdfIcon } = inputIcons;
+  const { nameIcon, dateIcon } = inputIcons;
   const { examDetailsIcon } = pageIcons;
   const { terminatedEditExamIcon, deleteExamIcon, checkIcon, cancelIcon } = buttonIcons;
   const [fileProps, setFileProps] = useState<FileProps>({} as FileProps);
@@ -152,11 +153,21 @@ const ExamDetails: React.FC<Props> = ({ route }) => {
                     icon={nameIcon}
                     editable={!submitLoading}
                   />
+                  <InputComponent
+                    value={brDateFormatter(values.date)}
+                    label='Data do exame'
+                    errors={touched.date && errors.date ? errors.date : ''}
+                    onBlur={() => setFieldTouched('date')}
+                    keyboardType='numeric'
+                    onChangeText={e => setFieldValue('date', brDateFormatter(e))}
+                    icon={dateIcon}
+                    editable={!loading}
+                  />
                 </View>
                 <PickFile
-                  onFileSelected={fileProps => {
-                    setFieldValue('path', fileProps.name);
-                    setFileProps(fileProps);
+                  onFileSelected={props => {
+                    setFieldValue('path', props.name);
+                    setFileProps(props);
                   }}
                   fileName={values.path}
                   errors={touched.path && errors.path ? errors.path : ''}

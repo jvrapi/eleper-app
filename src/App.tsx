@@ -1,6 +1,6 @@
+import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
-import 'react-native-gesture-handler';
 import { AuthProvider } from './contexts/auth';
 import { BottomTabBarProvider } from './contexts/bottomTabBar';
 import Routes from './routes';

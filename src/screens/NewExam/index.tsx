@@ -11,10 +11,12 @@ import { showMessage } from 'react-native-flash-message';
 import { FileProps } from '../../components/PickFile';
 import { save } from '../../services/exam';
 import AuthContext from '../../contexts/auth';
+import { brDateFormatter, enDateFormatter } from '../../utils/formatter';
 
 const initialValues: Exam = {
   id: '',
   name: '',
+  date: '',
   userId: '',
   createdAt: '',
   path: '',
@@ -28,7 +30,7 @@ const validationSchema = Yup.object().shape({
 const NewExam = () => {
   const { user } = useContext(AuthContext);
   const { newExamIcon } = pageIcons;
-  const { nameIcon } = inputIcons;
+  const { nameIcon, dateIcon } = inputIcons;
   const { terminatedEditExamIcon } = buttonIcons;
   const [fileProps, setFileProps] = useState<FileProps>({} as FileProps);
   const [loading, setLoading] = useState(false);
@@ -46,13 +48,15 @@ const NewExam = () => {
 
     multiFormData.append('name', values.name);
 
+    multiFormData.append('date', enDateFormatter(values.date));
+
     multiFormData.append('userId', user?.id);
 
     setLoading(true);
     try {
       await save(multiFormData);
       showMessage({
-        message: 'Exame atualizado com sucesso',
+        message: 'Exame salvo com sucesso',
         type: 'success',
         icon: 'success',
       });
@@ -88,12 +92,23 @@ const NewExam = () => {
                 icon={nameIcon}
                 editable={!loading}
               />
+
+              <InputComponent
+                value={values.date}
+                label='Data do exame'
+                errors={touched.date && errors.date ? errors.date : ''}
+                onBlur={() => setFieldTouched('date')}
+                keyboardType='numeric'
+                onChangeText={e => setFieldValue('date', brDateFormatter(e))}
+                icon={dateIcon}
+                editable={!loading}
+              />
             </View>
 
             <PickFile
-              onFileSelected={fileProps => {
-                setFieldValue('path', fileProps.name);
-                setFileProps(fileProps);
+              onFileSelected={props => {
+                setFieldValue('path', props.name);
+                setFileProps(props);
               }}
               fileName={values.path}
               errors={touched.path && errors.path ? errors.path : ''}

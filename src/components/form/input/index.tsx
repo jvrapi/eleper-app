@@ -37,7 +37,6 @@ const styles = (errors: string | string[] | FormikErrors<any> | FormikErrors<any
       paddingHorizontal: 15,
       alignItems: 'center',
       marginBottom: 15,
-      marginTop: 30,
       borderColor: errors ? colors.danger : '#000000',
       borderStyle: 'solid',
       borderWidth: 2,

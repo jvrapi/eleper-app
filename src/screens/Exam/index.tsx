@@ -88,6 +88,9 @@ const ExamScreen = () => {
 
   useEffect(() => {
     getData();
+    navigation.addListener('focus', () => {
+      getData();
+    });
   }, []);
 
   return (
@@ -101,7 +104,7 @@ const ExamScreen = () => {
                 <Card key={i} style={[styles.card, styles.shadow]} onPress={() => onPressCard(exam)}>
                   <View style={styles.textContainer}>
                     <Text style={styles.examName}>{exam.name}</Text>
-                    <Text style={styles.examDate}>{DateTimeToBrDate(exam.createdAt)}</Text>
+                    <Text style={styles.examDate}>{DateTimeToBrDate(exam.date)}</Text>
                   </View>
                   {myExamsIcon}
                 </Card>

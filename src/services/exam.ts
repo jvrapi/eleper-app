@@ -1,11 +1,11 @@
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { Exam } from '../interfaces/exam';
 import api from './api';
 
 const baseUrl = '/exam';
 
 export async function getAll(userId: string): Promise<AxiosResponse<Exam[]>> {
-  const response = await api.get(`${baseUrl}?id=${userId}`);
+  const response = await api.get(`${baseUrl}/${userId}`);
   return response;
 }
 

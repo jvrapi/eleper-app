@@ -34,8 +34,10 @@ const SignIn: React.FC = () => {
   }
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}> Seja bem-vindo de volta</Text>
-      <Text style={styles.subTitle}>Para continuar, informe o seu e-mail e a sua senha</Text>
+      <View style={styles.header}>
+        <Text style={styles.title}> Seja bem-vindo de volta</Text>
+        <Text style={styles.subTitle}>Para continuar, informe o seu e-mail e a sua senha</Text>
+      </View>
       <Form initialValues={initialValues} onSubmit={handleSubmitForm} validationSchema={validationSchema} validateOnChange={false}>
         {({ values, handleChange, handleSubmit, errors, setFieldTouched, touched }) => (
           <>
@@ -80,6 +82,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: colors.screenColor,
+  },
+  header: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 30,
   },
   title: {
     fontFamily: 'Poppins-SemiBold',

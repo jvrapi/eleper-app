@@ -134,7 +134,7 @@ const NewUserRegisterDisease = () => {
             <MultiSelect listItems={items} inputLabelText='Toque aqui para listar as doenças' onSelectedItem={onSelectedItem} />
           </View>
           <View style={styles.Button}>
-            <Button buttonText='Finalizei!' icon={checkIcon} onPress={registerDiseasesTerminated} style={styles.submitButton} />
+            <Button buttonText='Finalizei!' icon={checkIcon} onPress={registerDiseasesTerminated} />
           </View>
           <TouchableOpacity>
             <Text style={styles.diseaseNotFoundButtonText} onPress={() => setShowModal(true)}>
@@ -168,13 +168,7 @@ const NewUserRegisterDisease = () => {
                     onBlur={() => setFieldTouched('name')}
                     editable={!savingDisease}
                   />
-                  <Button
-                    buttonText='Finalizado'
-                    icon={checkIcon}
-                    loading={savingDisease}
-                    onPress={() => handleSubmit()}
-                    style={styles.submitButton}
-                  />
+                  <Button buttonText='Finalizado' icon={checkIcon} loading={savingDisease} onPress={() => handleSubmit()} />
                 </>
               )}
             </Form>
@@ -238,9 +232,6 @@ const styles = StyleSheet.create({
     fontSize: 17,
     textAlign: 'center',
     marginHorizontal: 10,
-  },
-  submitButton: {
-    marginTop: 40,
   },
 });
 

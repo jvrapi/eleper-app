@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, TouchableOpacityProps } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet, TouchableOpacityProps, PermissionsAndroid } from 'react-native';
 import { inputIcons } from '../../assets/icons';
 import DocumentPicker from 'react-native-document-picker';
 import { showMessage } from 'react-native-flash-message';
@@ -24,11 +24,25 @@ const PickFile: React.FC<Props> = ({ onFileSelected, fileName, errors, ...props 
 
   async function onPress() {
     try {
-      const { uri, name } = await DocumentPicker.pick({
-        type: [DocumentPicker.types.pdf],
+      const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE, {
+        title: 'Preciso da sua permissão',
+        message: 'O eliper precisa da sua permissão para acessar os arquivos do seu celular',
+        buttonNegative: 'Não',
+        buttonPositive: 'OK',
       });
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        const { uri, name } = await DocumentPicker.pick({
+          type: [DocumentPicker.types.pdf],
+        });
 
-      onFileSelected({ uri, name });
+        onFileSelected({ uri, name });
+      } else {
+        showMessage({
+          message: 'Preciso da sua permissão para acessar os arquivos',
+          type: 'warning',
+          icon: 'warning',
+        });
+      }
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         showMessage({

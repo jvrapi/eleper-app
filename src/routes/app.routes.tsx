@@ -14,10 +14,10 @@ const AppRoutes: React.FC = () => {
   return (
     <Tab.Navigator tabBar={props => showTabBar && <CustomTabBar {...props} />}>
       <Tab.Screen name='Home' component={Home} />
-      <Tab.Screen name='Annotations' component={Annotations} />
+      <Tab.Screen name='Exam' component={Exam} />
       <Tab.Screen name='Treatment' component={Treatment} />
       <Tab.Screen name='Profile' component={Profile} />
-      <Tab.Screen name='Exam' component={Exam} />
+      <Tab.Screen name='Annotations' component={Annotations} />
       <Tab.Screen name='Disease' component={Disease} />
     </Tab.Navigator>
   );
