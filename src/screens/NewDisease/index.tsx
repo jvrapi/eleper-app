@@ -91,7 +91,7 @@ const NewDisease = () => {
         <>
           <View style={styles.header}>
             <View style={globalStyles.iconContainer}>{newDiseaseIcon}</View>
-            <Text style={styles.title}>Novo Exame</Text>
+            <Text style={styles.title}>Atualizar Doenças</Text>
           </View>
           <View style={styles.scroll}>
             <MultiSelect listItems={items} inputLabelText='Toque aqui para listar as doenças' onSelectedItem={onSelectedItem} />

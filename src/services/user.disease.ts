@@ -18,3 +18,15 @@ export async function getUnrecordedDiseases(id: string): Promise<AxiosResponse<D
   const response = await api.get(`${baseUrl}/unrecordedDiseases/${id}`);
   return response;
 }
+
+export async function deleteMany(userDiseases: string[]) {
+  const response = await api.delete(`${baseUrl}`, {
+    data: userDiseases,
+  });
+  return response;
+}
+
+export async function deleteDisease(diseaseId: string) {
+  const response = await api.delete(`${baseUrl}/${diseaseId}`);
+  return response;
+}

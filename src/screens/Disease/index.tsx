@@ -1,27 +1,65 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { RefreshControl, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { RefreshControl, SafeAreaView, ScrollView, StyleSheet, Text, View, BackHandler } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { colors } from '../../assets/styles';
-import { Card, ErrorComponent, FloatButton, LoadingComponent } from '../../components';
+import { Card, ErrorComponent, FloatButton, LoadingComponent, MultiItems } from '../../components';
 import AuthContext from '../../contexts/auth';
 import { UserDisease } from '../../interfaces/user.disease';
-import { getUserDiseases } from '../../services/user.disease';
+import { getUserDiseases, deleteMany } from '../../services/user.disease';
 import { DateTimeToBrDate } from '../../utils/function';
 import { buttonIcons, pageIcons } from '../../assets/icons';
 import { useNavigation } from '@react-navigation/native';
 
+import CheckBox from '@react-native-community/checkbox';
+import BottomTabBarContext from '../../contexts/bottomTabBar';
+
+interface MultiSelectItems extends UserDisease {
+  selected: boolean;
+}
+
 const Disease: React.FC = () => {
   const { user } = useContext(AuthContext);
+  const { setShowTabBar } = useContext(BottomTabBarContext);
   const [loading, setLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
-  const [userDiseases, setUserDiseases] = useState<UserDisease[]>([]);
+  const [multiSelect, setMultiSelect] = useState(false);
+  const [allSelected, setAllSelected] = useState(false);
+  const [userDiseases, setUserDiseases] = useState<MultiSelectItems[]>([]);
+  const [selectedDiseasesAmount, setSelectedDiseasesAmount] = useState(0);
   const navigation = useNavigation();
 
+  useEffect(() => {
+    getData();
+    navigation.addListener('focus', () => {
+      getData();
+    });
+  }, []);
+
+  useEffect(() => {
+    function backAction() {
+      if (multiSelect) {
+        const updatedArray = userDiseases.map(userDisease => {
+          userDisease.selected = false;
+          setAllSelected(false);
+          return userDisease;
+        });
+        setUserDiseases(updatedArray);
+        countSelectedItems(updatedArray);
+        return true;
+      } else {
+        return false;
+      }
+    }
+    BackHandler.addEventListener('hardwareBackPress', backAction);
+
+    return () => BackHandler.removeEventListener('hardwareBackPress', backAction);
+  }, [multiSelect, userDiseases]);
+
   async function getData() {
-    setLoading(true);
     try {
       const { data } = await getUserDiseases(user?.id as string);
-      setUserDiseases(data);
+      const formattedData = data.map(userDisease => ({ ...userDisease, selected: false }));
+      setUserDiseases(formattedData);
     } catch {
       setHasError(true);
       showMessage({
@@ -35,6 +73,7 @@ const Disease: React.FC = () => {
   }
 
   async function onRefresh() {
+    setLoading(true);
     await getData();
     showMessage({
       message: 'Lista atualizada!',
@@ -43,36 +82,127 @@ const Disease: React.FC = () => {
     });
   }
 
+  async function onDeleteItems() {
+    const itemsSelected = userDiseases.filter(userDisease => userDisease.selected).map(userDisease => userDisease.id);
+    setLoading(true);
+    try {
+      await deleteMany(itemsSelected);
+      getData();
+      showMessage({
+        message: 'Doenças excluídas com sucesso!',
+        type: 'success',
+        icon: 'success',
+      });
+    } catch {
+      showMessage({
+        message: 'Não consegui excluir as doenças, pode tentar de novo?',
+        type: 'danger',
+        icon: 'danger',
+      });
+    } finally {
+      onCancelSelectionItems();
+    }
+  }
+
   function onPressFloatButton() {
     navigation.navigate('NewDisease');
   }
 
-  useEffect(() => {
-    getData();
-    navigation.addListener('focus', () => {
-      getData();
+  function onLongPressCard(firstElementIndex: number) {
+    setMultiSelect(true);
+    setShowTabBar(false);
+    const updatedArray = userDiseases.map((userDisease, i) => {
+      if (i === firstElementIndex) {
+        userDisease.selected = true;
+        setSelectedDiseasesAmount(selectedDiseasesAmount + 1);
+      }
+      return userDisease;
     });
-  }, []);
+    setUserDiseases(updatedArray);
+  }
+
+  function onPressCard(elementIndex: number) {
+    if (multiSelect) {
+      const updatedArray = userDiseases.map((userDisease, i) => {
+        if (i === elementIndex) {
+          userDisease.selected = !userDisease.selected;
+        }
+        return userDisease;
+      });
+
+      countSelectedItems(updatedArray);
+    } else {
+      // navigation.navigate('UserDiseaseDetails');
+    }
+  }
+
+  function onPressSelectAllItems() {
+    const updatedArray = userDiseases.map(userDisease => {
+      if (!allSelected) {
+        userDisease.selected = true;
+        setAllSelected(true);
+      } else {
+        userDisease.selected = false;
+        setAllSelected(false);
+      }
+      return userDisease;
+    });
+    setUserDiseases(updatedArray);
+    countSelectedItems(updatedArray);
+  }
+
+  function countSelectedItems(updatedArray: MultiSelectItems[]) {
+    const selectedAmount = updatedArray.filter(userDisease => userDisease.selected).length;
+    if (selectedAmount === 0) {
+      setSelectedDiseasesAmount(selectedAmount);
+    } else {
+      if (selectedAmount === userDiseases.length) {
+        setAllSelected(true);
+      } else {
+        setAllSelected(false);
+      }
+      setSelectedDiseasesAmount(selectedAmount);
+      setUserDiseases(updatedArray);
+    }
+  }
+
+  function onCancelSelectionItems() {
+    setMultiSelect(false);
+    setShowTabBar(true);
+    setSelectedDiseasesAmount(0);
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       {!loading && !hasError && (
         <>
-          <Text style={styles.title}>Minhas doenças</Text>
-          <View style={styles.scrollContainer}>
-            <ScrollView style={styles.scroll} refreshControl={<RefreshControl refreshing={loading} onRefresh={onRefresh} />}>
-              {userDiseases.map((userDisease, i) => (
-                <Card key={i} style={[styles.card, styles.shadow]}>
-                  <View style={styles.textContainer}>
-                    <Text style={styles.examName}>{userDisease.disease.name}</Text>
-                    <Text style={styles.examDate}>{DateTimeToBrDate(userDisease.diagnosisDate as string)}</Text>
-                    <Text>Atualmente {userDisease.active ? 'Ativa' : 'Inativa'}</Text>
-                  </View>
-                  {pageIcons.diseaseIcon}
-                </Card>
-              ))}
-            </ScrollView>
-          </View>
-          <FloatButton icon={buttonIcons.newDiseaseIcon} style={styles.floatButton} onPress={onPressFloatButton} />
+          <MultiItems
+            multiSelect={multiSelect}
+            allSelected={allSelected}
+            onPressSelectAllItems={onPressSelectAllItems}
+            onPressCancel={onCancelSelectionItems}
+            onPressDelete={onDeleteItems}
+            itemsAmount={selectedDiseasesAmount}
+            selectedItemsText='Doenças selecionadas'
+          >
+            <Text style={styles.title}>Minhas doenças</Text>
+            <View style={styles.scrollContainer}>
+              <ScrollView style={styles.scroll} refreshControl={<RefreshControl refreshing={loading} onRefresh={onRefresh} />}>
+                {userDiseases.map((userDisease, i) => (
+                  <Card key={i} style={[styles.card, styles.shadow]} onLongPress={() => onLongPressCard(i)} onPress={() => onPressCard(i)}>
+                    <View style={styles.textContainer}>
+                      <Text style={styles.examName}>{userDisease.disease.name}</Text>
+                      <Text style={styles.examDate}>{DateTimeToBrDate(userDisease.diagnosisDate as string)}</Text>
+                      <Text>Atualmente {userDisease.active ? 'Ativa' : 'Inativa'}</Text>
+                    </View>
+                    {!multiSelect && pageIcons.diseaseIcon}
+                    {multiSelect && <CheckBox value={userDisease.selected} tintColors={{ true: colors.darkBlue, false: colors.blue }} />}
+                  </Card>
+                ))}
+              </ScrollView>
+            </View>
+            {!multiSelect && <FloatButton icon={buttonIcons.newDiseaseIcon} style={styles.floatButton} onPress={onPressFloatButton} />}
+          </MultiItems>
         </>
       )}
       {loading && <LoadingComponent />}
@@ -88,6 +218,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: colors.screenColor,
   },
+
   title: {
     fontFamily: 'Poppins-SemiBold',
     fontSize: 20,
@@ -133,6 +264,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
     fontSize: 13,
   },
+
   floatButton: {
     bottom: 100,
     right: 30,

@@ -8,3 +8,4 @@ export { default as ModalComponent } from './Modal';
 export { default as Card } from './Card';
 export { default as FloatButton } from './FloatButton';
 export { default as PickFile } from './PickFile';
+export { default as MultiItems } from './MultiItems';

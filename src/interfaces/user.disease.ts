@@ -9,6 +9,7 @@ export interface Save {
 }
 
 export interface UserDisease {
+  id: string;
   user: User;
   disease: Disease;
   active?: boolean;
