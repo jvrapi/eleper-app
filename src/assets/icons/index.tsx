@@ -8,6 +8,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export const pageIcons = {
   searchIcon: <MaterialIcons name='search' size={30} color='#A9A9A9' />,
@@ -18,6 +19,7 @@ export const pageIcons = {
   examDetailsIcon: <MaterialCommunityIcons name='file-document-edit-outline' size={100} color='#000000' />,
   newExamIcon: <Feather name='file-plus' size={80} color='#000000' />,
   newDiseaseIcon: <MaterialCommunityIcons name='thermometer-plus' size={80} color='#000000' />,
+  userDiseaseIcon: <Ionicons name='thermometer' size={80} color='#000000' />,
 };
 
 export const inputIcons = {
@@ -31,6 +33,8 @@ export const inputIcons = {
   nameIcon: <MaterialIcons name='drive-file-rename-outline' size={30} color='#000000' />,
   myExamsIcon: <FaIcons5 name='file-medical' size={30} color='#000000' />,
   pdfIcon: <AntDesign name='pdffile1' size={30} color='#000000' />,
+  diseaseActive: <Feather name='user-check' size={30} color='#000000' />,
+  diseaseInactive: <Feather name='user-check' size={30} color='#000000' />,
 };
 
 export const buttonIcons = {
@@ -48,4 +52,5 @@ export const buttonIcons = {
   deleteExamIcon: <MaterialCommunityIcons name='file-remove-outline' size={30} color='#FFFFFF' />,
   newExamIcon: <Feather name='file-plus' size={30} color='#FFFFFF' />,
   newDiseaseIcon: <MaterialCommunityIcons name='thermometer-plus' size={30} color='#FFFFFF' />,
+  deleteIcon: <AntDesign name='delete' size={30} color='#FFFFFF' />,
 };

@@ -102,6 +102,7 @@ const styles = (errors: string | string[] | FormikErrors<any> | FormikErrors<any
       fontFamily: 'Poppins-Regular',
       marginLeft: 10,
       color: fileName === '' ? '#8e8e8e' : '#000000',
+      fontSize: 15,
     },
   });
 

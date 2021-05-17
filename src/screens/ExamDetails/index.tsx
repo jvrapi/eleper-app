@@ -38,7 +38,7 @@ const ExamDetails: React.FC<Props> = ({ route }) => {
   const { id } = route.params;
   const navigation = useNavigation();
   const [exam, setExam] = useState<Exam>(initialValues);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
@@ -220,6 +220,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.screenColor,
   },
+
   header: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -230,6 +231,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginTop: 10,
   },
+
   fileContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -238,6 +240,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginTop: 10,
   },
+
   fileCard: {
     width: '100%',
     backgroundColor: '#fff',
@@ -250,13 +253,16 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     alignItems: 'center',
   },
+
   fileName: {
     fontFamily: 'Poppins-Regular',
     marginLeft: 10,
   },
+
   submitButton: {
     marginTop: 20,
   },
+
   deleteButton: {
     marginTop: 10,
   },
@@ -274,20 +280,24 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     color: colors.danger,
   },
+
   modalBodyText: {
     fontFamily: 'Poppins-Regular',
     textAlign: 'center',
     fontSize: 20,
     marginVertical: 20,
   },
+
   modalButtonsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
+
   modalButton: {
     width: 170,
   },
+
   firstModalButton: {
     marginRight: 20,
   },

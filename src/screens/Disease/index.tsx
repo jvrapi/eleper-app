@@ -132,7 +132,7 @@ const Disease: React.FC = () => {
 
       countSelectedItems(updatedArray);
     } else {
-      // navigation.navigate('UserDiseaseDetails');
+      navigation.navigate('UserDiseaseDetails', { id: userDiseases[elementIndex].id });
     }
   }
 
@@ -192,7 +192,7 @@ const Disease: React.FC = () => {
                   <Card key={i} style={[styles.card, styles.shadow]} onLongPress={() => onLongPressCard(i)} onPress={() => onPressCard(i)}>
                     <View style={styles.textContainer}>
                       <Text style={styles.examName}>{userDisease.disease.name}</Text>
-                      <Text style={styles.examDate}>{DateTimeToBrDate(userDisease.diagnosisDate as string)}</Text>
+                      <Text style={styles.examDate}>{`Diagnosticada em:  ${DateTimeToBrDate(userDisease.diagnosisDate as string)}`}</Text>
                       <Text>Atualmente {userDisease.active ? 'Ativa' : 'Inativa'}</Text>
                     </View>
                     {!multiSelect && pageIcons.diseaseIcon}

@@ -15,3 +15,10 @@ export interface UserDisease {
   active?: boolean;
   diagnosisDate?: string;
 }
+
+export interface Details {
+  disease: Disease;
+  id: string;
+  active: boolean;
+  diagnosisDate?: string;
+}
