@@ -11,7 +11,7 @@ interface Props extends TouchableOpacityProps {
 }
 
 const InputButton: React.FC<Props> = ({ label, errors, icon, value, ...props }) => {
-  const { container, card, labelText } = styles(errors, label);
+  const { container, card, labelText } = styles(errors, labelColor());
 
   function renderLabel() {
     if (errors) {
@@ -20,6 +20,14 @@ const InputButton: React.FC<Props> = ({ label, errors, icon, value, ...props }) 
       return value;
     } else {
       return label;
+    }
+  }
+
+  function labelColor() {
+    if (value) {
+      return '#000000';
+    } else {
+      return '#8e8e8e';
     }
   }
 
@@ -33,7 +41,7 @@ const InputButton: React.FC<Props> = ({ label, errors, icon, value, ...props }) 
   );
 };
 
-const styles = (errors: string | string[] | FormikErrors<any> | FormikErrors<any>[], label: string) =>
+const styles = (errors: string | string[] | FormikErrors<any> | FormikErrors<any>[], labelColor: string) =>
   StyleSheet.create({
     container: {
       flexDirection: 'row',
@@ -58,7 +66,7 @@ const styles = (errors: string | string[] | FormikErrors<any> | FormikErrors<any
     labelText: {
       fontFamily: 'Poppins-Regular',
       marginLeft: 10,
-      color: label === '' ? '#8e8e8e' : '#000000',
+      color: labelColor,
       fontSize: 15,
     },
   });

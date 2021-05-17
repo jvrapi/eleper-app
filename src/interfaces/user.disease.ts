@@ -22,3 +22,9 @@ export interface Details {
   active: boolean;
   diagnosisDate?: string;
 }
+
+export interface Update {
+  id: string;
+  diagnosisDate?: string;
+  active: boolean;
+}

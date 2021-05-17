@@ -1,5 +1,5 @@
 import api from './api';
-import { Details, Save, UserDisease } from '../interfaces/user.disease';
+import { Details, Save, UserDisease, Update } from '../interfaces/user.disease';
 import { AxiosResponse } from 'axios';
 import { Disease } from '../interfaces/disease';
 const baseUrl = '/userDisease';
@@ -23,6 +23,11 @@ export async function getById(id: string): Promise<AxiosResponse<Details>> {
 
 export async function saveMany(userDiseases: Save[]): Promise<AxiosResponse<Save[]>> {
   const response = await api.post(`${baseUrl}/saveMany`, userDiseases);
+  return response;
+}
+
+export async function update(userDisease: Update): Promise<AxiosResponse<Details>> {
+  const response = await api.put(`${baseUrl}/`, userDisease);
   return response;
 }
 

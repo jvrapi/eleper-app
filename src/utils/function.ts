@@ -2,9 +2,10 @@ export function cutName(name: string) {
   return name.split(/\s+/g)[0];
 }
 
-export function DateTimeToBrDate(date: string | null) {
+export function DateTimeToBrDate(date?: string) {
   if (date) {
-    const dateOnly = date.split('T')[0];
+    const currentDate = new Date(date as string);
+    const dateOnly = currentDate.toISOString().split('T')[0];
     return UsDateToBrDate(dateOnly);
   } else {
     return 'Data não cadastrada';

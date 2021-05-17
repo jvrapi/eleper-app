@@ -34,7 +34,7 @@ export const inputIcons = {
   myExamsIcon: <FaIcons5 name='file-medical' size={30} color='#000000' />,
   pdfIcon: <AntDesign name='pdffile1' size={30} color='#000000' />,
   diseaseActive: <Feather name='user-check' size={30} color='#000000' />,
-  diseaseInactive: <Feather name='user-check' size={30} color='#000000' />,
+  diseaseInactive: <Feather name='user-x' size={30} color='#000000' />,
 };
 
 export const buttonIcons = {
