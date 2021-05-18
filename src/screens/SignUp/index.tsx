@@ -4,15 +4,17 @@ import { View, StyleSheet, Text, SafeAreaView } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import * as Yup from 'yup';
 import { colors, globalStyles } from '../../assets/styles';
-import { InputComponent, Button } from '../../components';
+import { InputComponent, Button, InputButton } from '../../components';
 
 import AuthContext from '../../contexts/auth';
 import { NewUser } from '../../interfaces/user';
 import { storageItems } from '../../services/storage';
 import { signUp } from '../../services/user';
-import { brDateFormatter, enDateFormatter } from '../../utils/formatter';
+import { enDateFormatter } from '../../utils/formatter';
 import { cpfMask } from '../../utils/mask';
 import { buttonIcons, inputIcons } from '../../assets/icons';
+import { DateTimeToBrDate } from '../../utils/function';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Preencha o campo nome'),
@@ -37,6 +39,7 @@ const SignUp: React.FC = () => {
 
   const { signUpIcon } = buttonIcons;
   const { userIcon, emailIcon, cpfIcon, dateIcon, passwordIcon } = inputIcons;
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   async function handleSubmitForm(values: NewUser) {
     setLoading(true);
@@ -99,15 +102,14 @@ const SignUp: React.FC = () => {
                   editable={!loading}
                 />
 
-                <InputComponent
-                  value={values.birth}
+                <InputButton
                   label='Data de nascimento'
                   errors={touched.birth && errors.birth ? errors.birth : ''}
+                  value={DateTimeToBrDate(values.birth)}
                   onBlur={() => setFieldTouched('birth')}
-                  keyboardType='numeric'
-                  onChangeText={e => setFieldValue('birth', brDateFormatter(e))}
                   icon={dateIcon}
-                  editable={!loading}
+                  disabled={loading}
+                  onPress={() => setShowDatePicker(true)}
                 />
 
                 <InputComponent
@@ -128,6 +130,20 @@ const SignUp: React.FC = () => {
                 icon={signUpIcon}
                 style={styles.submitButton}
               />
+
+              {showDatePicker && (
+                <DateTimePicker
+                  value={values.birth ? new Date(values.birth as string) : new Date()}
+                  maximumDate={new Date()}
+                  display='default'
+                  mode='date'
+                  is24Hour={true}
+                  onChange={(event, selectedDate) => {
+                    setShowDatePicker(false);
+                    setFieldValue('birth', selectedDate);
+                  }}
+                />
+              )}
             </>
           )}
         </Form>

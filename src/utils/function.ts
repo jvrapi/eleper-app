@@ -8,7 +8,7 @@ export function DateTimeToBrDate(date?: string) {
     const dateOnly = currentDate.toISOString().split('T')[0];
     return UsDateToBrDate(dateOnly);
   } else {
-    return 'Data não cadastrada';
+    return '';
   }
 }
 

@@ -24,7 +24,7 @@ const InputButton: React.FC<Props> = ({ label, errors, icon, value, ...props }) 
   }
 
   function labelColor() {
-    if (value) {
+    if (value && !props.disabled) {
       return '#000000';
     } else {
       return '#8e8e8e';
@@ -48,8 +48,7 @@ const styles = (errors: string | string[] | FormikErrors<any> | FormikErrors<any
       alignItems: 'center',
       justifyContent: 'center',
       width: '100%',
-      paddingHorizontal: 10,
-      marginTop: 10,
+      marginBottom: 15,
     },
     card: {
       width: '100%',
