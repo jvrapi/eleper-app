@@ -1,32 +1,73 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, RefreshControl, Linking } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, RefreshControl, Linking, BackHandler } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../../assets/styles';
 import AuthContext from '../../contexts/auth';
 import { Exam } from '../../interfaces/exam';
-import { getAll } from '../../services/exam';
+import { getAll, deleteMany } from '../../services/exam';
 import api from '../../services/api';
-import { Button, Card, ErrorComponent, FloatButton, LoadingComponent, ModalComponent } from '../../components';
+import { Button, Card, ErrorComponent, FloatButton, LoadingComponent, ModalComponent, MultiItems, NoDataComponent } from '../../components';
 import { DateTimeToBrDate } from '../../utils/function';
 import { pageIcons, buttonIcons } from '../../assets/icons';
 import { useNavigation } from '@react-navigation/native';
+import BottomTabBarContext from '../../contexts/bottomTabBar';
+import CheckBox from '@react-native-community/checkbox';
+
+interface MultiSelectItems extends Exam {
+  selected: boolean;
+}
 
 const ExamScreen = () => {
   const { user } = useContext(AuthContext);
-  const [exams, setExams] = useState<Exam[]>([]);
+  const { setShowTabBar } = useContext(BottomTabBarContext);
+
+  const [exams, setExams] = useState<MultiSelectItems[]>([]);
   const [selectedExam, setSelectedExam] = useState<Exam>({} as Exam);
   const [loading, setLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [multiSelect, setMultiSelect] = useState(false);
+  const [allSelected, setAllSelected] = useState(false);
+  const [selectedItemsAmount, setSelectedItemsAmount] = useState(0);
+
   const { myExamsIcon } = pageIcons;
   const { examEditIcon, downloadIcon, newExamIcon } = buttonIcons;
   const navigation = useNavigation();
 
+  useEffect(() => {
+    getData();
+    navigation.addListener('focus', () => {
+      getData();
+    });
+  }, []);
+
+  useEffect(() => {
+    function backAction() {
+      if (multiSelect) {
+        const updatedArray = exams.map(exam => {
+          exam.selected = false;
+          setAllSelected(false);
+          return exam;
+        });
+        setExams(updatedArray);
+        countSelectedItems(updatedArray);
+        onCancelSelectionItems();
+        return true;
+      } else {
+        return false;
+      }
+    }
+    BackHandler.addEventListener('hardwareBackPress', backAction);
+
+    return () => BackHandler.removeEventListener('hardwareBackPress', backAction);
+  }, [multiSelect, exams]);
+
   async function getData() {
     try {
       const { data } = await getAll(user?.id as string);
-      setExams(data);
+      const formattedData = data.map(exam => ({ ...exam, selected: false }));
+      setExams(formattedData);
     } catch (error) {
       const errorMessage = error.response.data.error;
       showMessage({
@@ -49,9 +90,20 @@ const ExamScreen = () => {
     });
   }
 
-  function onPressCard(exam: Exam) {
-    setSelectedExam(exam);
-    setShowModal(true);
+  function onPressCard(elementIndex: number) {
+    if (multiSelect) {
+      const updatedArray = exams.map((exam, i) => {
+        if (i === elementIndex) {
+          exam.selected = !exam.selected;
+        }
+        return exam;
+      });
+
+      countSelectedItems(updatedArray);
+    } else {
+      setSelectedExam(exams[elementIndex]);
+      setShowModal(true);
+    }
   }
 
   function onEditButtonPressed() {
@@ -86,43 +138,119 @@ const ExamScreen = () => {
     navigation.navigate('NewExam');
   }
 
-  useEffect(() => {
-    getData();
-    navigation.addListener('focus', () => {
-      getData();
+  function onPressSelectAllItems() {
+    const updatedArray = exams.map(exam => {
+      if (!allSelected) {
+        exam.selected = true;
+        setAllSelected(true);
+      } else {
+        exam.selected = false;
+        setAllSelected(false);
+      }
+      return exam;
     });
-  }, []);
+    setExams(updatedArray);
+    countSelectedItems(updatedArray);
+  }
+
+  function onCancelSelectionItems() {
+    setMultiSelect(false);
+    setShowTabBar(true);
+    setSelectedItemsAmount(0);
+  }
+
+  async function onDeleteItems() {
+    const itemsSelected = exams.filter(exam => exam.selected).map(exam => exam.id);
+    setLoading(true);
+    try {
+      await deleteMany(itemsSelected);
+      getData();
+      showMessage({
+        message: 'Exames excluídas com sucesso!',
+        type: 'success',
+        icon: 'success',
+      });
+    } catch (error) {
+      showMessage({
+        message: 'Não consegui excluir os exames, pode tentar de novo?',
+        type: 'danger',
+        icon: 'danger',
+      });
+    } finally {
+      onCancelSelectionItems();
+    }
+  }
+
+  function onLongPressCard(firstElementIndex: number) {
+    setMultiSelect(true);
+    setShowTabBar(false);
+    const updatedArray = exams.map((exam, i) => {
+      if (i === firstElementIndex) {
+        exam.selected = true;
+        setSelectedItemsAmount(selectedItemsAmount + 1);
+      }
+      return exam;
+    });
+    setExams(updatedArray);
+  }
+
+  function countSelectedItems(updatedArray: MultiSelectItems[]) {
+    const selectedAmount = updatedArray.filter(item => item.selected).length;
+    if (selectedAmount === 0) {
+      setSelectedItemsAmount(selectedAmount);
+    } else {
+      if (selectedAmount === exams.length) {
+        setAllSelected(true);
+      } else {
+        setAllSelected(false);
+      }
+      setSelectedItemsAmount(selectedAmount);
+      setExams(updatedArray);
+    }
+  }
 
   return (
     <SafeAreaView style={styles.container}>
-      {!loading && !hasError && (
+      {!loading && !hasError && exams.length > 0 && (
         <>
-          <Text style={styles.title}>Meus exames</Text>
-          <View style={styles.scrollContainer}>
-            <ScrollView style={styles.scroll} refreshControl={<RefreshControl refreshing={loading} onRefresh={onRefresh} />}>
-              {exams.map((exam, i) => (
-                <Card key={i} style={[styles.card, styles.shadow]} onPress={() => onPressCard(exam)}>
-                  <View style={styles.textContainer}>
-                    <Text style={styles.examName}>{exam.name}</Text>
-                    <Text style={styles.examDate}>Criado em: {DateTimeToBrDate(exam.createdAt)}</Text>
-                  </View>
-                  {myExamsIcon}
-                </Card>
-              ))}
-            </ScrollView>
-          </View>
-
-          <FloatButton icon={newExamIcon} style={styles.floatButton} onPress={onPressFloatButton} />
-          <ModalComponent showModal={showModal} close={() => setShowModal(false)}>
-            <View style={styles.modalContainer}>
-              <Button buttonText='Baixar Exame' icon={downloadIcon} onPress={onDownloadButtonPressed} />
-              <Button buttonText='Editar Exame' icon={examEditIcon} style={styles.lastButton} onPress={onEditButtonPressed} />
+          <MultiItems
+            multiSelect={multiSelect}
+            allSelected={allSelected}
+            onPressSelectAllItems={onPressSelectAllItems}
+            onPressCancel={onCancelSelectionItems}
+            onPressDelete={onDeleteItems}
+            itemsAmount={selectedItemsAmount}
+            selectedItemsText='Exames selecionados'
+          >
+            <Text style={styles.title}>Meus exames</Text>
+            <View style={styles.scrollContainer}>
+              <ScrollView style={styles.scroll} refreshControl={<RefreshControl refreshing={loading} onRefresh={onRefresh} />}>
+                {exams.map((exam, i) => (
+                  <Card key={i} style={[styles.card, styles.shadow]} onLongPress={() => onLongPressCard(i)} onPress={() => onPressCard(i)}>
+                    <View style={styles.textContainer}>
+                      <Text style={styles.examName}>{exam.name}</Text>
+                      <Text style={styles.examDate}>Criado em: {DateTimeToBrDate(exam.createdAt)}</Text>
+                    </View>
+                    {!multiSelect && myExamsIcon}
+                    {multiSelect && <CheckBox value={exam.selected} tintColors={{ true: colors.darkBlue, false: colors.blue }} />}
+                  </Card>
+                ))}
+              </ScrollView>
             </View>
-          </ModalComponent>
+
+            {!multiSelect && <FloatButton icon={newExamIcon} style={styles.floatButton} onPress={onPressFloatButton} />}
+            <ModalComponent showModal={showModal} close={() => setShowModal(false)}>
+              <View style={styles.modalContainer}>
+                <Button buttonText='Baixar Exame' icon={downloadIcon} onPress={onDownloadButtonPressed} />
+                <Button buttonText='Editar Exame' icon={examEditIcon} style={styles.lastButton} onPress={onEditButtonPressed} />
+              </View>
+            </ModalComponent>
+          </MultiItems>
         </>
       )}
       {loading && <LoadingComponent />}
       {hasError && <ErrorComponent />}
+      {!loading && !hasError && exams.length === 0 && <NoDataComponent />}
     </SafeAreaView>
   );
 };

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { RefreshControl, SafeAreaView, ScrollView, StyleSheet, Text, View, BackHandler } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { colors } from '../../assets/styles';
-import { Card, ErrorComponent, FloatButton, LoadingComponent, MultiItems } from '../../components';
+import { Card, ErrorComponent, FloatButton, LoadingComponent, MultiItems, NoDataComponent } from '../../components';
 import AuthContext from '../../contexts/auth';
 import { UserDisease } from '../../interfaces/user.disease';
 import { getUserDiseases, deleteMany } from '../../services/user.disease';
@@ -45,6 +45,7 @@ const Disease: React.FC = () => {
         });
         setUserDiseases(updatedArray);
         countSelectedItems(updatedArray);
+        onCancelSelectionItems();
         return true;
       } else {
         return false;
@@ -174,7 +175,7 @@ const Disease: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {!loading && !hasError && (
+      {!loading && !hasError && userDiseases.length > 0 && (
         <>
           <MultiItems
             multiSelect={multiSelect}
@@ -207,6 +208,7 @@ const Disease: React.FC = () => {
       )}
       {loading && <LoadingComponent />}
       {hasError && <ErrorComponent />}
+      {!loading && !hasError && userDiseases.length === 0 && <NoDataComponent />}
     </SafeAreaView>
   );
 };

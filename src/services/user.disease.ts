@@ -1,10 +1,8 @@
-import api from './api';
+import api, { DeleteResponse } from './api';
 import { Details, Save, UserDisease, Update } from '../interfaces/user.disease';
 import { AxiosResponse } from 'axios';
 import { Disease } from '../interfaces/disease';
 const baseUrl = '/userDisease';
-
-type DeleteResponse = Record<string, string>;
 
 export async function getUserDiseases(id: string): Promise<AxiosResponse<UserDisease[]>> {
   const response = await api.get(`${baseUrl}/${id}`);

@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 import { Exam } from '../interfaces/exam';
-import api from './api';
+import api, { DeleteResponse } from './api';
 
 const baseUrl = '/exam';
 
@@ -25,6 +25,13 @@ export async function updateExam(exam: FormData): Promise<AxiosResponse<Exam>> {
 
 export async function deleteExam(examId: string) {
   const response = await api.delete(`${baseUrl}/${examId}`);
+  return response;
+}
+
+export async function deleteMany(exams: string[]): Promise<AxiosResponse<DeleteResponse[]>> {
+  const response = await api.delete(`${baseUrl}`, {
+    data: exams,
+  });
   return response;
 }
 

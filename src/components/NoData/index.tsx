@@ -1,13 +1,14 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-const ErrorComponent = () => {
+const NoData = () => {
   return (
     <View style={styles.container}>
-      <Text>Error Component</Text>
+      <Text>No Data Component</Text>
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -15,4 +16,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-export default ErrorComponent;
+
+export default NoData;
