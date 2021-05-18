@@ -109,7 +109,7 @@ const NewUserRegisterDisease = () => {
       setSavingDisease(false);
 
       showMessage({
-        message: error.response.data.error,
+        message: 'Não consegui salvar essa doença, pode tentar de novo?',
         type: 'danger',
         icon: 'danger',
       });
