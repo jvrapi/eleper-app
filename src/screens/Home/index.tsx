@@ -52,22 +52,24 @@ const Home: React.FC = () => {
             {'\n'}
             Em que posso ajudar?
           </Text>
-          <ScrollView style={styles.scroll}>
-            {homeOptions.map((option, i) => (
-              <Card key={i} style={[styles.card, styles.shadow]} onPress={() => goTo(option.route)} activeOpacity={0.5}>
-                <View style={styles.textContainer}>
-                  <Text style={styles.cardText}>{option.title}</Text>
+          <View style={styles.scrollContainer}>
+            <ScrollView style={styles.scroll}>
+              {homeOptions.map((option, i) => (
+                <Card key={i} style={[styles.card, styles.shadow]} onPress={() => goTo(option.route)} activeOpacity={0.5}>
+                  <View style={styles.textContainer}>
+                    <Text style={styles.cardText}>{option.title}</Text>
 
-                  <View style={styles.infoContainer}>
-                    {infoIcon}
+                    <View style={styles.infoContainer}>
+                      {infoIcon}
 
-                    <Text style={styles.infoText}>{option.info}</Text>
+                      <Text style={styles.infoText}>{option.info}</Text>
+                    </View>
                   </View>
-                </View>
-                {option.icon}
-              </Card>
-            ))}
-          </ScrollView>
+                  {option.icon}
+                </Card>
+              ))}
+            </ScrollView>
+          </View>
         </>
       )}
       {loading && <LoadingComponent />}
@@ -92,6 +94,14 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
     fontSize: 20,
     textAlign: 'center',
+  },
+  scrollContainer: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    width: '100%',
+    height: '72%',
+    marginBottom: 95,
   },
   scroll: {
     width: '100%',
@@ -133,7 +143,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     width: 250,
     marginLeft: 5,
-    color: '#a9a9a9',
+    color: '#656565',
   },
 });
 

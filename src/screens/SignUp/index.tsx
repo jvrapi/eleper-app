@@ -10,16 +10,21 @@ import AuthContext from '../../contexts/auth';
 import { NewUser } from '../../interfaces/user';
 import { storageItems } from '../../services/storage';
 import { signUp } from '../../services/user';
-import { enDateFormatter } from '../../utils/formatter';
 import { cpfMask } from '../../utils/mask';
 import { buttonIcons, inputIcons } from '../../assets/icons';
 import { DateTimeToBrDate } from '../../utils/function';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import moment from 'moment';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Preencha o campo nome'),
   cpf: Yup.string().required('Preencha o campo cpf'),
-  birth: Yup.string().required('Preencha o campo data de nascimento'),
+  birth: Yup.string()
+    .required('Preencha o campo data de nascimento')
+    .test('date-validation', 'Data não é valida', date => {
+      const dateIsValid = moment(new Date(date as string), 'YYYY-MM-DDThh:mm:ssZ', true).isValid();
+      return dateIsValid;
+    }),
   email: Yup.string().email('Digite um e-mail válido').required('Preencha o campo de e-mail'),
   password: Yup.string().min(6, 'A senha deve ter no mínimo 6 caracteres').required('Preencha o campo de senha'),
 });
@@ -43,17 +48,18 @@ const SignUp: React.FC = () => {
 
   async function handleSubmitForm(values: NewUser) {
     setLoading(true);
+
     try {
       const { data } = await signUp({
         ...values,
-        birth: enDateFormatter(values.birth),
+        cpf: values.cpf.replace(/\D/g, ''),
       });
       storageItems(data);
 
       setUser(data.user);
     } catch (error) {
       showMessage({
-        message: error.response.data.error,
+        message: 'Não consegui realizar o seu cadastrado, pode tentar de novo?',
         type: 'danger',
         icon: 'danger',
       });

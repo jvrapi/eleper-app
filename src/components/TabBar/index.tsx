@@ -45,7 +45,7 @@ const CustomTabBar = ({ state, navigation }: BottomTabBarProps<BottomTabBarOptio
             name='drug-pack'
             size={30}
             color={state.index === 2 ? colors.iconFocused : colors.iconInactive}
-            onPress={() => goTo('Treatment')}
+            onPress={() => goTo('UserMedicine')}
           />
           <Text style={[styles.screenTitle, { color: state.index === 2 ? colors.iconFocused : colors.iconInactive }]}>Remédios</Text>
         </TouchableOpacity>

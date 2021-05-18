@@ -9,7 +9,6 @@ import { getUserDiseases, deleteMany } from '../../services/user.disease';
 import { DateTimeToBrDate } from '../../utils/function';
 import { buttonIcons, pageIcons } from '../../assets/icons';
 import { useNavigation } from '@react-navigation/native';
-
 import CheckBox from '@react-native-community/checkbox';
 import BottomTabBarContext from '../../contexts/bottomTabBar';
 
@@ -20,12 +19,12 @@ interface MultiSelectItems extends UserDisease {
 const Disease: React.FC = () => {
   const { user } = useContext(AuthContext);
   const { setShowTabBar } = useContext(BottomTabBarContext);
+  const [items, setItems] = useState<MultiSelectItems[]>([]);
   const [loading, setLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [multiSelect, setMultiSelect] = useState(false);
   const [allSelected, setAllSelected] = useState(false);
-  const [userDiseases, setUserDiseases] = useState<MultiSelectItems[]>([]);
-  const [selectedDiseasesAmount, setSelectedDiseasesAmount] = useState(0);
+  const [selectedItemsAmount, setSelectedItemsAmount] = useState(0);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -38,12 +37,12 @@ const Disease: React.FC = () => {
   useEffect(() => {
     function backAction() {
       if (multiSelect) {
-        const updatedArray = userDiseases.map(userDisease => {
-          userDisease.selected = false;
+        const updatedArray = items.map(item => {
+          item.selected = false;
           setAllSelected(false);
-          return userDisease;
+          return item;
         });
-        setUserDiseases(updatedArray);
+        setItems(updatedArray);
         countSelectedItems(updatedArray);
         onCancelSelectionItems();
         return true;
@@ -54,13 +53,13 @@ const Disease: React.FC = () => {
     BackHandler.addEventListener('hardwareBackPress', backAction);
 
     return () => BackHandler.removeEventListener('hardwareBackPress', backAction);
-  }, [multiSelect, userDiseases]);
+  }, [multiSelect, items]);
 
   async function getData() {
     try {
       const { data } = await getUserDiseases(user?.id as string);
       const formattedData = data.map(userDisease => ({ ...userDisease, selected: false }));
-      setUserDiseases(formattedData);
+      setItems(formattedData);
     } catch {
       setHasError(true);
       showMessage({
@@ -84,7 +83,7 @@ const Disease: React.FC = () => {
   }
 
   async function onDeleteItems() {
-    const itemsSelected = userDiseases.filter(userDisease => userDisease.selected).map(userDisease => userDisease.id);
+    const itemsSelected = items.filter(item => item.selected).map(item => item.id);
     setLoading(true);
     try {
       await deleteMany(itemsSelected);
@@ -112,70 +111,70 @@ const Disease: React.FC = () => {
   function onLongPressCard(firstElementIndex: number) {
     setMultiSelect(true);
     setShowTabBar(false);
-    const updatedArray = userDiseases.map((userDisease, i) => {
+    const updatedArray = items.map((item, i) => {
       if (i === firstElementIndex) {
-        userDisease.selected = true;
-        setSelectedDiseasesAmount(selectedDiseasesAmount + 1);
+        item.selected = true;
+        setSelectedItemsAmount(selectedItemsAmount + 1);
       }
-      return userDisease;
+      return item;
     });
-    setUserDiseases(updatedArray);
+    setItems(updatedArray);
   }
 
   function onPressCard(elementIndex: number) {
     if (multiSelect) {
-      const updatedArray = userDiseases.map((userDisease, i) => {
+      const updatedArray = items.map((item, i) => {
         if (i === elementIndex) {
-          userDisease.selected = !userDisease.selected;
+          item.selected = !item.selected;
         }
-        return userDisease;
+        return item;
       });
 
       countSelectedItems(updatedArray);
     } else {
-      navigation.navigate('UserDiseaseDetails', { id: userDiseases[elementIndex].id });
+      navigation.navigate('UserDiseaseDetails', { id: items[elementIndex].id });
     }
   }
 
   function onPressSelectAllItems() {
-    const updatedArray = userDiseases.map(userDisease => {
+    const updatedArray = items.map(item => {
       if (!allSelected) {
-        userDisease.selected = true;
+        item.selected = true;
         setAllSelected(true);
       } else {
-        userDisease.selected = false;
+        item.selected = false;
         setAllSelected(false);
       }
-      return userDisease;
+      return item;
     });
-    setUserDiseases(updatedArray);
+    setItems(updatedArray);
     countSelectedItems(updatedArray);
   }
 
   function countSelectedItems(updatedArray: MultiSelectItems[]) {
     const selectedAmount = updatedArray.filter(userDisease => userDisease.selected).length;
     if (selectedAmount === 0) {
-      setSelectedDiseasesAmount(selectedAmount);
+      setSelectedItemsAmount(selectedAmount);
     } else {
-      if (selectedAmount === userDiseases.length) {
+      if (selectedAmount === items.length) {
         setAllSelected(true);
       } else {
         setAllSelected(false);
       }
-      setSelectedDiseasesAmount(selectedAmount);
-      setUserDiseases(updatedArray);
+      setSelectedItemsAmount(selectedAmount);
+      setItems(updatedArray);
     }
   }
 
   function onCancelSelectionItems() {
     setMultiSelect(false);
     setShowTabBar(true);
-    setSelectedDiseasesAmount(0);
+    setSelectedItemsAmount(0);
   }
 
   return (
     <SafeAreaView style={styles.container}>
-      {!loading && !hasError && userDiseases.length > 0 && (
+      {!loading && !hasError && items.length > 0 && (
         <>
           <MultiItems
             multiSelect={multiSelect}
@@ -183,17 +182,20 @@ const Disease: React.FC = () => {
             onPressSelectAllItems={onPressSelectAllItems}
             onPressCancel={onCancelSelectionItems}
             onPressDelete={onDeleteItems}
-            itemsAmount={selectedDiseasesAmount}
+            itemsAmount={selectedItemsAmount}
             selectedItemsText='Doenças selecionadas'
           >
             <Text style={styles.title}>Minhas doenças</Text>
             <View style={styles.scrollContainer}>
               <ScrollView style={styles.scroll} refreshControl={<RefreshControl refreshing={loading} onRefresh={onRefresh} />}>
-                {userDiseases.map((userDisease, i) => (
+                {items.map((userDisease, i) => (
                   <Card key={i} style={[styles.card, styles.shadow]} onLongPress={() => onLongPressCard(i)} onPress={() => onPressCard(i)}>
                     <View style={styles.textContainer}>
                       <Text style={styles.examName}>{userDisease.disease.name}</Text>
-                      <Text style={styles.examDate}>{`Diagnosticada em:  ${DateTimeToBrDate(userDisease.diagnosisDate as string)}`}</Text>
+                      <Text style={styles.examDate}>{`Diagnosticada em:  ${DateTimeToBrDate(
+                        userDisease.diagnosisDate,
+                        'Data não cadastrada',
+                      )}`}</Text>
                       <Text>Atualmente {userDisease.active ? 'Ativa' : 'Inativa'}</Text>
                     </View>
                     {!multiSelect && pageIcons.diseaseIcon}
@@ -208,7 +210,7 @@ const Disease: React.FC = () => {
       )}
       {loading && <LoadingComponent />}
       {hasError && <ErrorComponent />}
-      {!loading && !hasError && userDiseases.length === 0 && <NoDataComponent />}
+      {!loading && !hasError && items.length === 0 && <NoDataComponent />}
     </SafeAreaView>
   );
 };

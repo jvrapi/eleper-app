@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { CustomTabBar } from '../components';
 import BottomTabBarContext from '../contexts/bottomTabBar';
 import Profile from './profile.routes';
-import Treatment from '../screens/Treatment';
+import UserMedicine from '../screens/UserMedicine';
 import Annotations from './annotations.routes';
 import Home from './home.routes';
 import Exam from './exam.routes';
@@ -15,7 +15,7 @@ const AppRoutes: React.FC = () => {
     <Tab.Navigator tabBar={props => showTabBar && <CustomTabBar {...props} />}>
       <Tab.Screen name='Home' component={Home} />
       <Tab.Screen name='Exam' component={Exam} />
-      <Tab.Screen name='Treatment' component={Treatment} />
+      <Tab.Screen name='UserMedicine' component={UserMedicine} />
       <Tab.Screen name='Profile' component={Profile} />
       <Tab.Screen name='Annotations' component={Annotations} />
       <Tab.Screen name='Disease' component={Disease} />

@@ -2,11 +2,13 @@ export function cutName(name: string) {
   return name.split(/\s+/g)[0];
 }
 
-export function DateTimeToBrDate(date?: string) {
+export function DateTimeToBrDate(date?: string, message?: string) {
   if (date) {
     const currentDate = new Date(date as string);
     const dateOnly = currentDate.toISOString().split('T')[0];
     return UsDateToBrDate(dateOnly);
+  } else if (message) {
+    return message;
   } else {
     return '';
   }
