@@ -1,8 +1,8 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Disease from '../screens/Disease';
-import NewDisease from '../screens/NewDisease';
+import Disease from '../screens/UserDisease';
+import NewDisease from '../screens/NewUserDisease';
 import UserDiseaseDetails from '../screens/UserDiseaseDetails';
 
 const AuthStack = createStackNavigator();
