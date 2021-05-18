@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { RouteProp } from '@react-navigation/native';
+import { RouteProp, useNavigation } from '@react-navigation/native';
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { colors, globalStyles } from '../../assets/styles';
-import { getById, update } from '../../services/user.disease';
-import { Button, ErrorComponent, InputButton, LoadingComponent } from '../../components';
+import { getById, update, deleteUserDisease } from '../../services/user.disease';
+import { Button, ErrorComponent, InputButton, LoadingComponent, ModalComponent } from '../../components';
 import { showMessage } from 'react-native-flash-message';
 import { Details } from '../../interfaces/user.disease';
 import { pageIcons, inputIcons, buttonIcons } from '../../assets/icons';
@@ -45,23 +45,27 @@ const initialValues = {
 
 const UserDiseaseDetails: React.FC<Props> = ({ route }) => {
   const { id } = route.params;
+  const navigation = useNavigation();
   const { userDiseaseIcon } = pageIcons;
   const { dateIcon, diseaseActive, diseaseInactive } = inputIcons;
-  const { checkIcon, deleteIcon } = buttonIcons;
+  const { checkIcon, deleteIcon, cancelIcon } = buttonIcons;
   const [loading, setLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const [userDisease, setUserDisease] = useState<Details>(initialValues);
-
+  useEffect(() => {
+    getData();
+  }, []);
   async function getData() {
     try {
       const { data } = await getById(id);
       setUserDisease(data);
     } catch {
       showMessage({
-        message: 'Não consegui recuperar as informações',
+        message: 'Não consegui recuperar as informações, pode tentar de novo?',
         type: 'danger',
         icon: 'danger',
       });
@@ -70,10 +74,6 @@ const UserDiseaseDetails: React.FC<Props> = ({ route }) => {
       setLoading(false);
     }
   }
-
-  useEffect(() => {
-    getData();
-  }, []);
 
   async function handleSubmitForm(values: Details) {
     setSubmitLoading(true);
@@ -93,6 +93,26 @@ const UserDiseaseDetails: React.FC<Props> = ({ route }) => {
       });
     } finally {
       setSubmitLoading(false);
+    }
+  }
+
+  async function onPressYesButton() {
+    setLoading(true);
+    setShowModal(false);
+    try {
+      await deleteUserDisease(id);
+      showMessage({
+        message: 'Doença excluída com sucesso',
+        type: 'success',
+        icon: 'success',
+      });
+      navigation.reset({ routes: [{ name: 'Disease' }] });
+    } catch {
+      showMessage({
+        message: 'Não consegui excluir, pode tentar de novo?',
+        type: 'danger',
+        icon: 'danger',
+      });
     }
   }
 
@@ -142,7 +162,14 @@ const UserDiseaseDetails: React.FC<Props> = ({ route }) => {
                   style={styles.submitButton}
                   icon={checkIcon}
                 />
-                <Button loading={submitLoading} buttonText='Excluir' style={styles.deleteButton} icon={deleteIcon} colorType='danger' />
+                <Button
+                  loading={submitLoading}
+                  onPress={() => setShowModal(true)}
+                  buttonText='Excluir'
+                  style={styles.deleteButton}
+                  icon={deleteIcon}
+                  colorType='danger'
+                />
 
                 {showDatePicker && (
                   <DateTimePicker
@@ -160,6 +187,31 @@ const UserDiseaseDetails: React.FC<Props> = ({ route }) => {
               </>
             )}
           </Form>
+          <ModalComponent showModal={showModal} close={() => setShowModal(false)}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalHeaderText}>Atenção!</Text>
+              <Text style={styles.modalBodyText}>Quer realmente excluir essa doença?</Text>
+              <View style={styles.modalButtonsContainer}>
+                <Button
+                  loading={loading}
+                  onPress={onPressYesButton}
+                  buttonText='Sim'
+                  style={[styles.modalButton, styles.firstModalButton]}
+                  icon={checkIcon}
+                  colorType='danger'
+                />
+
+                <Button
+                  loading={loading}
+                  onPress={() => setShowModal(false)}
+                  buttonText='Não'
+                  style={styles.modalButton}
+                  icon={cancelIcon}
+                  colorType='success'
+                />
+              </View>
+            </View>
+          </ModalComponent>
         </>
       )}
       {loading && <LoadingComponent />}
@@ -192,6 +244,40 @@ const styles = StyleSheet.create({
 
   deleteButton: {
     marginTop: 10,
+  },
+  modalContent: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+
+  modalHeaderText: {
+    fontFamily: 'Poppins-SemiBold',
+    textAlign: 'center',
+    fontSize: 27,
+    marginVertical: 20,
+    color: colors.danger,
+  },
+
+  modalBodyText: {
+    fontFamily: 'Poppins-Regular',
+    textAlign: 'center',
+    fontSize: 20,
+    marginVertical: 20,
+  },
+
+  modalButtonsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  modalButton: {
+    width: 170,
+  },
+
+  firstModalButton: {
+    marginRight: 20,
   },
 });
 export default UserDiseaseDetails;

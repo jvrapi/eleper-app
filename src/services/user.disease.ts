@@ -31,6 +31,11 @@ export async function update(userDisease: Update): Promise<AxiosResponse<Details
   return response;
 }
 
+export async function deleteUserDisease(id: string) {
+  const response = api.delete(`${baseUrl}/${id}`);
+  return response;
+}
+
 export async function deleteMany(userDiseases: string[]): Promise<AxiosResponse<DeleteResponse[]>> {
   const response = await api.delete(`${baseUrl}`, {
     data: userDiseases,
