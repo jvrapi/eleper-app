@@ -10,7 +10,7 @@ import CheckBox from '@react-native-community/checkbox';
 import MedicineIcon from '../../assets/icons/medicine-icon.svg';
 import NewMedicineIcon from '../../assets/icons/new-medicine.svg';
 import { showMessage } from 'react-native-flash-message';
-import { getAll } from '../../services/user.medicine';
+import { getAll, deleteMany } from '../../services/user.medicine';
 import moment from 'moment';
 import { DateTimeToBrDate } from '../../utils/function';
 
@@ -58,22 +58,42 @@ const UserMedicines: React.FC = () => {
   }, [multiSelect, items]);
 
   async function getData() {
-    setLoading(false);
     try {
       const { data } = await getAll(user?.id as string);
       const formattedData = data.map(medicine => ({ ...medicine, selected: false }));
       setItems(formattedData);
     } catch {
+      setHasError(true);
       showMessage({
         message: 'Não consegui listar os seus medicamentos',
         type: 'danger',
         icon: 'danger',
       });
+    } finally {
+      setLoading(false);
     }
   }
 
   async function onDeleteItems() {
-    return;
+    const itemsSelected = items.filter(item => item.selected).map(item => item.id);
+    setLoading(true);
+    try {
+      await deleteMany(itemsSelected);
+      getData();
+      showMessage({
+        message: 'Medicamentos excluídos com sucesso!',
+        type: 'success',
+        icon: 'success',
+      });
+    } catch {
+      showMessage({
+        message: 'Não consegui excluir os medicamentos, pode tentar de novo?',
+        type: 'danger',
+        icon: 'danger',
+      });
+    } finally {
+      onCancelSelectionItems();
+    }
   }
 
   async function onRefresh() {
@@ -164,7 +184,7 @@ const UserMedicines: React.FC = () => {
       const d2 = new Date();
       const diff = moment(d2, 'YYYY-MM-DDThh:mm:ssZ').diff(moment(d1, 'YYYY-MM-DDThh:mm:ssZ'));
       const months = Math.floor(moment.duration(diff).asMonths());
-      const days = Math.round(moment.duration(diff).asDays());
+      const days = Math.floor(moment.duration(diff).asDays());
 
       return `Tomando a ${months >= 1 ? `${months} ${months === 1 ? 'mês' : 'meses'}` : `${days} dias`}`;
     }
