@@ -1,4 +1,3 @@
-import DateTimePicker from '@react-native-community/datetimepicker';
 import React, { useContext, useEffect, useState } from 'react';
 import { View, StyleSheet, Text, SafeAreaView, ScrollView, TouchableWithoutFeedback } from 'react-native';
 import { colors, globalStyles } from '../../assets/styles';
@@ -6,7 +5,6 @@ import { Formik as Form, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import { Button, InputButton, InputComponent, ModalComponent } from '../../components';
 import { DateTimeToBrDate } from '../../utils/function';
-import { inputIcons } from '../../assets/icons';
 import { Save } from '../../interfaces/user.medicine';
 import { UserDisease } from '../../interfaces/user.disease';
 import { getUserDiseases } from '../../services/user.disease';

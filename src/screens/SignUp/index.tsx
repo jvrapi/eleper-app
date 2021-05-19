@@ -13,8 +13,8 @@ import { signUp } from '../../services/user';
 import { cpfMask } from '../../utils/mask';
 import { buttonIcons, inputIcons } from '../../assets/icons';
 import { DateTimeToBrDate } from '../../utils/function';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Preencha o campo nome'),
@@ -137,19 +137,15 @@ const SignUp: React.FC = () => {
                 style={styles.submitButton}
               />
 
-              {showDatePicker && (
-                <DateTimePicker
-                  value={values.birth ? new Date(values.birth as string) : new Date()}
-                  maximumDate={new Date()}
-                  display='default'
-                  mode='date'
-                  is24Hour={true}
-                  onChange={(event, selectedDate) => {
-                    setShowDatePicker(false);
-                    setFieldValue('birth', selectedDate);
-                  }}
-                />
-              )}
+              <DateTimePickerModal
+                isVisible={showDatePicker}
+                mode='date'
+                onConfirm={date => {
+                  setShowDatePicker(false);
+                  setFieldValue('birth', date);
+                }}
+                onCancel={() => setShowDatePicker(false)}
+              />
             </>
           )}
         </Form>

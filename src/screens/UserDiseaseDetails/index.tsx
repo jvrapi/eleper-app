@@ -10,8 +10,8 @@ import { pageIcons, inputIcons, buttonIcons } from '../../assets/icons';
 import { Formik as Form } from 'formik';
 import * as Yup from 'yup';
 import { DateTimeToBrDate } from '../../utils/function';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 type RootStackParamList = {
   ExamDetails: { id: string };
@@ -171,19 +171,15 @@ const UserDiseaseDetails: React.FC<Props> = ({ route }) => {
                   colorType='danger'
                 />
 
-                {showDatePicker && (
-                  <DateTimePicker
-                    value={values.diagnosisDate ? new Date(values.diagnosisDate as string) : new Date()}
-                    maximumDate={new Date()}
-                    display='default'
-                    mode='date'
-                    is24Hour={true}
-                    onChange={(event, selectedDate) => {
-                      setShowDatePicker(false);
-                      setFieldValue('diagnosisDate', selectedDate);
-                    }}
-                  />
-                )}
+                <DateTimePickerModal
+                  isVisible={showDatePicker}
+                  mode='date'
+                  onConfirm={date => {
+                    setShowDatePicker(false);
+                    setFieldValue('diagnosisDate', date);
+                  }}
+                  onCancel={() => setShowDatePicker(false)}
+                />
               </>
             )}
           </Form>
