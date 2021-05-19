@@ -11,7 +11,6 @@ interface Props extends TextInputProps {
 }
 
 const InputComponent: React.FC<Props> = ({ password, errors, label, icon, ...props }) => {
-  const IconComponent = icon;
   function renderLabel() {
     if (errors) {
       return errors as string;
@@ -21,7 +20,7 @@ const InputComponent: React.FC<Props> = ({ password, errors, label, icon, ...pro
   const { container, input } = styles(errors);
   return (
     <View style={container}>
-      {IconComponent}
+      {icon}
       <TextInput style={input} placeholder={renderLabel()} secureTextEntry={password} {...props} />
     </View>
   );
@@ -44,7 +43,7 @@ const styles = (errors: string | string[] | FormikErrors<any> | FormikErrors<any
     },
     input: {
       flex: 1,
-      fontSize: 16,
+      fontSize: 13,
       marginLeft: 10,
       fontFamily: 'Poppins-Regular',
     },

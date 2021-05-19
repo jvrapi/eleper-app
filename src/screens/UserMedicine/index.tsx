@@ -1,18 +1,17 @@
-import { useNavigation } from '@react-navigation/core';
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, SafeAreaView, RefreshControl, BackHandler } from 'react-native';
+import CheckBox from '@react-native-community/checkbox';
+import { useNavigation } from '@react-navigation/core';
+import moment from 'moment';
+import { BackHandler, RefreshControl, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { showMessage } from 'react-native-flash-message';
+import MedicineIcon from '../../assets/icons/medicine-icon.svg';
+import NewMedicineIcon from '../../assets/icons/new-medicine.svg';
 import { colors } from '../../assets/styles';
+import { Card, ErrorComponent, FloatButton, LoadingComponent, MultiItems, NoDataComponent } from '../../components';
 import AuthContext from '../../contexts/auth';
 import BottomTabBarContext from '../../contexts/bottomTabBar';
 import { UserMedicine } from '../../interfaces/user.medicine';
-import { Button, Card, ErrorComponent, FloatButton, LoadingComponent, ModalComponent, MultiItems, NoDataComponent } from '../../components';
-import CheckBox from '@react-native-community/checkbox';
-import MedicineIcon from '../../assets/icons/medicine-icon.svg';
-import NewMedicineIcon from '../../assets/icons/new-medicine.svg';
-import { showMessage } from 'react-native-flash-message';
-import { getAll, deleteMany } from '../../services/user.medicine';
-import moment from 'moment';
-import { DateTimeToBrDate } from '../../utils/function';
+import { deleteMany, getAll } from '../../services/user.medicine';
 
 interface MultiSelectItems extends UserMedicine {
   selected: boolean;

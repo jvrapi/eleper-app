@@ -11,4 +11,3 @@ export { default as PickFile } from './PickFile';
 export { default as MultiItems } from './MultiItems';
 export { default as InputButton } from './InputButton';
 export { default as NoDataComponent } from './NoData';
-export { default as NewMedicineForm } from './NewMedicineForm';

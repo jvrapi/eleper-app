@@ -55,4 +55,5 @@ export const buttonIcons = {
   newExamIcon: <Feather name='file-plus' size={30} color='#FFFFFF' />,
   newDiseaseIcon: <MaterialCommunityIcons name='thermometer-plus' size={30} color='#FFFFFF' />,
   deleteIcon: <AntDesign name='delete' size={30} color='#FFFFFF' />,
+  calendarCheckIcon: <FaIcons5 name='calendar-check' size={30} color='#FFFFFF' />,
 };

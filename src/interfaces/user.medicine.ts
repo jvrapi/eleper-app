@@ -2,19 +2,22 @@ import { Disease } from './disease';
 import { Medicine } from './medicine';
 
 export interface Save {
-  name: string;
-  amount: number;
+  amount: string;
   instruction: string;
-  active: boolean;
   beginDate: string;
-  endDate: string;
+  endDate: string | null;
+  userId: string;
+  diseaseId: string;
+  medicine: {
+    name: string;
+  };
 }
 
 export interface UserMedicine {
   id: string;
   medicine: Medicine;
   disease: Disease;
-  amount: number;
+  amount: string;
   instruction: string;
   beginDate: string;
   endDate: string;

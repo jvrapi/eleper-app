@@ -33,7 +33,7 @@ const InputButton: React.FC<Props> = ({ label, errors, icon, value, ...props }) 
 
   return (
     <View style={container}>
-      <TouchableOpacity style={card} activeOpacity={0.5} {...props}>
+      <TouchableOpacity activeOpacity={0.5} {...props} style={[props.style, card]}>
         {icon}
         <Text style={labelText}>{renderLabel()}</Text>
       </TouchableOpacity>
@@ -66,7 +66,7 @@ const styles = (errors: string | string[] | FormikErrors<any> | FormikErrors<any
       fontFamily: 'Poppins-Regular',
       marginLeft: 10,
       color: labelColor,
-      fontSize: 15,
+      fontSize: 13,
     },
   });
 

@@ -3,11 +3,11 @@ import React, { useContext } from 'react';
 import { CustomTabBar } from '../components';
 import BottomTabBarContext from '../contexts/bottomTabBar';
 import Profile from './profile.routes';
-import UserMedicine from '../screens/UserMedicine';
 import Annotations from './annotations.routes';
 import Home from './home.routes';
 import Exam from './exam.routes';
 import Disease from './disease.routes';
+import UserMedicine from './user.medicine.routes';
 const Tab = createBottomTabNavigator();
 const AppRoutes: React.FC = () => {
   const { showTabBar } = useContext(BottomTabBarContext);
