@@ -18,6 +18,7 @@ import MedicineInstructionIcon from '../../assets/icons/medicine-instructions.sv
 import UserDiseaseIcon from '../../assets/icons/user-disease.svg';
 import MedicalDateIcon from '../../assets/icons/medical-date.svg';
 import NewMedicineIcon from '../../assets/icons/new-medicine.svg';
+import moment from 'moment';
 
 const initialValues: Save = {
   amount: '',
@@ -32,7 +33,31 @@ const initialValues: Save = {
 };
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required('Preencha o campo nome'),
+  amount: Yup.string().required('Informe quantos você toma'),
+
+  instruction: Yup.string().required('Informe quantas vezes você o toma '),
+
+  beginDate: Yup.string()
+    .required('Informe quando começou com o medicamento')
+    .test('date-validation', 'Data não é valida', date => {
+      const dateIsValid = moment(new Date(date as string), 'YYYY-MM-DDThh:mm:ssZ', true).isValid();
+      return dateIsValid;
+    }),
+
+  endDate: Yup.string()
+    .notRequired()
+    .test('date-validation', 'Data não é valida', date => {
+      if (date) {
+        const dateIsValid = moment(new Date(date as string), 'YYYY-MM-DDThh:mm:ssZ', true).isValid();
+        return dateIsValid;
+      }
+      return true;
+    }),
+  diseaseId: Yup.string().required('Informe para qual doença você o toma'),
+
+  medicine: Yup.object().shape({
+    name: Yup.string().required('Informe o nome do medicamento'),
+  }),
 });
 
 const NewUserMedicine: React.FC = () => {
@@ -106,7 +131,7 @@ const NewUserMedicine: React.FC = () => {
           enableReinitialize
           initialValues={initialValues}
           onSubmit={handleSubmitForm}
-          //validationSchema={validationSchema}
+          validationSchema={validationSchema}
           validateOnChange={false}
         >
           {({ values, handleChange, handleSubmit, errors, setFieldTouched, touched, setFieldValue }) => (
