@@ -43,7 +43,7 @@ const styles = (errors: string | string[] | FormikErrors<any> | FormikErrors<any
     },
     input: {
       flex: 1,
-      fontSize: 13,
+      fontSize: 15,
       marginLeft: 10,
       fontFamily: 'Poppins-Regular',
     },

@@ -44,7 +44,7 @@ const MultiItems: React.FC<Props> = ({
         </View>
       )}
       {children}
-      {multiSelect && <FloatButton icon={icon} style={styles.floatButton} onPress={onPressDelete} />}
+      {multiSelect && <FloatButton icon={icon} style={styles.floatButton} onPress={onPressDelete} colorType='danger' />}
     </View>
   );
 };

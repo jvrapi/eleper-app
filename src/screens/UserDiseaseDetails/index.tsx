@@ -14,10 +14,10 @@ import moment from 'moment';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 type RootStackParamList = {
-  ExamDetails: { id: string };
+  DiseaseDetails: { id: string };
 };
 
-type UserDiseaseDetailsScreenRouteProp = RouteProp<RootStackParamList, 'ExamDetails'>;
+type UserDiseaseDetailsScreenRouteProp = RouteProp<RootStackParamList, 'DiseaseDetails'>;
 
 type Props = {
   route: UserDiseaseDetailsScreenRouteProp;
@@ -162,14 +162,14 @@ const UserDiseaseDetails: React.FC<Props> = ({ route }) => {
                   style={styles.submitButton}
                   icon={checkIcon}
                 />
-                <Button
+                {/* <Button
                   loading={submitLoading}
                   onPress={() => setShowModal(true)}
                   buttonText='Excluir'
                   style={styles.deleteButton}
                   icon={deleteIcon}
                   colorType='danger'
-                />
+                /> */}
 
                 <DateTimePickerModal
                   isVisible={showDatePicker}

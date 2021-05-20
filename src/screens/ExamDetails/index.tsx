@@ -169,14 +169,14 @@ const ExamDetails: React.FC<Props> = ({ route }) => {
                   style={styles.submitButton}
                   icon={terminatedEditExamIcon}
                 />
-                <Button
+                {/* <Button
                   loading={submitLoading}
                   onPress={() => setShowModal(true)}
                   buttonText='Excluir'
                   style={styles.deleteButton}
                   icon={deleteExamIcon}
                   colorType='danger'
-                />
+                /> */}
               </>
             )}
           </Form>

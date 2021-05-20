@@ -66,7 +66,7 @@ const styles = (errors: string | string[] | FormikErrors<any> | FormikErrors<any
       fontFamily: 'Poppins-Regular',
       marginLeft: 10,
       color: labelColor,
-      fontSize: 13,
+      fontSize: 15,
     },
   });
 

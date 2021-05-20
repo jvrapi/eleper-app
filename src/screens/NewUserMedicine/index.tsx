@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, SafeAreaView, ScrollView, TouchableWithoutFeedb
 import { colors, globalStyles } from '../../assets/styles';
 import { Formik as Form, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
-import { Button, InputButton, InputComponent, ModalComponent } from '../../components';
+import { Button, InputButton, InputComponent, ModalComponent, ErrorComponent, LoadingComponent } from '../../components';
 import { DateTimeToBrDate } from '../../utils/function';
 import { Save } from '../../interfaces/user.medicine';
 import { UserDisease } from '../../interfaces/user.disease';
@@ -18,6 +18,7 @@ import MedicineInstructionIcon from '../../assets/icons/medicine-instructions.sv
 import UserDiseaseIcon from '../../assets/icons/user-disease.svg';
 import MedicalDateIcon from '../../assets/icons/medical-date.svg';
 import NewMedicineIcon from '../../assets/icons/new-medicine.svg';
+import NewMedicinePlusIcon from '../../assets/icons/medicine-plus.svg';
 import moment from 'moment';
 
 const initialValues: Save = {
@@ -65,6 +66,7 @@ const NewUserMedicine: React.FC = () => {
   const [showBeginDatePicker, setShowBeginDatePicker] = useState(false);
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [items, setItems] = useState<UserDisease[]>([]);
   const [selectedDiseaseIndex, setSelectedDiseaseIndex] = useState<number | null>(null);
@@ -83,6 +85,7 @@ const NewUserMedicine: React.FC = () => {
         type: 'danger',
         icon: 'danger',
       });
+      setHasError(true);
     } finally {
       setLoading(false);
     }
@@ -122,134 +125,142 @@ const NewUserMedicine: React.FC = () => {
   }
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <View style={styles.header}>
-          <View style={globalStyles.iconContainer}>{<NewMedicineIcon fill='#000' width='80' height='80' />}</View>
-          <Text style={styles.title}>Novo Medicamento</Text>
-        </View>
-        <Form
-          enableReinitialize
-          initialValues={initialValues}
-          onSubmit={handleSubmitForm}
-          validationSchema={validationSchema}
-          validateOnChange={false}
-        >
-          {({ values, handleChange, handleSubmit, errors, setFieldTouched, touched, setFieldValue }) => (
-            <>
-              <View style={globalStyles.inputArea}>
-                <InputComponent
-                  value={values.medicine.name}
-                  label='Nome do medicamento que você toma'
-                  onChangeText={handleChange('medicine.name')}
-                  errors={touched.medicine?.name && errors.medicine?.name ? errors.medicine.name : ''}
-                  onBlur={() => setFieldTouched('medicine.name')}
-                  editable={!loading}
-                  icon={<MedicineIcon fill='#000' width='35' height='35' />}
-                />
+      {!loading && !hasError && (
+        <>
+          <ScrollView>
+            <View style={styles.header}>
+              <View style={globalStyles.iconContainer}>{<NewMedicineIcon fill='#000' width='80' height='80' />}</View>
+              <Text style={styles.title}>Novo Medicamento</Text>
+            </View>
+            <Form
+              enableReinitialize
+              initialValues={initialValues}
+              onSubmit={handleSubmitForm}
+              validationSchema={validationSchema}
+              validateOnChange={false}
+            >
+              {({ values, handleChange, handleSubmit, errors, setFieldTouched, touched, setFieldValue }) => (
+                <>
+                  <View style={globalStyles.inputArea}>
+                    <InputComponent
+                      value={values.medicine?.name}
+                      label='Nome do medicamento que você toma'
+                      onChangeText={handleChange('medicine.name')}
+                      errors={touched.medicine?.name && errors.medicine?.name ? errors.medicine.name : ''}
+                      onBlur={() => setFieldTouched('medicine.name')}
+                      editable={!loading}
+                      icon={<MedicineIcon fill='#000' width='35' height='35' />}
+                    />
 
-                <InputComponent
-                  value={values.amount}
-                  label='Quantos você toma?'
-                  onChangeText={handleChange('amount')}
-                  errors={touched.amount && errors.amount ? errors.amount : ''}
-                  onBlur={() => setFieldTouched('amount')}
-                  editable={!loading}
-                  icon={<MedicineDosageIcon fill='#000' width='35' height='35' />}
-                />
+                    <InputComponent
+                      value={values.amount}
+                      label='Quantos você toma?'
+                      onChangeText={handleChange('amount')}
+                      errors={touched.amount && errors.amount ? errors.amount : ''}
+                      onBlur={() => setFieldTouched('amount')}
+                      editable={!loading}
+                      icon={<MedicineDosageIcon fill='#000' width='35' height='35' />}
+                    />
 
-                <InputComponent
-                  value={values.instruction}
-                  label='Quantas vezes você toma?'
-                  onChangeText={handleChange('instruction')}
-                  errors={touched.instruction && errors.instruction ? errors.instruction : ''}
-                  onBlur={() => setFieldTouched('instruction')}
-                  editable={!loading}
-                  icon={<MedicineInstructionIcon fill='#000' width='35' height='35' />}
-                />
+                    <InputComponent
+                      value={values.instruction}
+                      label='Quantas vezes você toma?'
+                      onChangeText={handleChange('instruction')}
+                      errors={touched.instruction && errors.instruction ? errors.instruction : ''}
+                      onBlur={() => setFieldTouched('instruction')}
+                      editable={!loading}
+                      icon={<MedicineInstructionIcon fill='#000' width='35' height='35' />}
+                    />
 
-                <InputButton
-                  label='Quando começou a tomar?'
-                  errors={touched.beginDate && errors.beginDate ? errors.beginDate : ''}
-                  value={DateTimeToBrDate(values.beginDate)}
-                  onBlur={() => setFieldTouched('beginDate')}
-                  disabled={loading}
-                  onPress={() => setShowBeginDatePicker(true)}
-                  icon={<MedicalDateIcon fill='#000' width='35' height='35' />}
-                />
+                    <InputButton
+                      label='Quando começou a tomar?'
+                      errors={touched.beginDate && errors.beginDate ? errors.beginDate : ''}
+                      value={DateTimeToBrDate(values.beginDate)}
+                      onBlur={() => setFieldTouched('beginDate')}
+                      disabled={loading}
+                      onPress={() => setShowBeginDatePicker(true)}
+                      icon={<MedicalDateIcon fill='#000' width='35' height='35' />}
+                    />
 
-                <InputButton
-                  label='Quando terminou de tomar?'
-                  errors={touched.endDate && errors.endDate ? errors.endDate : ''}
-                  value={DateTimeToBrDate(values.endDate ? values.endDate : '')}
-                  onBlur={() => setFieldTouched('endDate')}
-                  disabled={loading}
-                  onPress={() => setShowEndDatePicker(true)}
-                  icon={<MedicalDateIcon fill='#000' width='35' height='35' />}
-                />
+                    <InputButton
+                      label='Quando terminou de tomar?'
+                      errors={touched.endDate && errors.endDate ? errors.endDate : ''}
+                      value={DateTimeToBrDate(values.endDate ? values.endDate : '')}
+                      onBlur={() => setFieldTouched('endDate')}
+                      disabled={loading}
+                      onPress={() => setShowEndDatePicker(true)}
+                      icon={<MedicalDateIcon fill='#000' width='35' height='35' />}
+                    />
 
-                <InputButton
-                  label='Para qual doença é esse medicamento?'
-                  errors={touched.diseaseId && errors.diseaseId ? errors.diseaseId : ''}
-                  value={selectedDiseaseIndex === null ? '' : items[selectedDiseaseIndex].disease.name}
-                  onBlur={() => setFieldTouched('diseaseId')}
-                  disabled={loading}
-                  onPress={() => setShowModal(true)}
-                  icon={<UserDiseaseIcon fill='#000' width='35' height='35' />}
-                />
+                    <InputButton
+                      label='Para qual doença é esse medicamento?'
+                      errors={touched.diseaseId && errors.diseaseId ? errors.diseaseId : ''}
+                      value={selectedDiseaseIndex === null ? '' : items[selectedDiseaseIndex].disease.name}
+                      onBlur={() => setFieldTouched('diseaseId')}
+                      disabled={loading}
+                      onPress={() => setShowModal(true)}
+                      icon={<UserDiseaseIcon fill='#000' width='35' height='35' />}
+                    />
 
-                <DateTimePickerModal
-                  isVisible={showBeginDatePicker}
-                  mode='date'
-                  onConfirm={date => {
-                    setShowBeginDatePicker(false);
-                    setFieldValue('beginDate', date);
-                  }}
-                  onCancel={() => setShowBeginDatePicker(false)}
-                />
+                    <DateTimePickerModal
+                      isVisible={showBeginDatePicker}
+                      mode='date'
+                      onConfirm={date => {
+                        setShowBeginDatePicker(false);
+                        setFieldValue('beginDate', date);
+                      }}
+                      onCancel={() => setShowBeginDatePicker(false)}
+                    />
 
-                <DateTimePickerModal
-                  isVisible={showEndDatePicker}
-                  mode='date'
-                  onConfirm={date => {
-                    setShowEndDatePicker(false);
-                    setFieldValue('endDate', date);
-                  }}
-                  onCancel={() => setShowEndDatePicker(false)}
-                />
-              </View>
-
-              <Button
-                loading={loading}
-                onPress={async () => {
-                  if (selectedDiseaseIndex !== null) {
-                    await setFieldValue('diseaseId', items[selectedDiseaseIndex as number].disease.id);
-                    setTimeout(() => setFieldTouched('diseaseId', true));
-                  }
-                  handleSubmit();
-                }}
-                buttonText='Cadastrar-se'
-                style={styles.submitButton}
-              />
-            </>
-          )}
-        </Form>
-      </ScrollView>
-      <ModalComponent showModal={showModal} close={() => setShowModal(false)}>
-        <View style={modalStyles.container}>
-          <Text style={modalStyles.textHeader}>Selecione uma doença</Text>
-          <View style={modalStyles.scrollContainer}>
-            <ScrollView style={modalStyles.scroll}>
-              {items.map((userDisease, i) => (
-                <TouchableWithoutFeedback key={i} onPress={() => selectedDisease(i)}>
-                  <View style={[modalStyles.content, modalStyles.shadow]}>
-                    <Text style={modalStyles.text}> {userDisease.disease.name}</Text>
+                    <DateTimePickerModal
+                      isVisible={showEndDatePicker}
+                      mode='date'
+                      onConfirm={date => {
+                        setShowEndDatePicker(false);
+                        setFieldValue('endDate', date);
+                      }}
+                      onCancel={() => setShowEndDatePicker(false)}
+                    />
                   </View>
-                </TouchableWithoutFeedback>
-              ))}
-            </ScrollView>
-          </View>
-        </View>
-      </ModalComponent>
+
+                  <Button
+                    loading={loading}
+                    onPress={async () => {
+                      if (selectedDiseaseIndex !== null) {
+                        await setFieldValue('diseaseId', items[selectedDiseaseIndex as number].disease.id);
+                        setTimeout(() => setFieldTouched('diseaseId', true));
+                      }
+                      handleSubmit();
+                    }}
+                    buttonText='Salvar'
+                    style={styles.submitButton}
+                    icon={<NewMedicinePlusIcon fill='#fff' width='40' height='40' />}
+                  />
+                </>
+              )}
+            </Form>
+          </ScrollView>
+          <ModalComponent showModal={showModal} close={() => setShowModal(false)}>
+            <View style={modalStyles.container}>
+              <Text style={modalStyles.textHeader}>Selecione uma doença</Text>
+              <View style={modalStyles.scrollContainer}>
+                <ScrollView style={modalStyles.scroll}>
+                  {items.map((userDisease, i) => (
+                    <TouchableWithoutFeedback key={i} onPress={() => selectedDisease(i)}>
+                      <View style={[modalStyles.content, modalStyles.shadow]}>
+                        <Text style={modalStyles.text}> {userDisease.disease.name}</Text>
+                      </View>
+                    </TouchableWithoutFeedback>
+                  ))}
+                </ScrollView>
+              </View>
+            </View>
+          </ModalComponent>
+        </>
+      )}
+
+      {loading && <LoadingComponent />}
+      {hasError && <ErrorComponent />}
     </SafeAreaView>
   );
 };
