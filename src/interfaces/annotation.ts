@@ -5,3 +5,9 @@ export interface Annotation {
   userId: string;
   diseaseId: string;
 }
+
+export interface Save {
+  diseaseId?: string;
+  description: string;
+  userId: string;
+}

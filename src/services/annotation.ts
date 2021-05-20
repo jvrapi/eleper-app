@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { Annotation } from '../interfaces/annotations';
+import { Annotation, Save } from '../interfaces/annotation';
 import api, { DeleteResponse } from './api';
 
 const baseUrl = '/annotation';
@@ -13,5 +13,10 @@ export async function deleteMany(annotationIds: string[]): Promise<AxiosResponse
   const response = await api.delete(`${baseUrl}/`, {
     data: annotationIds,
   });
+  return response;
+}
+
+export async function save(annotation: Save): Promise<AxiosResponse<Annotation>> {
+  const response = await api.post(`${baseUrl}/`, annotation);
   return response;
 }

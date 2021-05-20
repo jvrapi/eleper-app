@@ -21,7 +21,8 @@ const InputComponent: React.FC<Props> = ({ password, errors, label, icon, ...pro
   return (
     <View style={container}>
       {icon}
-      <TextInput style={input} placeholder={renderLabel()} secureTextEntry={password} {...props} />
+
+      <TextInput style={input} placeholder={renderLabel()} secureTextEntry={password} placeholderTextColor='#8e8e8e' {...props} />
     </View>
   );
 };

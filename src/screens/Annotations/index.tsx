@@ -7,7 +7,7 @@ import { colors } from '../../assets/styles';
 import { Card, ErrorComponent, FloatButton, LoadingComponent, MultiItems, NoDataComponent } from '../../components';
 import AuthContext from '../../contexts/auth';
 import BottomTabBarContext from '../../contexts/bottomTabBar';
-import { Annotation } from '../../interfaces/annotations';
+import { Annotation } from '../../interfaces/annotation';
 import { list, deleteMany } from '../../services/annotation';
 import { DateTimeToBrDate } from '../../utils/function';
 import PostItIcon from '../../assets/icons/post-it.svg';
@@ -105,7 +105,7 @@ const Annotations: React.FC = () => {
   }
 
   function onPressFloatButton() {
-    navigation.navigate('NewDisease');
+    navigation.navigate('NewAnnotation');
   }
 
   function onLongPressCard(firstElementIndex: number) {
