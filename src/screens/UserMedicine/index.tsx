@@ -218,16 +218,15 @@ const UserMedicines: React.FC = () => {
                 ))}
               </ScrollView>
             </View>
-
-            {!multiSelect && (
-              <FloatButton
-                icon={<NewMedicineIcon width='40' height='40' fill='#fff' />}
-                style={styles.floatButton}
-                onPress={onPressFloatButton}
-              />
-            )}
           </MultiItems>
         </>
+      )}
+      {!multiSelect && (
+        <FloatButton
+          icon={<NewMedicineIcon width='40' height='40' fill='#fff' />}
+          style={styles.floatButton}
+          onPress={onPressFloatButton}
+        />
       )}
       {loading && <LoadingComponent />}
       {hasError && <ErrorComponent />}

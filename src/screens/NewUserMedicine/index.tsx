@@ -218,27 +218,38 @@ const NewUserMedicine: React.FC = () => {
                 />
               </View>
 
-              <Button loading={loading} onPress={() => handleSubmit()} buttonText='Cadastrar-se' style={styles.submitButton} />
+              <Button
+                loading={loading}
+                onPress={async () => {
+                  if (selectedDiseaseIndex !== null) {
+                    await setFieldValue('diseaseId', items[selectedDiseaseIndex as number].disease.id);
+                    setTimeout(() => setFieldTouched('diseaseId', true));
+                  }
+                  handleSubmit();
+                }}
+                buttonText='Cadastrar-se'
+                style={styles.submitButton}
+              />
             </>
           )}
         </Form>
-        <ModalComponent showModal={showModal} close={() => setShowModal(false)}>
-          <View style={modalStyles.container}>
-            <Text style={modalStyles.textHeader}>Selecione uma doença</Text>
-            <View style={modalStyles.scrollContainer}>
-              <ScrollView style={modalStyles.scroll}>
-                {items.map((userDisease, i) => (
-                  <TouchableWithoutFeedback key={i} onPress={() => selectedDisease(i)}>
-                    <View style={[modalStyles.content, modalStyles.shadow]}>
-                      <Text style={modalStyles.text}> {userDisease.disease.name}</Text>
-                    </View>
-                  </TouchableWithoutFeedback>
-                ))}
-              </ScrollView>
-            </View>
-          </View>
-        </ModalComponent>
       </ScrollView>
+      <ModalComponent showModal={showModal} close={() => setShowModal(false)}>
+        <View style={modalStyles.container}>
+          <Text style={modalStyles.textHeader}>Selecione uma doença</Text>
+          <View style={modalStyles.scrollContainer}>
+            <ScrollView style={modalStyles.scroll}>
+              {items.map((userDisease, i) => (
+                <TouchableWithoutFeedback key={i} onPress={() => selectedDisease(i)}>
+                  <View style={[modalStyles.content, modalStyles.shadow]}>
+                    <Text style={modalStyles.text}> {userDisease.disease.name}</Text>
+                  </View>
+                </TouchableWithoutFeedback>
+              ))}
+            </ScrollView>
+          </View>
+        </View>
+      </ModalComponent>
     </SafeAreaView>
   );
 };

@@ -204,10 +204,10 @@ const Disease: React.FC = () => {
                 ))}
               </ScrollView>
             </View>
-            {!multiSelect && <FloatButton icon={buttonIcons.newDiseaseIcon} style={styles.floatButton} onPress={onPressFloatButton} />}
           </MultiItems>
         </>
       )}
+      {!multiSelect && <FloatButton icon={buttonIcons.newDiseaseIcon} style={styles.floatButton} onPress={onPressFloatButton} />}
       {loading && <LoadingComponent />}
       {hasError && <ErrorComponent />}
       {!loading && !hasError && items.length === 0 && <NoDataComponent />}

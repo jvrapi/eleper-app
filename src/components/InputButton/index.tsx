@@ -14,7 +14,7 @@ const InputButton: React.FC<Props> = ({ label, errors, icon, value, ...props }) 
   const { container, card, labelText } = styles(errors, labelColor());
 
   function renderLabel() {
-    if (errors) {
+    if (errors && !value) {
       return errors as string;
     } else if (value) {
       return value;
