@@ -40,7 +40,7 @@ const MultiItems: React.FC<Props> = ({
               onPress={onPressSelectAllItems}
             />
           </View>
-          <Text style={styles.multiSelectText}>{`${itemsAmount} ${selectedItemsText}`}</Text>
+          <Text style={styles.multiSelectText}>{selectedItemsText}</Text>
         </View>
       )}
       {children}

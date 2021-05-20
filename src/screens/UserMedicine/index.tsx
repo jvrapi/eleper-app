@@ -189,6 +189,19 @@ const UserMedicines: React.FC = () => {
     }
   }
 
+  function multiItemsText() {
+    let value;
+    if (selectedItemsAmount === 0) {
+      value = 'Selecionar itens';
+    } else if (selectedItemsAmount === 1) {
+      value = selectedItemsAmount + ' Item selecionado';
+    } else {
+      value = selectedItemsAmount + ' Itens selecionados';
+    }
+
+    return value + '';
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       {!loading && !hasError && items.length > 0 && (
@@ -200,7 +213,7 @@ const UserMedicines: React.FC = () => {
             onPressCancel={onCancelSelectionItems}
             onPressDelete={onDeleteItems}
             itemsAmount={selectedItemsAmount}
-            selectedItemsText='Exames selecionados'
+            selectedItemsText={multiItemsText()}
           >
             <Text style={styles.title}>Meus exames</Text>
             <View style={styles.scrollContainer}>
@@ -213,7 +226,9 @@ const UserMedicines: React.FC = () => {
                       <Text style={styles.itemSubTitle}>{renderDateLabel(item.beginDate, item.endDate)}</Text>
                     </View>
                     {!multiSelect && <MedicineIcon width='50' height='50' fill='#000000' />}
-                    {multiSelect && <CheckBox value={item.selected} tintColors={{ true: colors.darkBlue, false: colors.blue }} />}
+                    {multiSelect && (
+                      <CheckBox value={item.selected} tintColors={{ true: colors.darkBlue, false: colors.blue }} disabled={true} />
+                    )}
                   </Card>
                 ))}
               </ScrollView>

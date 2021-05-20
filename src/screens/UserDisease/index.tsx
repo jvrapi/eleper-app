@@ -171,7 +171,18 @@ const Disease: React.FC = () => {
     setShowTabBar(true);
     setSelectedItemsAmount(0);
   }
+  function multiItemsText() {
+    let value;
+    if (selectedItemsAmount === 0) {
+      value = 'Selecionar itens';
+    } else if (selectedItemsAmount === 1) {
+      value = selectedItemsAmount + ' Item selecionado';
+    } else {
+      value = selectedItemsAmount + ' Itens selecionados';
+    }
 
+    return value + '';
+  }
   return (
     <SafeAreaView style={styles.container}>
       {!loading && !hasError && items.length > 0 && (
@@ -183,23 +194,25 @@ const Disease: React.FC = () => {
             onPressCancel={onCancelSelectionItems}
             onPressDelete={onDeleteItems}
             itemsAmount={selectedItemsAmount}
-            selectedItemsText='Doenças selecionadas'
+            selectedItemsText={multiItemsText()}
           >
             <Text style={styles.title}>Minhas doenças</Text>
             <View style={styles.scrollContainer}>
               <ScrollView style={styles.scroll} refreshControl={<RefreshControl refreshing={loading} onRefresh={onRefresh} />}>
-                {items.map((userDisease, i) => (
+                {items.map((item, i) => (
                   <Card key={i} style={[styles.card, styles.shadow]} onLongPress={() => onLongPressCard(i)} onPress={() => onPressCard(i)}>
                     <View style={styles.textContainer}>
-                      <Text style={styles.examName}>{userDisease.disease.name}</Text>
-                      <Text style={styles.examDate}>{`Diagnosticada em:  ${DateTimeToBrDate(
-                        userDisease.diagnosisDate,
+                      <Text style={styles.itemName}>{item.disease.name}</Text>
+                      <Text style={styles.itemDate}>{`Diagnosticada em:  ${DateTimeToBrDate(
+                        item.diagnosisDate,
                         'Data não cadastrada',
                       )}`}</Text>
-                      <Text>Atualmente {userDisease.active ? 'Ativa' : 'Inativa'}</Text>
+                      <Text>Atualmente {item.active ? 'Ativa' : 'Inativa'}</Text>
                     </View>
                     {!multiSelect && pageIcons.diseaseIcon}
-                    {multiSelect && <CheckBox value={userDisease.selected} tintColors={{ true: colors.darkBlue, false: colors.blue }} />}
+                    {multiSelect && (
+                      <CheckBox value={item.selected} tintColors={{ true: colors.darkBlue, false: colors.blue }} disabled={true} />
+                    )}
                   </Card>
                 ))}
               </ScrollView>
@@ -260,11 +273,11 @@ const styles = StyleSheet.create({
   textContainer: {
     justifyContent: 'center',
   },
-  examName: {
+  itemName: {
     fontFamily: 'Poppins-Regular',
     fontSize: 17,
   },
-  examDate: {
+  itemDate: {
     fontFamily: 'Poppins-Regular',
     fontSize: 13,
   },

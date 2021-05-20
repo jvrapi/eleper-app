@@ -207,7 +207,18 @@ const ExamScreen: React.FC = () => {
       setItems(updatedArray);
     }
   }
+  function multiItemsText() {
+    let value;
+    if (selectedItemsAmount === 0) {
+      value = 'Selecionar itens';
+    } else if (selectedItemsAmount === 1) {
+      value = selectedItemsAmount + ' Item selecionado';
+    } else {
+      value = selectedItemsAmount + ' Itens selecionados';
+    }
 
+    return value + '';
+  }
   return (
     <SafeAreaView style={styles.container}>
       {!loading && !hasError && items.length > 0 && (
@@ -219,19 +230,21 @@ const ExamScreen: React.FC = () => {
             onPressCancel={onCancelSelectionItems}
             onPressDelete={onDeleteItems}
             itemsAmount={selectedItemsAmount}
-            selectedItemsText='Exames selecionados'
+            selectedItemsText={multiItemsText()}
           >
             <Text style={styles.title}>Meus exames</Text>
             <View style={styles.scrollContainer}>
               <ScrollView style={styles.scroll} refreshControl={<RefreshControl refreshing={loading} onRefresh={onRefresh} />}>
-                {items.map((exam, i) => (
+                {items.map((item, i) => (
                   <Card key={i} style={[styles.card, styles.shadow]} onLongPress={() => onLongPressCard(i)} onPress={() => onPressCard(i)}>
                     <View style={styles.textContainer}>
-                      <Text style={styles.itemName}>{exam.name}</Text>
-                      <Text style={styles.itemDate}>Criado em: {DateTimeToBrDate(exam.createdAt)}</Text>
+                      <Text style={styles.itemName}>{item.name}</Text>
+                      <Text style={styles.itemDate}>Criado em: {DateTimeToBrDate(item.createdAt)}</Text>
                     </View>
                     {!multiSelect && myExamsIcon}
-                    {multiSelect && <CheckBox value={exam.selected} tintColors={{ true: colors.darkBlue, false: colors.blue }} />}
+                    {multiSelect && (
+                      <CheckBox value={item.selected} tintColors={{ true: colors.darkBlue, false: colors.blue }} disabled={true} />
+                    )}
                   </Card>
                 ))}
               </ScrollView>

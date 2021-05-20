@@ -18,7 +18,7 @@ export const homeOptions = [
     title: 'Minhas Anotações',
     icon: pageIcons.annotationsIcon,
     info: 'Faça anotações importantes sobre a sua saúde, como por exemplo, taxa de glicose ou pressão arterial',
-    route: { name: 'Disease' },
+    route: { name: 'Annotations' },
   },
 
   {

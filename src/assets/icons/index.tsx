@@ -56,4 +56,5 @@ export const buttonIcons = {
   newDiseaseIcon: <MaterialCommunityIcons name='thermometer-plus' size={40} color='#FFFFFF' />,
   deleteIcon: <AntDesign name='delete' size={40} color='#FFFFFF' />,
   calendarCheckIcon: <FaIcons5 name='calendar-check' size={40} color='#FFFFFF' />,
+  newPostIt: <MaterialIcons name='post-add' size={40} color='#FFFFFF' />,
 };
