@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    height: '72%',
+    height: '71%',
   },
   scroll: {
     width: '100%',

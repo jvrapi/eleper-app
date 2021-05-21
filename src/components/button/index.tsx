@@ -39,7 +39,7 @@ const GradientButton: React.FC<Props> = ({ loading, buttonText, icon, colorType,
       >
         {IconComponent && !loading && <View style={styles.iconContainer}>{IconComponent}</View>}
         {!loading && <Text style={[styles.text, stylesProps.textColor]}>{buttonText}</Text>}
-        {loading && <LoadingComponent />}
+        {loading && <LoadingComponent color='#fff' />}
       </LinearGradient>
     </TouchableOpacity>
   );

@@ -1,33 +1,53 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, TouchableWithoutFeedback, ScrollView } from 'react-native';
-import { showMessage } from 'react-native-flash-message';
-import { colors, globalStyles } from '../../assets/styles';
-import AuthContext from '../../contexts/auth';
+import { Annotation } from '../../interfaces/annotation';
 import { UserDisease } from '../../interfaces/user.disease';
-import { Save } from '../../interfaces/annotation';
+import { showMessage } from 'react-native-flash-message';
+import { RouteProp } from '@react-navigation/core';
+import { getById, update } from '../../services/annotation';
 import { getUserDiseases } from '../../services/user.disease';
-import { save } from '../../services/annotation';
-import { Formik as Form, FormikHelpers } from 'formik';
+
+import { colors, globalStyles } from '../../assets/styles';
 
 import NewPostItIcon from '../../assets/icons/new-post-it.svg';
 import UserDiseaseIcon from '../../assets/icons/user-disease.svg';
 import PostItEdit from '../../assets/icons/post-it-edit.svg';
 import PostItSave from '../../assets/icons/post-it-save.svg';
+
+import { Formik as Form } from 'formik';
 import * as Yup from 'yup';
 import { Button, InputButton, ModalComponent, TextArea } from '../../components';
+
+type RootStackParamList = {
+  AnnotationDetails: { id: string };
+};
+
+type AnnotationDetailsScreenRouteProp = RouteProp<RootStackParamList, 'AnnotationDetails'>;
+
+type Props = {
+  route: AnnotationDetailsScreenRouteProp;
+};
+
+const initialValues: Annotation = {
+  description: '',
+  userId: '',
+  diseaseId: '',
+  id: '',
+  createdAt: '',
+  disease: {
+    id: '',
+    name: '',
+  },
+};
 
 const validationSchema = Yup.object().shape({
   description: Yup.string().required('Informe a descrição da anotação'),
 });
 
-const initialValues: Save = {
-  description: '',
-  diseaseId: '',
-  userId: '',
-};
+const AnnotationDetails: React.FC<Props> = ({ route }) => {
+  const { id } = route.params;
 
-const NewAnnotation: React.FC = () => {
-  const { user } = useContext(AuthContext);
+  const [data, setData] = useState<Annotation>(initialValues);
   const [items, setItems] = useState<UserDisease[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitForm, setSubmitForm] = useState(false);
@@ -41,35 +61,47 @@ const NewAnnotation: React.FC = () => {
 
   async function getData() {
     try {
-      const { data } = await getUserDiseases(user?.id as string);
-      setItems(data);
-    } catch {
+      const annotationsResponse = await getById(id);
+      setData(annotationsResponse.data);
+
+      const userDiseaseResponse = await getUserDiseases(annotationsResponse.data.userId);
+      setItems(userDiseaseResponse.data);
+
+      if (annotationsResponse.data.disease) {
+        userDiseaseResponse.data.forEach((userDisease, i) => {
+          if (annotationsResponse.data.disease.id === userDisease.disease.id) {
+            setSelectedDiseaseIndex(i);
+          }
+        });
+      }
+    } catch (error) {
       showMessage({
-        message: 'Ops! Aconteceu alguma coisa',
-        type: 'danger',
+        message: 'Não consegui recuperar as informações, pode tentar de novo?',
         icon: 'danger',
+        type: 'danger',
       });
-      setHasError(true);
     } finally {
       setLoading(false);
     }
   }
 
-  async function handleSubmitForm(values: Save, { resetForm }: FormikHelpers<Save>) {
+  async function handleSubmitForm(values: Annotation) {
     setSubmitForm(true);
-    values.userId = user?.id as string;
-    if (!values.diseaseId) {
-      delete values.diseaseId;
-    }
     try {
-      await save(values);
+      const { data } = await update(values);
+
+      if (data.disease.id) {
+        items.forEach((userDisease, i) => {
+          if (data.disease.id === userDisease.disease.id) {
+            setSelectedDiseaseIndex(i);
+          }
+        });
+      }
       showMessage({
         message: 'Informações salvas com sucesso!',
         type: 'success',
         icon: 'success',
       });
-      resetForm();
-      setSelectedDiseaseIndex(null);
     } catch {
       showMessage({
         message: 'Não consegui salvar as informações, pode tentar de novo?',
@@ -94,7 +126,13 @@ const NewAnnotation: React.FC = () => {
             <View style={globalStyles.iconContainer}>{<NewPostItIcon fill='#000' width='70' height='70' />}</View>
             <Text style={styles.title}>Nova Anotação</Text>
           </View>
-          <Form initialValues={initialValues} onSubmit={handleSubmitForm} validationSchema={validationSchema} validateOnChange={false}>
+          <Form
+            enableReinitialize
+            initialValues={data}
+            onSubmit={handleSubmitForm}
+            validationSchema={validationSchema}
+            validateOnChange={false}
+          >
             {({ values, handleChange, handleSubmit, errors, setFieldTouched, touched, setFieldValue }) => (
               <>
                 <View style={globalStyles.inputArea}>
@@ -107,7 +145,6 @@ const NewAnnotation: React.FC = () => {
                     editable={!submitForm}
                     icon={<PostItEdit fill='#efefef' width='100' height='100' />}
                   />
-
                   <InputButton
                     label='Para qual doença é essa anotação?'
                     errors={touched.diseaseId && errors.diseaseId ? errors.diseaseId : ''}
@@ -118,11 +155,10 @@ const NewAnnotation: React.FC = () => {
                     icon={<UserDiseaseIcon fill='#000' width='35' height='35' />}
                   />
                 </View>
-
                 <Button
                   loading={submitForm}
                   onPress={handleSubmit}
-                  buttonText='Salvar'
+                  buttonText='Atualizar'
                   icon={<PostItSave fill='#fff' width='40' height='40' />}
                 />
 
@@ -158,7 +194,7 @@ const NewAnnotation: React.FC = () => {
   );
 };
 
-export default NewAnnotation;
+export default AnnotationDetails;
 
 const styles = StyleSheet.create({
   container: {

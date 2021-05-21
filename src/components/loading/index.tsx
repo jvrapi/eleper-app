@@ -1,17 +1,9 @@
 import React from 'react';
+import { ActivityIndicator, ActivityIndicatorProps } from 'react-native';
 import { colors } from '../../assets/styles';
-import { ActivityIndicator, SafeAreaView, StyleSheet } from 'react-native';
 
-export default () => (
-  <SafeAreaView style={styles.container}>
-    <ActivityIndicator size='large' color={colors.black} />
-  </SafeAreaView>
-);
+const LoadingComponent: React.FC<ActivityIndicatorProps> = ({ ...props }) => {
+  return <ActivityIndicator size='large' color={props.color ? props.color : colors.black} {...props} />;
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
+export default LoadingComponent;

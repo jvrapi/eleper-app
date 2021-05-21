@@ -1,13 +1,19 @@
-export interface Annotation {
-  id: string;
-  createdAt: string;
+import { Disease } from './disease';
+
+interface DefaultFields {
   description: string;
   userId: string;
-  diseaseId: string;
+  diseaseId?: string;
 }
 
-export interface Save {
-  diseaseId?: string;
-  description: string;
-  userId: string;
+export interface Annotation extends DefaultFields {
+  id: string;
+  createdAt: string;
+  disease: Disease;
+}
+
+export type Save = DefaultFields;
+
+export interface Update extends DefaultFields {
+  id: string;
 }
