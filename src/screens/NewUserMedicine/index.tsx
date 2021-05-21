@@ -68,6 +68,7 @@ const NewUserMedicine: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [submitButton, setSubmitLoading] = useState(false);
   const [items, setItems] = useState<UserDisease[]>([]);
   const [selectedDiseaseIndex, setSelectedDiseaseIndex] = useState<number | null>(null);
 
@@ -92,7 +93,7 @@ const NewUserMedicine: React.FC = () => {
   }
 
   async function handleSubmitForm(values: Save, { resetForm }: FormikHelpers<Save>) {
-    setLoading(true);
+    setSubmitLoading(true);
     const data = {
       ...values,
       diseaseId: items[selectedDiseaseIndex as number].disease.id,
@@ -115,7 +116,7 @@ const NewUserMedicine: React.FC = () => {
         icon: 'danger',
       });
     } finally {
-      setLoading(false);
+      setSubmitLoading(false);
     }
   }
 
@@ -148,7 +149,7 @@ const NewUserMedicine: React.FC = () => {
                       onChangeText={handleChange('medicine.name')}
                       errors={touched.medicine?.name && errors.medicine?.name ? errors.medicine.name : ''}
                       onBlur={() => setFieldTouched('medicine.name')}
-                      editable={!loading}
+                      editable={!submitButton}
                       icon={<MedicineIcon fill='#000' width='35' height='35' />}
                     />
 
@@ -158,7 +159,7 @@ const NewUserMedicine: React.FC = () => {
                       onChangeText={handleChange('amount')}
                       errors={touched.amount && errors.amount ? errors.amount : ''}
                       onBlur={() => setFieldTouched('amount')}
-                      editable={!loading}
+                      editable={!submitButton}
                       icon={<MedicineDosageIcon fill='#000' width='35' height='35' />}
                     />
 
@@ -168,7 +169,7 @@ const NewUserMedicine: React.FC = () => {
                       onChangeText={handleChange('instruction')}
                       errors={touched.instruction && errors.instruction ? errors.instruction : ''}
                       onBlur={() => setFieldTouched('instruction')}
-                      editable={!loading}
+                      editable={!submitButton}
                       icon={<MedicineInstructionIcon fill='#000' width='35' height='35' />}
                     />
 
@@ -177,7 +178,7 @@ const NewUserMedicine: React.FC = () => {
                       errors={touched.beginDate && errors.beginDate ? errors.beginDate : ''}
                       value={DateTimeToBrDate(values.beginDate)}
                       onBlur={() => setFieldTouched('beginDate')}
-                      disabled={loading}
+                      disabled={submitButton}
                       onPress={() => setShowBeginDatePicker(true)}
                       icon={<MedicalDateIcon fill='#000' width='35' height='35' />}
                     />
@@ -187,7 +188,7 @@ const NewUserMedicine: React.FC = () => {
                       errors={touched.endDate && errors.endDate ? errors.endDate : ''}
                       value={DateTimeToBrDate(values.endDate ? values.endDate : '')}
                       onBlur={() => setFieldTouched('endDate')}
-                      disabled={loading}
+                      disabled={submitButton}
                       onPress={() => setShowEndDatePicker(true)}
                       icon={<MedicalDateIcon fill='#000' width='35' height='35' />}
                     />
@@ -197,7 +198,7 @@ const NewUserMedicine: React.FC = () => {
                       errors={touched.diseaseId && errors.diseaseId ? errors.diseaseId : ''}
                       value={selectedDiseaseIndex === null ? '' : items[selectedDiseaseIndex].disease.name}
                       onBlur={() => setFieldTouched('diseaseId')}
-                      disabled={loading}
+                      disabled={submitButton}
                       onPress={() => setShowModal(true)}
                       icon={<UserDiseaseIcon fill='#000' width='35' height='35' />}
                     />
@@ -224,7 +225,7 @@ const NewUserMedicine: React.FC = () => {
                   </View>
 
                   <Button
-                    loading={loading}
+                    loading={submitButton}
                     onPress={async () => {
                       if (selectedDiseaseIndex !== null) {
                         await setFieldValue('diseaseId', items[selectedDiseaseIndex as number].disease.id);
