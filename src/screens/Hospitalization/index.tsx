@@ -1,22 +1,25 @@
 import CheckBox from '@react-native-community/checkbox';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/core';
 import React, { useContext, useEffect, useState } from 'react';
-import { SafeAreaView, Text, StyleSheet, BackHandler, View, ScrollView, RefreshControl } from 'react-native';
-import { showMessage } from 'react-native-flash-message';
+import { RefreshControl, StyleSheet, Text, View, ScrollView, BackHandler } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../../assets/styles';
 import { Card, ErrorComponent, FloatButton, LoadingComponent, MultiItems, NoDataComponent } from '../../components';
 import AuthContext from '../../contexts/auth';
 import BottomTabBarContext from '../../contexts/bottomTabBar';
-import { Annotation } from '../../interfaces/annotation';
-import { list, deleteMany } from '../../services/annotation';
-import { cutString, DateTimeToBrDate } from '../../utils/function';
-import PostItIcon from '../../assets/icons/post-it.svg';
-import { buttonIcons } from '../../assets/icons';
-interface MultiSelectItems extends Annotation {
+import { Hospitalization } from '../../interfaces/hospitalization';
+import moment from 'moment';
+import { showMessage } from 'react-native-flash-message';
+import { getAll, deleteMany } from '../../services/hospitalization';
+import HospitalizationIcon from '../../assets/icons/hospitalization.svg';
+import NewHospitalizationIcon from '../../assets/icons/new-hospitalization.svg';
+import { cutString } from '../../utils/function';
+
+interface MultiSelectItems extends Hospitalization {
   selected: boolean;
 }
 
-const Annotations: React.FC = () => {
+const HospitalizationList: React.FC = () => {
   const { user } = useContext(AuthContext);
   const { setShowTabBar } = useContext(BottomTabBarContext);
   const [items, setItems] = useState<MultiSelectItems[]>([]);
@@ -57,29 +60,19 @@ const Annotations: React.FC = () => {
 
   async function getData() {
     try {
-      const { data } = await list(user?.id as string);
-      const formattedData = data.map(annotation => ({ ...annotation, selected: false }));
+      const { data } = await getAll(user?.id as string);
+      const formattedData = data.map(hospitalization => ({ ...hospitalization, selected: false }));
       setItems(formattedData);
-    } catch {
+    } catch (error) {
       setHasError(true);
       showMessage({
-        message: 'Não consegui carregar a lista com as suas doenças',
+        message: 'Não consegui listar as suas internações',
         type: 'danger',
         icon: 'danger',
       });
     } finally {
       setLoading(false);
     }
-  }
-
-  async function onRefresh() {
-    setLoading(true);
-    await getData();
-    showMessage({
-      message: 'Lista atualizada!',
-      type: 'success',
-      icon: 'success',
-    });
   }
 
   async function onDeleteItems() {
@@ -89,13 +82,13 @@ const Annotations: React.FC = () => {
       await deleteMany(itemsSelected);
       getData();
       showMessage({
-        message: 'Doenças excluídas com sucesso!',
+        message: 'Medicamentos excluídos com sucesso!',
         type: 'success',
         icon: 'success',
       });
     } catch {
       showMessage({
-        message: 'Não consegui excluir as doenças, pode tentar de novo?',
+        message: 'Não consegui excluir os medicamentos, pode tentar de novo?',
         type: 'danger',
         icon: 'danger',
       });
@@ -104,8 +97,17 @@ const Annotations: React.FC = () => {
     }
   }
 
+  async function onRefresh() {
+    await getData();
+    showMessage({
+      message: 'Lista atualizada!',
+      type: 'success',
+      icon: 'success',
+    });
+  }
+
   function onPressFloatButton() {
-    navigation.navigate('NewAnnotation');
+    navigation.navigate('NewUserMedicine');
   }
 
   function onLongPressCard(firstElementIndex: number) {
@@ -132,7 +134,7 @@ const Annotations: React.FC = () => {
 
       countSelectedItems(updatedArray);
     } else {
-      navigation.navigate('AnnotationDetails', { id: items[elementIndex].id });
+      navigation.navigate('UserMedicineDetails', { id: items[elementIndex].id });
     }
   }
 
@@ -172,6 +174,16 @@ const Annotations: React.FC = () => {
     setSelectedItemsAmount(0);
   }
 
+  function renderDateLabel(beginDate: string, endDate?: string) {
+    const d1 = moment(beginDate).format('DD/MM/YYYY');
+    if (!endDate) {
+      return `${d1} - `;
+    }
+
+    const d2 = moment(endDate).format('DD/MM/YYYY');
+    return `${d1} - ${d2}`;
+  }
+
   function multiItemsText() {
     let value;
     if (selectedItemsAmount === 0) {
@@ -198,16 +210,17 @@ const Annotations: React.FC = () => {
             itemsAmount={selectedItemsAmount}
             selectedItemsText={multiItemsText()}
           >
-            <Text style={styles.title}>Minhas anotações</Text>
+            <Text style={styles.title}>Minhas internações</Text>
             <View style={styles.scrollContainer}>
               <ScrollView style={styles.scroll} refreshControl={<RefreshControl refreshing={loading} onRefresh={onRefresh} />}>
                 {items.map((item, i) => (
                   <Card key={i} style={[styles.card, styles.shadow]} onLongPress={() => onLongPressCard(i)} onPress={() => onPressCard(i)}>
                     <View style={styles.textContainer}>
-                      <Text style={styles.itemName}>{cutString(item.description)}</Text>
-                      <Text style={styles.itemDate}>{`Criada  em:  ${DateTimeToBrDate(item.createdAt, 'Data não cadastrada')}`}</Text>
+                      <Text style={styles.itemTitle}>{item.location}</Text>
+                      <Text style={styles.itemSubTitle}>{cutString(item.reason)}</Text>
+                      <Text style={styles.itemSubTitle}>{renderDateLabel(item.entranceDate, item.exitDate)}</Text>
                     </View>
-                    {!multiSelect && <PostItIcon fill='#000' width='90' height='90' />}
+                    {!multiSelect && <HospitalizationIcon width='50' height='50' fill='#000000' />}
                     {multiSelect && (
                       <CheckBox value={item.selected} tintColors={{ true: colors.darkBlue, false: colors.blue }} disabled={true} />
                     )}
@@ -218,7 +231,13 @@ const Annotations: React.FC = () => {
           </MultiItems>
         </>
       )}
-      {!multiSelect && <FloatButton icon={buttonIcons.newPostIt} style={styles.floatButton} onPress={onPressFloatButton} />}
+      {!multiSelect && (
+        <FloatButton
+          icon={<NewHospitalizationIcon width='40' height='70' fill='#fff' />}
+          style={styles.floatButton}
+          onPress={onPressFloatButton}
+        />
+      )}
       {loading && <LoadingComponent />}
       {hasError && <ErrorComponent />}
       {!loading && !hasError && items.length === 0 && <NoDataComponent />}
@@ -226,27 +245,34 @@ const Annotations: React.FC = () => {
   );
 };
 
+export default HospitalizationList;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: colors.screenColor,
   },
+
   title: {
     fontFamily: 'Poppins-SemiBold',
     fontSize: 20,
   },
+
   scrollContainer: {
-    justifyContent: 'center',
+    flex: 1,
+    justifyContent: 'flex-start',
     alignItems: 'center',
     width: '100%',
     height: '71%',
+    marginBottom: 95,
   },
+
   scroll: {
     width: '100%',
     padding: 10,
   },
+
   card: {
     marginVertical: 10,
     justifyContent: 'space-between',
@@ -254,6 +280,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 20,
   },
+
   shadow: {
     shadowColor: '#2974FA',
     shadowOffset: {
@@ -270,13 +297,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
-  itemName: {
+  itemTitle: {
     fontFamily: 'Poppins-Regular',
     fontSize: 17,
   },
-  itemDate: {
+  itemSubTitle: {
     fontFamily: 'Poppins-Regular',
     fontSize: 13,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  lastButton: {
+    marginTop: 20,
   },
 
   floatButton: {
@@ -284,5 +319,3 @@ const styles = StyleSheet.create({
     right: 30,
   },
 });
-
-export default Annotations;

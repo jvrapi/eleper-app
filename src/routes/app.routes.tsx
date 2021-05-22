@@ -7,6 +7,7 @@ import Annotations from './annotations.routes';
 import Home from './home.routes';
 import Exam from './exam.routes';
 import Disease from './disease.routes';
+import Hospitalization from './hospitalization.routes';
 import UserMedicine from './user.medicine.routes';
 const Tab = createBottomTabNavigator();
 const AppRoutes: React.FC = () => {
@@ -19,6 +20,7 @@ const AppRoutes: React.FC = () => {
       <Tab.Screen name='Profile' component={Profile} />
       <Tab.Screen name='Annotations' component={Annotations} />
       <Tab.Screen name='Disease' component={Disease} />
+      <Tab.Screen name='Hospitalization' component={Hospitalization} />
     </Tab.Navigator>
   );
 };

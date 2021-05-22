@@ -21,3 +21,11 @@ export function UsDateToBrDate(date: string) {
   const year = dateArray[0];
   return `${day}/${month}/${year}`;
 }
+
+export function cutString(value: string) {
+  if (value.length > 20) {
+    return value.substr(0, 20) + '...';
+  } else {
+    return value;
+  }
+}

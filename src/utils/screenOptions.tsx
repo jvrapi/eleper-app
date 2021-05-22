@@ -21,12 +21,12 @@ export const homeOptions = [
     route: { name: 'Annotations' },
   },
 
-  {
+  /* {
     title: 'Meu Historico Familiar',
     icon: pageIcons.familyHistoryIcon,
     info: 'Para deixar seu historico mais completo, informe doenças que estão ou que estiveram presente na familia',
     route: { name: 'Disease' },
-  },
+  }, */
   {
     title: 'Minhas internações',
     icon: pageIcons.familyHistoryIcon,
