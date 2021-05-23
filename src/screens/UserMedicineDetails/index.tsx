@@ -19,6 +19,7 @@ import NewMedicinePlusIcon from '../../assets/icons/medicine-plus.svg';
 
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
+import { buttonIcons } from '../../assets/icons';
 
 type RootStackParamList = {
   MedicineDetails: { id: string };
@@ -77,6 +78,7 @@ const validationSchema = Yup.object().shape({
 
 const UserMedicineDetailsScreen: React.FC<Props> = ({ route }) => {
   const { id } = route.params;
+  const { updateIcon } = buttonIcons;
   const [userMedicine, setUserMedicine] = useState<UserMedicineDetails>(initialValues);
   const [loading, setLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
@@ -231,12 +233,7 @@ const UserMedicineDetailsScreen: React.FC<Props> = ({ route }) => {
               />
             </View>
 
-            <Button
-              loading={loading}
-              onPress={handleSubmit}
-              buttonText='Atualizar'
-              icon={<NewMedicinePlusIcon fill='#fff' width='40' height='40' />}
-            />
+            <Button loading={loading} onPress={handleSubmit} buttonText='Atualizar' icon={updateIcon} />
           </>
         )}
       </Form>

@@ -17,6 +17,7 @@ import PostItSave from '../../assets/icons/post-it-save.svg';
 import { Formik as Form } from 'formik';
 import * as Yup from 'yup';
 import { Button, InputButton, ModalComponent, TextArea } from '../../components';
+import { buttonIcons } from '../../assets/icons';
 
 type RootStackParamList = {
   AnnotationDetails: { id: string };
@@ -46,7 +47,7 @@ const validationSchema = Yup.object().shape({
 
 const AnnotationDetails: React.FC<Props> = ({ route }) => {
   const { id } = route.params;
-
+  const { updateIcon } = buttonIcons;
   const [data, setData] = useState<Annotation>(initialValues);
   const [items, setItems] = useState<UserDisease[]>([]);
   const [loading, setLoading] = useState(true);
@@ -155,12 +156,7 @@ const AnnotationDetails: React.FC<Props> = ({ route }) => {
                     icon={<UserDiseaseIcon fill='#000' width='35' height='35' />}
                   />
                 </View>
-                <Button
-                  loading={submitForm}
-                  onPress={handleSubmit}
-                  buttonText='Atualizar'
-                  icon={<PostItSave fill='#fff' width='40' height='40' />}
-                />
+                <Button loading={submitForm} onPress={handleSubmit} buttonText='Atualizar' icon={updateIcon} />
 
                 <ModalComponent showModal={showModal} close={() => setShowModal(false)}>
                   <View style={modalStyles.container}>

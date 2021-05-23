@@ -15,6 +15,7 @@ import PostItEdit from '../../assets/icons/post-it-edit.svg';
 import PostItSave from '../../assets/icons/post-it-save.svg';
 import * as Yup from 'yup';
 import { Button, InputButton, ModalComponent, TextArea } from '../../components';
+import { buttonIcons } from '../../assets/icons';
 
 const validationSchema = Yup.object().shape({
   description: Yup.string().required('Informe a descrição da anotação'),
@@ -28,6 +29,7 @@ const initialValues: Save = {
 
 const NewAnnotation: React.FC = () => {
   const { user } = useContext(AuthContext);
+  const { addIcon } = buttonIcons;
   const [items, setItems] = useState<UserDisease[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitForm, setSubmitForm] = useState(false);
@@ -119,12 +121,7 @@ const NewAnnotation: React.FC = () => {
                   />
                 </View>
 
-                <Button
-                  loading={submitForm}
-                  onPress={handleSubmit}
-                  buttonText='Salvar'
-                  icon={<PostItSave fill='#fff' width='40' height='40' />}
-                />
+                <Button loading={submitForm} onPress={handleSubmit} buttonText='Salvar' icon={addIcon} />
 
                 <ModalComponent showModal={showModal} close={() => setShowModal(false)}>
                   <View style={modalStyles.container}>

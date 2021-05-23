@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: 'Poppins-SemiBold',
     fontSize: 18,
+    textAlign: 'center',
   },
   linearGrandient: {
     flex: 1,
@@ -60,6 +61,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 30,
     flexDirection: 'row',
+    textAlign: 'center',
   },
   iconContainer: {
     marginRight: 30,

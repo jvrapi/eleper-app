@@ -29,7 +29,7 @@ const NewExam = () => {
   const { user } = useContext(AuthContext);
   const { newExamIcon } = pageIcons;
   const { nameIcon } = inputIcons;
-  const { terminatedEditExamIcon } = buttonIcons;
+  const { terminatedEditExamIcon, addIcon } = buttonIcons;
   const [fileProps, setFileProps] = useState<FileProps>({} as FileProps);
   const [loading, setLoading] = useState(false);
 
@@ -101,13 +101,7 @@ const NewExam = () => {
               disabled={loading}
             />
 
-            <Button
-              loading={loading}
-              onPress={handleSubmit}
-              buttonText='Salvar'
-              style={styles.submitButton}
-              icon={terminatedEditExamIcon}
-            />
+            <Button loading={loading} onPress={handleSubmit} buttonText='Salvar' style={styles.submitButton} icon={addIcon} />
           </>
         )}
       </Form>

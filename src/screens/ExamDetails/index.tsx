@@ -44,7 +44,7 @@ const ExamDetails: React.FC<Props> = ({ route }) => {
   const [submitLoading, setSubmitLoading] = useState(false);
   const { nameIcon } = inputIcons;
   const { examDetailsIcon } = pageIcons;
-  const { terminatedEditExamIcon, deleteExamIcon, checkIcon, cancelIcon } = buttonIcons;
+  const { terminatedEditExamIcon, deleteExamIcon, checkIcon, cancelIcon, updateIcon } = buttonIcons;
   const [fileProps, setFileProps] = useState<FileProps>({} as FileProps);
 
   useEffect(() => {
@@ -167,7 +167,7 @@ const ExamDetails: React.FC<Props> = ({ route }) => {
                   onPress={() => handleSubmit()}
                   buttonText='Atualizar'
                   style={styles.submitButton}
-                  icon={terminatedEditExamIcon}
+                  icon={updateIcon}
                 />
                 {/* <Button
                   loading={submitLoading}

@@ -21,7 +21,7 @@ const NewDisease = () => {
   const [hasError, setHasError] = useState(false);
   const { user } = useContext(AuthContext);
   const { newDiseaseIcon } = pageIcons;
-  const { checkIcon } = buttonIcons;
+  const { checkIcon, addIcon } = buttonIcons;
   const { diseaseIcon } = inputIcons;
 
   const [showModal, setShowModal] = useState(false);
@@ -167,7 +167,7 @@ const NewDisease = () => {
                   onBlur={() => setFieldTouched('name')}
                   editable={!savingDisease}
                 />
-                <Button buttonText='Finalizado' icon={checkIcon} loading={savingDisease} onPress={() => handleSubmit()} />
+                <Button buttonText='Finalizado' icon={addIcon} loading={savingDisease} onPress={() => handleSubmit()} />
               </>
             )}
           </Form>

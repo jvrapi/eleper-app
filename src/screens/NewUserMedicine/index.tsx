@@ -20,6 +20,7 @@ import MedicalDateIcon from '../../assets/icons/medical-date.svg';
 import NewMedicineIcon from '../../assets/icons/new-medicine.svg';
 import NewMedicinePlusIcon from '../../assets/icons/medicine-plus.svg';
 import moment from 'moment';
+import { buttonIcons } from '../../assets/icons';
 
 const initialValues: Save = {
   amount: '',
@@ -63,6 +64,7 @@ const validationSchema = Yup.object().shape({
 
 const NewUserMedicine: React.FC = () => {
   const { user } = useContext(AuthContext);
+  const { addIcon } = buttonIcons;
   const [showBeginDatePicker, setShowBeginDatePicker] = useState(false);
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -229,7 +231,7 @@ const NewUserMedicine: React.FC = () => {
                     }}
                     buttonText='Salvar'
                     style={styles.submitButton}
-                    icon={<NewMedicinePlusIcon fill='#fff' width='40' height='40' />}
+                    icon={addIcon}
                   />
                 </>
               )}

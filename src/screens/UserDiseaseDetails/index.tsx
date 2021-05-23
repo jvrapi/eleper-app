@@ -48,7 +48,7 @@ const UserDiseaseDetails: React.FC<Props> = ({ route }) => {
   const navigation = useNavigation();
   const { userDiseaseIcon } = pageIcons;
   const { dateIcon, diseaseActive, diseaseInactive } = inputIcons;
-  const { checkIcon, deleteIcon, cancelIcon } = buttonIcons;
+  const { checkIcon, deleteIcon, cancelIcon, updateIcon } = buttonIcons;
   const [loading, setLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
@@ -160,7 +160,7 @@ const UserDiseaseDetails: React.FC<Props> = ({ route }) => {
                   onPress={() => handleSubmit()}
                   buttonText='Atualizar'
                   style={styles.submitButton}
-                  icon={checkIcon}
+                  icon={updateIcon}
                 />
                 {/* <Button
                   loading={submitLoading}

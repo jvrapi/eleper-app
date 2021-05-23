@@ -28,7 +28,7 @@ const NewUserRegisterDisease = () => {
   const [showModal, setShowModal] = useState(false);
   const [savingDisease, setSavingDisease] = useState(false);
   const [loadingText, setLoadingText] = useState('Estou preparando algumas coisas, por favor aguarde');
-  const { checkIcon } = buttonIcons;
+  const { checkIcon, addIcon } = buttonIcons;
   const { diseaseIcon } = inputIcons;
   const navigation = useNavigation();
   const { user } = useContext(AuthContext);
@@ -134,7 +134,7 @@ const NewUserRegisterDisease = () => {
             <MultiSelect listItems={items} inputLabelText='Toque aqui para listar as doenças' onSelectedItem={onSelectedItem} />
           </View>
           <View style={styles.Button}>
-            <Button buttonText='Finalizei!' icon={checkIcon} onPress={registerDiseasesTerminated} />
+            <Button buttonText='Finalizei!' icon={addIcon} onPress={registerDiseasesTerminated} />
           </View>
           <TouchableOpacity>
             <Text style={styles.diseaseNotFoundButtonText} onPress={() => setShowModal(true)}>
