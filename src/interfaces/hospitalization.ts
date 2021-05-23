@@ -10,3 +10,12 @@ export interface Hospitalization {
   reason: string;
   diseases: Disease[];
 }
+
+export interface Save {
+  userId: string;
+  entranceDate: string;
+  exitDate?: string | null;
+  location: string;
+  reason: string;
+  diseases: string[];
+}

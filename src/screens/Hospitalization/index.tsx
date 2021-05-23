@@ -107,7 +107,7 @@ const HospitalizationList: React.FC = () => {
   }
 
   function onPressFloatButton() {
-    navigation.navigate('NewUserMedicine');
+    navigation.navigate('NewHospitalization');
   }
 
   function onLongPressCard(firstElementIndex: number) {
@@ -134,7 +134,7 @@ const HospitalizationList: React.FC = () => {
 
       countSelectedItems(updatedArray);
     } else {
-      navigation.navigate('UserMedicineDetails', { id: items[elementIndex].id });
+      navigation.navigate('HospitalizationDetails', { id: items[elementIndex].id });
     }
   }
 

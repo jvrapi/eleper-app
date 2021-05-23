@@ -9,6 +9,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MedicalRecordsIcon from './medical-records.svg';
 
 export const pageIcons = {
   searchIcon: <MaterialIcons name='search' size={30} color='#A9A9A9' />,
@@ -57,4 +58,6 @@ export const buttonIcons = {
   deleteIcon: <AntDesign name='delete' size={40} color='#FFFFFF' />,
   calendarCheckIcon: <FaIcons5 name='calendar-check' size={40} color='#FFFFFF' />,
   newPostIt: <MaterialIcons name='post-add' size={40} color='#FFFFFF' />,
+  addIcon: <MedicalRecordsIcon fill='#FFF' width='40' height='40' />,
+  updateIcon: <MedicalRecordsIcon fill='#FFF' width='40' height='40' />,
 };

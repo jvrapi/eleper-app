@@ -4,7 +4,7 @@ import { View, TouchableOpacity, Text, StyleSheet, TouchableOpacityProps } from 
 import { colors } from '../../assets/styles';
 
 interface Props extends TouchableOpacityProps {
-  icon: JSX.Element;
+  icon?: JSX.Element;
   label: string;
   errors: string | string[] | FormikErrors<any> | FormikErrors<any>[];
   value: string;

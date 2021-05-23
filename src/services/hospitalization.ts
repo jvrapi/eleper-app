@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { Hospitalization } from '../interfaces/hospitalization';
+import { Hospitalization, Save } from '../interfaces/hospitalization';
 import api, { DeleteResponse } from './api';
 const baseUrl = '/hospitalization';
 
@@ -12,5 +12,10 @@ export async function deleteMany(hospitalizationIds: string[]): Promise<AxiosRes
   const response = await api.delete(`${baseUrl}`, {
     data: hospitalizationIds,
   });
+  return response;
+}
+
+export async function save(hospitalization: Save): Promise<AxiosResponse<Hospitalization>> {
+  const response = await api.post(`${baseUrl}`, hospitalization);
   return response;
 }
