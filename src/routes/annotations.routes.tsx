@@ -7,13 +7,13 @@ import AnnotationDetails from '../screens/AnnotationDetails';
 const AuthStack = createStackNavigator();
 
 const HomeRoutes: React.FC = () => {
-  return (
-    <AuthStack.Navigator screenOptions={{ headerShown: false }}>
-      <AuthStack.Screen name='Annotations' component={Annotations} />
-      <AuthStack.Screen name='NewAnnotation' component={NewAnnotation} />
-      <AuthStack.Screen name='AnnotationDetails' component={AnnotationDetails} />
-    </AuthStack.Navigator>
-  );
+	return (
+		<AuthStack.Navigator screenOptions={{ headerShown: false }}>
+			<AuthStack.Screen name='Annotations' component={Annotations} />
+			<AuthStack.Screen name='NewAnnotation' component={NewAnnotation} />
+			<AuthStack.Screen name='AnnotationDetails' component={AnnotationDetails} />
+		</AuthStack.Navigator>
+	);
 };
 
 export default HomeRoutes;

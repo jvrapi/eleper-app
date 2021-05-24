@@ -10,24 +10,24 @@ import { StatusBar } from 'react-native';
 import { colors } from './assets/styles';
 
 const App: React.FC = () => {
-  return (
-    <NavigationContainer>
-      <AuthProvider>
-        <BottomTabBarProvider>
-          <StatusBar barStyle='light-content' backgroundColor={colors.screenColor} />
-          <Routes />
-          <FlashMessage position='top' style={styles.message} duration={3000} />
-        </BottomTabBarProvider>
-      </AuthProvider>
-    </NavigationContainer>
-  );
+	return (
+		<NavigationContainer>
+			<AuthProvider>
+				<BottomTabBarProvider>
+					<StatusBar barStyle='light-content' backgroundColor={colors.screenColor} />
+					<Routes />
+					<FlashMessage position='top' style={styles.message} duration={3000} />
+				</BottomTabBarProvider>
+			</AuthProvider>
+		</NavigationContainer>
+	);
 };
 
 const styles = StyleSheet.create({
-  message: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+	message: {
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
 });
 
 export default App;

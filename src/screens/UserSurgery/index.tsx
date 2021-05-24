@@ -1,37 +1,31 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, RefreshControl, Linking, BackHandler } from 'react-native';
+import { BackHandler, RefreshControl, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import AuthContext from '../../contexts/auth';
+import BottomTabBarContext from '../../contexts/bottomTabBar';
+import { UserSurgery } from '../../interfaces/user.surgery';
+import moment from 'moment';
+import { getAll, deleteMany } from '../../services/user.surgery';
 import { showMessage } from 'react-native-flash-message';
 import { colors } from '../../assets/styles';
-import AuthContext from '../../contexts/auth';
-import { Exam } from '../../interfaces/exam';
-import { getAll, deleteMany } from '../../services/exam';
-import api from '../../services/api';
-import { Button, Card, ErrorComponent, FloatButton, LoadingComponent, ModalComponent, MultiItems, NoDataComponent } from '../../components';
-import { DateTimeToBrDate } from '../../utils/function';
-import { pageIcons, buttonIcons } from '../../assets/icons';
-import { useNavigation } from '@react-navigation/native';
-import BottomTabBarContext from '../../contexts/bottomTabBar';
+import { Card, ErrorComponent, FloatButton, LoadingComponent, MultiItems, NoDataComponent } from '../../components';
 import CheckBox from '@react-native-community/checkbox';
-
-interface MultiSelectItems extends Exam {
+import NewUserSurgeryIcon from '../../assets/icons/new-user-surgery.svg';
+import { pageIcons } from '../../assets/icons';
+interface MultiSelectItems extends UserSurgery {
 	selected: boolean;
 }
 
-const ExamScreen: React.FC = () => {
+const UserSurgeries: React.FC = () => {
 	const { user } = useContext(AuthContext);
 	const { setShowTabBar } = useContext(BottomTabBarContext);
-
+	const { surgeryIcon } = pageIcons;
 	const [items, setItems] = useState<MultiSelectItems[]>([]);
-	const [selectedExam, setSelectedExam] = useState<Exam>({} as Exam);
 	const [loading, setLoading] = useState(true);
 	const [hasError, setHasError] = useState(false);
-	const [showModal, setShowModal] = useState(false);
 	const [multiSelect, setMultiSelect] = useState(false);
 	const [allSelected, setAllSelected] = useState(false);
 	const [selectedItemsAmount, setSelectedItemsAmount] = useState(0);
-
-	const { myExamsIcon } = pageIcons;
-	const { examEditIcon, downloadIcon, newExamIcon } = buttonIcons;
 	const navigation = useNavigation();
 
 	useEffect(() => {
@@ -44,10 +38,10 @@ const ExamScreen: React.FC = () => {
 	useEffect(() => {
 		function backAction() {
 			if (multiSelect) {
-				const updatedArray = items.map(exam => {
-					exam.selected = false;
+				const updatedArray = items.map(item => {
+					item.selected = false;
 					setAllSelected(false);
-					return exam;
+					return item;
 				});
 				setItems(updatedArray);
 				countSelectedItems(updatedArray);
@@ -65,18 +59,39 @@ const ExamScreen: React.FC = () => {
 	async function getData() {
 		try {
 			const { data } = await getAll(user?.id as string);
-			const formattedData = data.map(exam => ({ ...exam, selected: false }));
+			const formattedData = data.map(medicine => ({ ...medicine, selected: false }));
 			setItems(formattedData);
-		} catch (error) {
-			const errorMessage = error.response.data.error;
+		} catch {
+			setHasError(true);
 			showMessage({
-				message: errorMessage ? errorMessage : 'Ocorreu um erro ao tentar listar os exames',
+				message: 'Não consegui listar os seus medicamentos',
 				type: 'danger',
 				icon: 'danger',
 			});
-			setHasError(true);
 		} finally {
 			setLoading(false);
+		}
+	}
+
+	async function onDeleteItems() {
+		const itemsSelected = items.filter(item => item.selected).map(item => item.id);
+		setLoading(true);
+		try {
+			await deleteMany(itemsSelected);
+			getData();
+			showMessage({
+				message: 'Medicamentos excluídos com sucesso!',
+				type: 'success',
+				icon: 'success',
+			});
+		} catch {
+			showMessage({
+				message: 'Não consegui excluir os medicamentos, pode tentar de novo?',
+				type: 'danger',
+				icon: 'danger',
+			});
+		} finally {
+			onCancelSelectionItems();
 		}
 	}
 
@@ -89,112 +104,55 @@ const ExamScreen: React.FC = () => {
 		});
 	}
 
-	function onPressCard(elementIndex: number) {
-		if (multiSelect) {
-			const updatedArray = items.map((exam, i) => {
-				if (i === elementIndex) {
-					exam.selected = !exam.selected;
-				}
-				return exam;
-			});
-
-			countSelectedItems(updatedArray);
-		} else {
-			setSelectedExam(items[elementIndex]);
-			setShowModal(true);
-		}
-	}
-
-	function onEditButtonPressed() {
-		setShowModal(false);
-		navigation.navigate('ExamDetails', { id: selectedExam.id });
-	}
-
-	async function onDownloadButtonPressed() {
-		setShowModal(false);
-		setLoading(true);
-		downloadFile();
-	}
-
-	async function downloadFile() {
-		const serverUrl = api.defaults.baseURL;
-		const token = api.defaults.headers.Authorization;
-		const url = `${serverUrl}/exam/examFile/${selectedExam.id}?authorization=${token}`;
-		try {
-			await Linking.canOpenURL(url);
-			Linking.openURL(url);
-			setLoading(false);
-		} catch (error) {
-			showMessage({
-				message: 'Desculpe, não consegui abrir o link para o download',
-				icon: 'danger',
-				type: 'danger',
-			});
-		}
-	}
-
 	function onPressFloatButton() {
-		navigation.navigate('NewExam');
-	}
-
-	function onPressSelectAllItems() {
-		const updatedArray = items.map(exam => {
-			if (!allSelected) {
-				exam.selected = true;
-				setAllSelected(true);
-			} else {
-				exam.selected = false;
-				setAllSelected(false);
-			}
-			return exam;
-		});
-		setItems(updatedArray);
-		countSelectedItems(updatedArray);
-	}
-
-	function onCancelSelectionItems() {
-		setMultiSelect(false);
-		setShowTabBar(true);
-		setSelectedItemsAmount(0);
-	}
-
-	async function onDeleteItems() {
-		const itemsSelected = items.filter(exam => exam.selected).map(exam => exam.id);
-		setLoading(true);
-		try {
-			await deleteMany(itemsSelected);
-			getData();
-			showMessage({
-				message: 'Exames excluídas com sucesso!',
-				type: 'success',
-				icon: 'success',
-			});
-		} catch (error) {
-			showMessage({
-				message: 'Não consegui excluir os exames, pode tentar de novo?',
-				type: 'danger',
-				icon: 'danger',
-			});
-		} finally {
-			onCancelSelectionItems();
-		}
+		navigation.navigate('NewUserMedicine');
 	}
 
 	function onLongPressCard(firstElementIndex: number) {
 		setMultiSelect(true);
 		setShowTabBar(false);
-		const updatedArray = items.map((exam, i) => {
+		const updatedArray = items.map((item, i) => {
 			if (i === firstElementIndex) {
-				exam.selected = true;
+				item.selected = true;
 				setSelectedItemsAmount(selectedItemsAmount + 1);
 			}
-			return exam;
+			return item;
 		});
 		setItems(updatedArray);
 	}
 
+	function onPressCard(elementIndex: number) {
+		if (multiSelect) {
+			const updatedArray = items.map((item, i) => {
+				if (i === elementIndex) {
+					item.selected = !item.selected;
+				}
+				return item;
+			});
+
+			countSelectedItems(updatedArray);
+		} else {
+			navigation.navigate('UserMedicineDetails', { id: items[elementIndex].id });
+		}
+	}
+
+	function onPressSelectAllItems() {
+		const updatedArray = items.map(item => {
+			if (!allSelected) {
+				item.selected = true;
+				setAllSelected(true);
+			} else {
+				item.selected = false;
+				setAllSelected(false);
+			}
+			return item;
+		});
+		setItems(updatedArray);
+		countSelectedItems(updatedArray);
+	}
+
 	function countSelectedItems(updatedArray: MultiSelectItems[]) {
-		const selectedAmount = updatedArray.filter(item => item.selected).length;
+		const selectedAmount = updatedArray.filter(userDisease => userDisease.selected).length;
 		if (selectedAmount === 0) {
 			setSelectedItemsAmount(selectedAmount);
 		} else {
@@ -207,6 +165,23 @@ const ExamScreen: React.FC = () => {
 			setItems(updatedArray);
 		}
 	}
+
+	function onCancelSelectionItems() {
+		setMultiSelect(false);
+		setShowTabBar(true);
+		setSelectedItemsAmount(0);
+	}
+
+	function renderDateLabel(beginDate: string, endDate?: string) {
+		const d1 = moment(beginDate).format('DD/MM/YYYY');
+		if (!endDate) {
+			return `${d1} - `;
+		}
+
+		const d2 = moment(endDate).format('DD/MM/YYYY');
+		return `${d1} - ${d2}`;
+	}
+
 	function multiItemsText() {
 		let value;
 		if (selectedItemsAmount === 0) {
@@ -219,6 +194,7 @@ const ExamScreen: React.FC = () => {
 
 		return value + '';
 	}
+
 	return (
 		<SafeAreaView style={styles.container}>
 			{!loading && !hasError && items.length > 0 && (
@@ -238,10 +214,13 @@ const ExamScreen: React.FC = () => {
 								{items.map((item, i) => (
 									<Card key={i} style={[styles.card, styles.shadow]} onLongPress={() => onLongPressCard(i)} onPress={() => onPressCard(i)}>
 										<View style={styles.textContainer}>
-											<Text style={styles.itemName}>{item.name}</Text>
-											<Text style={styles.itemDate}>Criado em: {DateTimeToBrDate(item.createdAt)}</Text>
+											<Text style={styles.itemTitle}>{item.surgery.name}</Text>
+											<Text style={styles.itemSubTitle}>{`Tomando para ${item.hospitalization.location}`}</Text>
+											<Text style={styles.itemSubTitle}>
+												{renderDateLabel(item.hospitalization.entranceDate, item.hospitalization.exitDate)}
+											</Text>
 										</View>
-										{!multiSelect && myExamsIcon}
+										{!multiSelect && surgeryIcon}
 										{multiSelect && (
 											<CheckBox value={item.selected} tintColors={{ true: colors.darkBlue, false: colors.blue }} disabled={true} />
 										)}
@@ -249,16 +228,15 @@ const ExamScreen: React.FC = () => {
 								))}
 							</ScrollView>
 						</View>
-
-						{!multiSelect && <FloatButton icon={newExamIcon} style={styles.floatButton} onPress={onPressFloatButton} />}
-						<ModalComponent showModal={showModal} close={() => setShowModal(false)}>
-							<View style={styles.modalContainer}>
-								<Button buttonText='Baixar Exame' icon={downloadIcon} onPress={onDownloadButtonPressed} />
-								<Button buttonText='Editar Exame' icon={examEditIcon} style={styles.lastButton} onPress={onEditButtonPressed} />
-							</View>
-						</ModalComponent>
 					</MultiItems>
 				</>
+			)}
+			{!multiSelect && (
+				<FloatButton
+					icon={<NewUserSurgeryIcon width='50' height='50' fill='#fff' />}
+					style={styles.floatButton}
+					onPress={onPressFloatButton}
+				/>
 			)}
 			{loading && <LoadingComponent />}
 			{hasError && <ErrorComponent />}
@@ -266,6 +244,8 @@ const ExamScreen: React.FC = () => {
 		</SafeAreaView>
 	);
 };
+
+export default UserSurgeries;
 
 const styles = StyleSheet.create({
 	container: {
@@ -317,23 +297,20 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 	},
 
-	itemName: {
+	itemTitle: {
 		fontFamily: 'Poppins-Regular',
 		fontSize: 17,
 	},
-
-	itemDate: {
+	itemSubTitle: {
 		fontFamily: 'Poppins-Regular',
 		fontSize: 13,
 		marginLeft: 5,
 	},
-
 	modalContainer: {
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
-
 	lastButton: {
 		marginTop: 20,
 	},
@@ -343,5 +320,3 @@ const styles = StyleSheet.create({
 		right: 30,
 	},
 });
-
-export default ExamScreen;

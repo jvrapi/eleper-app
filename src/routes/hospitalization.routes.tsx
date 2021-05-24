@@ -8,13 +8,13 @@ import HospitalizationDetails from '../screens/HospitalizationDetails';
 const AuthStack = createStackNavigator();
 
 const HospitalizationRoutes: React.FC = () => {
-  return (
-    <AuthStack.Navigator screenOptions={{ headerShown: false }}>
-      <AuthStack.Screen name='Hospitalization' component={Hospitalization} />
-      <AuthStack.Screen name='NewHospitalization' component={NewHospitalization} />
-      <AuthStack.Screen name='HospitalizationDetails' component={HospitalizationDetails} />
-    </AuthStack.Navigator>
-  );
+	return (
+		<AuthStack.Navigator screenOptions={{ headerShown: false }}>
+			<AuthStack.Screen name='Hospitalization' component={Hospitalization} />
+			<AuthStack.Screen name='NewHospitalization' component={NewHospitalization} />
+			<AuthStack.Screen name='HospitalizationDetails' component={HospitalizationDetails} />
+		</AuthStack.Navigator>
+	);
 };
 
 export default HospitalizationRoutes;

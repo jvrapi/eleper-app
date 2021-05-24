@@ -8,13 +8,13 @@ import UserDiseaseDetails from '../screens/UserDiseaseDetails';
 const AuthStack = createStackNavigator();
 
 const DiseaseRoutes: React.FC = () => {
-  return (
-    <AuthStack.Navigator screenOptions={{ headerShown: false }}>
-      <AuthStack.Screen name='Disease' component={Disease} />
-      <AuthStack.Screen name='NewDisease' component={NewDisease} />
-      <AuthStack.Screen name='UserDiseaseDetails' component={UserDiseaseDetails} />
-    </AuthStack.Navigator>
-  );
+	return (
+		<AuthStack.Navigator screenOptions={{ headerShown: false }}>
+			<AuthStack.Screen name='Disease' component={Disease} />
+			<AuthStack.Screen name='NewDisease' component={NewDisease} />
+			<AuthStack.Screen name='UserDiseaseDetails' component={UserDiseaseDetails} />
+		</AuthStack.Navigator>
+	);
 };
 
 export default DiseaseRoutes;

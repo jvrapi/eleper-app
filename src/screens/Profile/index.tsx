@@ -4,25 +4,25 @@ import { colors } from '../../assets/styles';
 import AuthContext from '../../contexts/auth';
 
 const Profile = () => {
-  const { signOut } = useContext(AuthContext);
+	const { signOut } = useContext(AuthContext);
 
-  useEffect(() => {
-    signOut();
-  }, []);
-  return (
-    <SafeAreaView style={styles.container}>
-      <Text>Profile Screen</Text>
-    </SafeAreaView>
-  );
+	useEffect(() => {
+		signOut();
+	}, []);
+	return (
+		<SafeAreaView style={styles.container}>
+			<Text>Profile Screen</Text>
+		</SafeAreaView>
+	);
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: colors.screenColor,
-  },
+	container: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: colors.screenColor,
+	},
 });
 
 export default Profile;

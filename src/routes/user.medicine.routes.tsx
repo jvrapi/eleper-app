@@ -8,13 +8,13 @@ import UserMedicineDetails from '../screens/UserMedicineDetails';
 const AuthStack = createStackNavigator();
 
 const UserMedicineRoutes: React.FC = () => {
-  return (
-    <AuthStack.Navigator screenOptions={{ headerShown: false }}>
-      <AuthStack.Screen name='UserMedicine' component={UserMedicine} />
-      <AuthStack.Screen name='NewUserMedicine' component={NewUserMedicine} />
-      <AuthStack.Screen name='UserMedicineDetails' component={UserMedicineDetails} />
-    </AuthStack.Navigator>
-  );
+	return (
+		<AuthStack.Navigator screenOptions={{ headerShown: false }}>
+			<AuthStack.Screen name='UserMedicine' component={UserMedicine} />
+			<AuthStack.Screen name='NewUserMedicine' component={NewUserMedicine} />
+			<AuthStack.Screen name='UserMedicineDetails' component={UserMedicineDetails} />
+		</AuthStack.Navigator>
+	);
 };
 
 export default UserMedicineRoutes;

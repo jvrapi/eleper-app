@@ -2,17 +2,17 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 const ErrorComponent = () => {
-  return (
-    <View style={styles.container}>
-      <Text>Error Component</Text>
-    </View>
-  );
+	return (
+		<View style={styles.container}>
+			<Text>Error Component</Text>
+		</View>
+	);
 };
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+	container: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
 });
 export default ErrorComponent;

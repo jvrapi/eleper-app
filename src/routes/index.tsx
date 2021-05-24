@@ -7,24 +7,24 @@ import { LoadingComponent } from '../components';
 import { View, StyleSheet } from 'react-native';
 
 const Routes: React.FC = () => {
-  const { user, loading } = useContext(AuthContext);
-  if (loading) {
-    return (
-      <View style={styles.container}>
-        <LoadingComponent />
-      </View>
-    );
-  }
+	const { user, loading } = useContext(AuthContext);
+	if (loading) {
+		return (
+			<View style={styles.container}>
+				<LoadingComponent />
+			</View>
+		);
+	}
 
-  return user ? <AppRoutes /> : <AuthRoutes />;
+	return user ? <AppRoutes /> : <AuthRoutes />;
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+	container: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
 });
 
 export default Routes;

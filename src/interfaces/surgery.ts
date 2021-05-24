@@ -1,4 +1,4 @@
-export interface Medicine {
+export interface Surgery {
 	id: string;
 	name: string;
 }
