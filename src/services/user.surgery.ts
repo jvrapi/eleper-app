@@ -15,7 +15,7 @@ export async function deleteMany(userMedicines: string[]): Promise<AxiosResponse
 	return response;
 }
 
-export async function saveMany(userMedicines: Save): Promise<AxiosResponse<UserSurgery>> {
+export async function save(userMedicines: Save): Promise<AxiosResponse<UserSurgery>> {
 	const response = await api.post(`${baseUrl}/`, userMedicines);
 	return response;
 }

@@ -105,7 +105,7 @@ const UserSurgeries: React.FC = () => {
 	}
 
 	function onPressFloatButton() {
-		navigation.navigate('NewUserMedicine');
+		navigation.navigate('NewUserSurgery');
 	}
 
 	function onLongPressCard(firstElementIndex: number) {

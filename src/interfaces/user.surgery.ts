@@ -7,9 +7,17 @@ export interface UserSurgery {
 	hospitalization: Hospitalization;
 }
 
+interface UserSurgeryHospitalization {
+	id?: string;
+	entranceDate: string;
+	exitDate?: string;
+	location: string;
+	reason: string;
+}
+
 interface DefaultFields {
 	userId: string;
-	hospitalization: Hospitalization;
+	hospitalization: UserSurgeryHospitalization;
 	afterEffects: string;
 }
 
