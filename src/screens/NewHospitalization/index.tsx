@@ -11,13 +11,14 @@ import MedicalMaskIcon from '../../assets/icons/medical-mask.svg';
 import NewHospitalizationIcon from '../../assets/icons/new-hospitalization.svg';
 import StethoscopeIcon from '../../assets/icons/stethoscope.svg';
 import { colors, globalStyles } from '../../assets/styles';
-import { Button, InputButton, InputComponent, ModalComponent, MultiSelect } from '../../components';
+import { Button, ErrorComponent, InputButton, InputComponent, LoadingComponent, ModalComponent, MultiSelect } from '../../components';
 import { MultiSelectItems } from '../../components/MultiSelect';
 import AuthContext from '../../contexts/auth';
 import { Save } from '../../interfaces/hospitalization';
 import { getAll } from '../../services/disease';
 import { save } from '../../services/hospitalization';
 import { DateTimeToBrDate } from '../../utils/function';
+import moment from 'moment';
 
 const initialValues: Save = {
   userId: '',
@@ -28,7 +29,17 @@ const initialValues: Save = {
   diseases: [''],
 };
 
-const validationSchema = Yup.object().shape({});
+const validationSchema = Yup.object().shape({
+  entranceDate: Yup.string()
+    .test('date-validation', 'Data não é valida', date => {
+      const dateIsValid = moment(new Date(date as string), 'YYYY-MM-DDThh:mm:ssZ', true).isValid();
+      return dateIsValid;
+    })
+    .required('Informe a data de entrada'),
+
+  location: Yup.string().required('Informe aonde aconteceu a internação'),
+  reason: Yup.string().required('Informe o motivo da internação'),
+});
 
 const NewHospitalization: React.FC = () => {
   const { user } = useContext(AuthContext);
@@ -63,9 +74,9 @@ const NewHospitalization: React.FC = () => {
   }
 
   async function handleSubmitForm(values: Save, { resetForm }: FormikHelpers<Save>) {
+    setSubmitLoading(true);
     values.diseases = items.filter(item => item.selected).map(item => item.id);
     values.userId = user?.id as string;
-    setSubmitLoading(true);
     try {
       await save(values);
       resetForm();
@@ -209,6 +220,8 @@ const NewHospitalization: React.FC = () => {
           </Form>
         </>
       )}
+      {loading && <LoadingComponent />}
+      {hasError && <ErrorComponent />}
     </SafeAreaView>
   );
 };
