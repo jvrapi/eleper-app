@@ -20,12 +20,12 @@ export async function save(userMedicines: Save): Promise<AxiosResponse<UserSurge
 	return response;
 }
 
-export async function getById(id: string): Promise<AxiosResponse<UserSurgery>> {
+export async function getById(id: string): Promise<AxiosResponse<Update>> {
 	const response = await api.get(`${baseUrl}/details/${id}`);
 	return response;
 }
 
-export async function update(userMedicines: Update): Promise<AxiosResponse<UserSurgery>> {
+export async function update(userMedicines: Update): Promise<AxiosResponse<Update>> {
 	const response = await api.put(`${baseUrl}/`, userMedicines);
 	return response;
 }

@@ -132,7 +132,7 @@ const UserSurgeries: React.FC = () => {
 
 			countSelectedItems(updatedArray);
 		} else {
-			navigation.navigate('UserMedicineDetails', { id: items[elementIndex].id });
+			navigation.navigate('UserSurgeryDetails', { id: items[elementIndex].id });
 		}
 	}
 

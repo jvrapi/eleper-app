@@ -27,5 +27,5 @@ export interface Save extends DefaultFields {
 
 export interface Update extends DefaultFields {
 	id: string;
-	surgeryId: string;
+	surgery: Surgery;
 }

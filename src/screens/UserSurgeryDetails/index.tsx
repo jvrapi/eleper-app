@@ -1,27 +1,39 @@
+import { RouteProp } from '@react-navigation/core';
 import React, { useContext, useEffect, useState } from 'react';
-import { Formik as Form, FormikHelpers } from 'formik';
+import { buttonIcons } from '../../assets/icons';
+import { Update } from '../../interfaces/user.surgery';
+import * as Yup from 'yup';
 import moment from 'moment';
-import { Keyboard, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { getById, update } from '../../services/user.surgery';
 import { showMessage } from 'react-native-flash-message';
+import BottomTabBarContext from '../../contexts/bottomTabBar';
+import { Keyboard, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import * as Yup from 'yup';
-import { buttonIcons } from '../../assets/icons';
 import HospitalizationDateIcon from '../../assets/icons/hospital-date.svg';
 import HospitalizationIcon from '../../assets/icons/hospitalization.svg';
 import MedicalToolsIcon from '../../assets/icons/medical-tools.svg';
 import StethoscopeIcon from '../../assets/icons/stethoscope.svg';
 import SurgeryAfterEffectsIcon from '../../assets/icons/surgery-after-effects.svg';
 import UserSurgeryIcons from '../../assets/icons/user-surgery.svg';
-import { colors, globalStyles } from '../../assets/styles';
 import { Button, InputButton, InputComponent } from '../../components';
-import AuthContext from '../../contexts/auth';
-import BottomTabBarContext from '../../contexts/bottomTabBar';
-import { Save } from '../../interfaces/user.surgery';
-import { save } from '../../services/user.surgery';
+import { colors, globalStyles } from '../../assets/styles';
+
+import { Formik as Form } from 'formik';
 import { DateTimeToBrDate } from '../../utils/function';
 
-const initialValues: Save = {
+type RootStackParamList = {
+	UserSurgeryDetails: { id: string };
+};
+
+type UserSurgeryDetailsScreenRouteProp = RouteProp<RootStackParamList, 'UserSurgeryDetails'>;
+
+type Props = {
+	route: UserSurgeryDetailsScreenRouteProp;
+};
+
+const initialValues: Update = {
+	id: '',
 	userId: '',
 	hospitalization: {
 		entranceDate: '',
@@ -30,15 +42,17 @@ const initialValues: Save = {
 		reason: '',
 	},
 	afterEffects: '',
-	surgery: '',
+	surgery: { id: '', name: '' },
 };
 
 const validationSchema = Yup.object().shape({
-	surgery: Yup.string().required('Informe a cirurgia realizada'),
+	surgery: Yup.object().shape({
+		name: Yup.string().required('informe o nome da cirurgia realizada'),
+	}),
 	hospitalization: Yup.object().shape({
 		entranceDate: Yup.string()
 			.test('date-validation', 'Data não é valida', date => {
-				const dateIsValid = moment(new Date(date as string), 'YYYY-MM-DDThh:mm:ssZ', true).isValid();
+				const dateIsValid = moment(moment(date).toDate(), 'YYYY-MM-DDThh:mm:ssZ', true).isValid();
 				return dateIsValid;
 			})
 			.required('Informe a data de entrada'),
@@ -46,19 +60,24 @@ const validationSchema = Yup.object().shape({
 		location: Yup.string().required('Informe aonde aconteceu a internação'),
 		reason: Yup.string().required('Informe o motivo da internação'),
 	}),
-	afterEffects: Yup.string(),
+	afterEffects: Yup.string().nullable(),
 });
 
-const NewUserSurgery: React.FC = () => {
-	const { user } = useContext(AuthContext);
+const UserSurgeryDetails: React.FC<Props> = ({ route }) => {
+	const { id } = route.params;
+	const { updateIcon } = buttonIcons;
 	const { setShowTabBar } = useContext(BottomTabBarContext);
 
-	const { addIcon } = buttonIcons;
-	const [loading, setLoading] = useState(false);
+	const [userSurgery, setUserSurgery] = useState(initialValues);
+	const [loading, setLoading] = useState(true);
 	const [hasError, setHasError] = useState(false);
 	const [showEntranceDatePicker, setShowEntranceDatePicker] = useState(false);
 	const [showExitDatePicker, setShowExitDatePicker] = useState(false);
 	const [submitLoading, setSubmitLoading] = useState(false);
+
+	useEffect(() => {
+		getData();
+	}, []);
 
 	useEffect(() => {
 		const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
@@ -74,12 +93,27 @@ const NewUserSurgery: React.FC = () => {
 		};
 	}, []);
 
-	async function handleSubmitForm(values: Save, { resetForm }: FormikHelpers<Save>) {
-		values.userId = user?.id as string;
+	async function getData() {
+		try {
+			const { data } = await getById(id);
+			setUserSurgery(data);
+		} catch (error) {
+			showMessage({
+				message: 'Erro ao tentar buscar as informações',
+				type: 'danger',
+				icon: 'danger',
+			});
+			setHasError(true);
+		} finally {
+			setLoading(false);
+		}
+	}
+
+	async function handleSubmitForm(values: Update) {
 		setSubmitLoading(true);
 		try {
-			await save(values);
-			resetForm();
+			const { data } = await update(values);
+			setUserSurgery(data);
 			showMessage({
 				message: 'Informações salvas com sucesso!',
 				type: 'success',
@@ -102,18 +136,24 @@ const NewUserSurgery: React.FC = () => {
 				<>
 					<View style={styles.header}>
 						<View style={globalStyles.iconContainer}>{<UserSurgeryIcons fill='#000' width='80' height='80' />}</View>
-						<Text style={styles.title}>Nova cirurgia</Text>
+						<Text style={styles.title}>Detalhes cirurgia</Text>
 					</View>
-					<Form initialValues={initialValues} onSubmit={handleSubmitForm} validationSchema={validationSchema} validateOnChange={false}>
+					<Form
+						enableReinitialize
+						initialValues={userSurgery}
+						onSubmit={handleSubmitForm}
+						validationSchema={validationSchema}
+						validateOnChange={false}
+					>
 						{({ values, handleChange, handleSubmit, errors, setFieldTouched, touched, setFieldValue }) => (
 							<KeyboardAwareScrollView style={styles.keyboard}>
 								<View style={globalStyles.inputArea}>
 									<InputComponent
-										value={values.surgery}
+										value={values.surgery.name}
 										label='Qual a cigurgia que você realizou?'
-										onChangeText={handleChange('surgery')}
-										errors={touched.surgery && errors.surgery ? errors.surgery : ''}
-										onBlur={() => setFieldTouched('surgery')}
+										onChangeText={handleChange('surgery.name')}
+										errors={touched.surgery?.name && errors.surgery?.name ? errors.surgery.name : ''}
+										onBlur={() => setFieldTouched('surgery.name')}
 										editable={!submitLoading}
 										icon={<MedicalToolsIcon fill='#000' width='40' height='40' />}
 									/>
@@ -190,7 +230,13 @@ const NewUserSurgery: React.FC = () => {
 										onCancel={() => setShowExitDatePicker(false)}
 									/>
 								</View>
-								<Button loading={submitLoading} onPress={handleSubmit} buttonText='Salvar' style={styles.submitLoading} icon={addIcon} />
+								<Button
+									loading={submitLoading}
+									onPress={handleSubmit}
+									buttonText='Atualizar'
+									style={styles.submitLoading}
+									icon={updateIcon}
+								/>
 							</KeyboardAwareScrollView>
 						)}
 					</Form>
@@ -200,7 +246,7 @@ const NewUserSurgery: React.FC = () => {
 	);
 };
 
-export default NewUserSurgery;
+export default UserSurgeryDetails;
 
 const styles = StyleSheet.create({
 	container: {
