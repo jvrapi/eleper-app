@@ -1,56 +1,63 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Formik as Form, FormikHelpers } from 'formik';
+import { RouteProp } from '@react-navigation/core';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import { showMessage } from 'react-native-flash-message';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import * as Yup from 'yup';
+
 import { buttonIcons } from '../../assets/icons';
+import { Button, InputButton, InputComponent, ErrorComponent, LoadingComponent, ModalComponent } from '../../components';
+import { Formik as Form } from 'formik';
+import { DateTimeToBrDate } from '../../utils/function';
+import * as Yup from 'yup';
 import HospitalizationDateIcon from '../../assets/icons/hospital-date.svg';
 import HospitalizationIcon from '../../assets/icons/hospitalization.svg';
 import MedicalMaskIcon from '../../assets/icons/medical-mask.svg';
-import NewHospitalizationIcon from '../../assets/icons/new-hospitalization.svg';
+import HospitalizationDetailsIcon from '../../assets/icons/hospital-bed.svg';
 import StethoscopeIcon from '../../assets/icons/stethoscope.svg';
 import { colors, globalStyles } from '../../assets/styles';
-import { Button, ErrorComponent, InputButton, InputComponent, LoadingComponent, ModalComponent, MultiSelect } from '../../components';
-import { MultiSelectItems } from '../../components/MultiSelect';
-import AuthContext from '../../contexts/auth';
-import { Save } from '../../interfaces/hospitalization';
+import MultiSelect, { MultiSelectItems } from '../../components/MultiSelect';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { Hospitalization } from '../../interfaces/hospitalization';
 import { getAll } from '../../services/disease';
-import { save } from '../../services/hospitalization';
-import { DateTimeToBrDate } from '../../utils/function';
-import moment from 'moment';
+import { getById, update } from '../../services/hospitalization';
+import { showMessage } from 'react-native-flash-message';
 
-const initialValues: Save = {
+type RootStackParamList = {
+  HospitalizationDetails: { id: string };
+};
+
+type HospitalizationDetailsScreenRouteProp = RouteProp<RootStackParamList, 'HospitalizationDetails'>;
+
+type Props = {
+  route: HospitalizationDetailsScreenRouteProp;
+};
+
+const disease = {
+  id: '',
+  name: '',
+};
+
+const initialValues: Hospitalization = {
+  id: '',
   userId: '',
   entranceDate: '',
   exitDate: '',
   location: '',
   reason: '',
-  diseases: [],
+  diseases: [disease],
 };
 
-const validationSchema = Yup.object().shape({
-  entranceDate: Yup.string()
-    .test('date-validation', 'Data não é valida', date => {
-      const dateIsValid = moment(new Date(date as string), 'YYYY-MM-DDThh:mm:ssZ', true).isValid();
-      return dateIsValid;
-    })
-    .required('Informe a data de entrada'),
+const validationSchema = Yup.object().shape({});
 
-  location: Yup.string().required('Informe aonde aconteceu a internação'),
-  reason: Yup.string().required('Informe o motivo da internação'),
-});
-
-const NewHospitalization: React.FC = () => {
-  const { user } = useContext(AuthContext);
-  const { checkIcon, addIcon } = buttonIcons;
+const HospitalizationDetails: React.FC<Props> = ({ route }) => {
+  const { id } = route.params;
+  const { updateIcon, checkIcon } = buttonIcons;
   const [items, setItems] = useState<MultiSelectItems[]>([]);
+  const [hospitalization, setHospitalization] = useState(initialValues);
   const [loading, setLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
-  const [showModal, setShowModal] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
   const [showEntranceDatePicker, setShowEntranceDatePicker] = useState(false);
   const [showExitDatePicker, setShowExitDatePicker] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     getData();
@@ -58,12 +65,25 @@ const NewHospitalization: React.FC = () => {
 
   async function getData() {
     try {
-      const { data } = await getAll();
-      const formattedData = data.map(disease => ({ ...disease, selected: false }));
+      const diseaseResponse = await getAll();
+      const hospitalizationResponse = await getById(id);
+
+      const formattedData = diseaseResponse.data.map(disease => {
+        const response = { ...disease, selected: false };
+
+        hospitalizationResponse.data.diseases.forEach(hospitalizationDisease => {
+          if (hospitalizationDisease.id === disease.id) {
+            response.selected = true;
+          }
+        });
+
+        return response;
+      });
       setItems(formattedData);
-    } catch {
+      setHospitalization(hospitalizationResponse.data);
+    } catch (error) {
       showMessage({
-        message: 'Ops! Aconteceu alguma coisa',
+        message: 'Ops! Não consegui carregar os dados',
         type: 'danger',
         icon: 'danger',
       });
@@ -73,15 +93,11 @@ const NewHospitalization: React.FC = () => {
     }
   }
 
-  async function handleSubmitForm(values: Save, { resetForm }: FormikHelpers<Save>) {
+  async function handleSubmitForm(values: Hospitalization) {
     setSubmitLoading(true);
-    values.diseases = items.filter(item => item.selected).map(item => item.id);
-    values.userId = user?.id as string;
     try {
-      await save(values);
-      resetForm();
-      const formattedData = items.map(disease => ({ ...disease, selected: false }));
-      setItems(formattedData);
+      const { data } = await update(values);
+      setHospitalization(data);
       showMessage({
         message: 'Informações salvas com sucesso!',
         type: 'success',
@@ -112,26 +128,21 @@ const NewHospitalization: React.FC = () => {
     return `${itemsSelected[0].name}, ${itemsSelected[1].name}, ...`;
   }
 
-  function onSelectedItem(itemId: string) {
-    const arrayFormatted = items.map(item => {
-      if (item.id === itemId) {
-        item.selected = !item.selected;
-      }
-      return item;
-    });
-
-    setItems(arrayFormatted);
-  }
-
   return (
     <SafeAreaView style={styles.container}>
       {!loading && !hasError && (
         <>
           <View style={styles.header}>
-            <View style={globalStyles.iconContainer}>{<NewHospitalizationIcon fill='#000' width='80' height='80' />}</View>
-            <Text style={styles.title}>Nova internação</Text>
+            <View style={globalStyles.iconContainer}>{<HospitalizationDetailsIcon fill='#000' width='80' height='80' />}</View>
+            <Text style={styles.title}>Detalhes internação</Text>
           </View>
-          <Form initialValues={initialValues} onSubmit={handleSubmitForm} validationSchema={validationSchema} validateOnChange={false}>
+          <Form
+            enableReinitialize
+            initialValues={hospitalization}
+            onSubmit={handleSubmitForm}
+            validationSchema={validationSchema}
+            validateOnChange={false}
+          >
             {({ values, handleChange, handleSubmit, errors, setFieldTouched, touched, setFieldValue }) => (
               <>
                 <View style={globalStyles.inputArea}>
@@ -204,13 +215,33 @@ const NewHospitalization: React.FC = () => {
                     onCancel={() => setShowExitDatePicker(false)}
                   />
                 </View>
-                <Button loading={submitLoading} onPress={handleSubmit} buttonText='Salvar' style={styles.submitLoading} icon={addIcon} />
+                <Button
+                  loading={submitLoading}
+                  onPress={handleSubmit}
+                  buttonText='Atualizar'
+                  style={styles.submitLoading}
+                  icon={updateIcon}
+                />
 
                 <ModalComponent showModal={showModal} close={() => setShowModal(false)}>
                   <View style={modalStyles.container}>
                     <Text style={modalStyles.textHeader}>Selecione uma doença</Text>
                     <View style={modalStyles.scrollContainer}>
-                      <MultiSelect listItems={items} inputLabelText='Toque aqui para listar as doenças' onSelectedItem={onSelectedItem} />
+                      <MultiSelect
+                        listItems={items}
+                        inputLabelText='Toque aqui para listar as doenças'
+                        onSelectedItem={id => {
+                          const arrayFormatted = items.map(item => {
+                            if (item.id === id) {
+                              item.selected = !item.selected;
+                            }
+                            return item;
+                          });
+                          const selected = arrayFormatted.filter(item => item.selected).map(item => item.id);
+                          setItems(arrayFormatted);
+                          setFieldValue('diseases', selected);
+                        }}
+                      />
                     </View>
                     <Button
                       onPress={() => setShowModal(false)}
@@ -231,7 +262,7 @@ const NewHospitalization: React.FC = () => {
   );
 };
 
-export default NewHospitalization;
+export default HospitalizationDetails;
 
 const styles = StyleSheet.create({
   container: {
