@@ -1,12 +1,6 @@
 import { pageIcons } from '../assets/icons';
 export const homeOptions = [
 	{
-		title: 'Meu registro',
-		icon: pageIcons.myRecordIcon,
-		info: 'Aqui você verá um resumo do seu registro pessoal.',
-		route: { name: 'Profile', screen: 'MyRecord' },
-	},
-	{
 		title: 'Minhas doenças',
 		icon: pageIcons.diseaseIcon,
 		info: 'Gereciamento das doenças que você me informou anteriormente',
@@ -20,12 +14,6 @@ export const homeOptions = [
 		route: { name: 'Annotations' },
 	},
 
-	/* {
-		title: 'Meu Historico Familiar',
-		icon: pageIcons.familyHistoryIcon,
-		info: 'Para deixar seu historico mais completo, informe doenças que estão ou que estiveram presente na familia',
-		route: { name: 'Disease' },
-	}, */
 	{
 		title: 'Minhas internações',
 		icon: pageIcons.hospitalizationIcon,

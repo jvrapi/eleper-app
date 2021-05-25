@@ -27,3 +27,12 @@ export interface RedefinePassword {
 	code: string;
 	password: string;
 }
+
+export interface UserDetails {
+	id: string;
+	name: string;
+	cpf: string;
+	email: string;
+	birth: string;
+	password?: string;
+}

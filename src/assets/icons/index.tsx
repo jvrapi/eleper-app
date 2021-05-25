@@ -27,6 +27,7 @@ export const pageIcons = {
 	familyHistoryIcon: <FaIcons5 name='book-medical' size={40} color='#000000' />,
 	hospitalizationIcon: <HospitalizationIcon width='40' height='40' fill='#000000' />,
 	surgeryIcon: <SurgeryIcon width='50' height='50' fill='#000000' />,
+	userIcon: <FaIcons5 name='user-alt' size={60} color='#000000' />,
 };
 
 export const inputIcons = {

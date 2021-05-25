@@ -64,14 +64,13 @@ const NewUserMedicine: React.FC = () => {
 	const { user } = useContext(AuthContext);
 	const { addIcon } = buttonIcons;
 	const { searchIcon } = pageIcons;
-
 	const [showBeginDatePicker, setShowBeginDatePicker] = useState(false);
 	const [showEndDatePicker, setShowEndDatePicker] = useState(false);
 	const [loading, setLoading] = useState(true);
 	const [hasError, setHasError] = useState(false);
 	const [showDiseaseModal, setShowDiseaseModal] = useState(false);
 	const [showMedicineModal, setShowMedicineModal] = useState(false);
-	const [submitButton, setSubmitLoading] = useState(false);
+	const [submitLoading, setSubmitLoading] = useState(false);
 	const [diseases, setDiseases] = useState<UserDisease[]>([]);
 	const [medicines, setMedicines] = useState<Medicine[]>([]);
 	const [selectedUserDisease, setSelectedUserDisease] = useState<UserDisease | null>(null);
@@ -183,7 +182,7 @@ const NewUserMedicine: React.FC = () => {
 										errors={touched.medicineId && errors.medicineId ? errors.medicineId : ''}
 										value={selectedMedicine === null ? '' : selectedMedicine.name}
 										onBlur={() => setFieldTouched('medicineId')}
-										disabled={submitButton}
+										disabled={submitLoading}
 										onPress={() => setShowMedicineModal(true)}
 										icon={<MedicineIcon fill='#000' width='35' height='35' />}
 									/>
@@ -194,7 +193,7 @@ const NewUserMedicine: React.FC = () => {
 										onChangeText={handleChange('amount')}
 										errors={touched.amount && errors.amount ? errors.amount : ''}
 										onBlur={() => setFieldTouched('amount')}
-										editable={!submitButton}
+										editable={!submitLoading}
 										icon={<MedicineDosageIcon fill='#000' width='35' height='35' />}
 									/>
 
@@ -204,7 +203,7 @@ const NewUserMedicine: React.FC = () => {
 										onChangeText={handleChange('instruction')}
 										errors={touched.instruction && errors.instruction ? errors.instruction : ''}
 										onBlur={() => setFieldTouched('instruction')}
-										editable={!submitButton}
+										editable={!submitLoading}
 										icon={<MedicineInstructionIcon fill='#000' width='35' height='35' />}
 									/>
 
@@ -213,7 +212,7 @@ const NewUserMedicine: React.FC = () => {
 										errors={touched.beginDate && errors.beginDate ? errors.beginDate : ''}
 										value={DateTimeToBrDate(values.beginDate)}
 										onBlur={() => setFieldTouched('beginDate')}
-										disabled={submitButton}
+										disabled={submitLoading}
 										onPress={() => setShowBeginDatePicker(true)}
 										icon={<MedicalDateIcon fill='#000' width='35' height='35' />}
 									/>
@@ -223,7 +222,7 @@ const NewUserMedicine: React.FC = () => {
 										errors={touched.endDate && errors.endDate ? errors.endDate : ''}
 										value={DateTimeToBrDate(values.endDate ? values.endDate : '')}
 										onBlur={() => setFieldTouched('endDate')}
-										disabled={submitButton}
+										disabled={submitLoading}
 										onPress={() => setShowEndDatePicker(true)}
 										icon={<MedicalDateIcon fill='#000' width='35' height='35' />}
 									/>
@@ -233,7 +232,7 @@ const NewUserMedicine: React.FC = () => {
 										errors={touched.userDiseaseId && errors.userDiseaseId ? errors.userDiseaseId : ''}
 										value={selectedUserDisease === null ? '' : selectedUserDisease.disease.name}
 										onBlur={() => setFieldTouched('userDiseaseId')}
-										disabled={submitButton}
+										disabled={submitLoading}
 										onPress={() => setShowDiseaseModal(true)}
 										icon={<UserDiseaseIcon fill='#000' width='35' height='35' />}
 									/>
@@ -260,7 +259,7 @@ const NewUserMedicine: React.FC = () => {
 								</View>
 
 								<Button
-									loading={submitButton}
+									loading={submitLoading}
 									onPress={async () => {
 										if (selectedUserDisease !== null) {
 											await setFieldValue('userDiseaseId', selectedUserDisease.id);
@@ -273,7 +272,7 @@ const NewUserMedicine: React.FC = () => {
 										handleSubmit();
 									}}
 									buttonText='Salvar'
-									style={styles.submitButton}
+									style={styles.submitLoading}
 									icon={addIcon}
 								/>
 							</>
@@ -357,7 +356,7 @@ const styles = StyleSheet.create({
 	scrollContainer: {
 		width: '100%',
 	},
-	submitButton: {
+	submitLoading: {
 		alignSelf: 'center',
 	},
 });

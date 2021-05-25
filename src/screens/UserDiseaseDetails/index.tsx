@@ -162,14 +162,6 @@ const UserDiseaseDetails: React.FC<Props> = ({ route }) => {
 									style={styles.submitButton}
 									icon={updateIcon}
 								/>
-								{/* <Button
-                  loading={submitLoading}
-                  onPress={() => setShowModal(true)}
-                  buttonText='Excluir'
-                  style={styles.deleteButton}
-                  icon={deleteIcon}
-                  colorType='danger'
-                /> */}
 
 								<DateTimePickerModal
 									isVisible={showDatePicker}
