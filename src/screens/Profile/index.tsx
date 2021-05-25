@@ -1,45 +1,98 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { SafeAreaView, View, Text, StyleSheet } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { pageIcons } from '../../assets/icons';
+import { buttonIcons, pageIcons } from '../../assets/icons';
 import { colors, globalStyles } from '../../assets/styles';
 import AuthContext from '../../contexts/auth';
 import TermsAndConditionsIcon from '../../assets/icons/terms-and-conditions.svg';
 import ProfileIcon from '../../assets/icons/profile.svg';
 import LogoutIcon from '../../assets/icons/logout.svg';
+import TrashIcon from '../../assets/icons/trash.svg';
 import { useNavigation } from '@react-navigation/native';
+import { Button, ModalComponent } from '../../components';
+import { deleteAccount } from '../../services/user';
+import { showMessage } from 'react-native-flash-message';
 
 const Profile = () => {
 	const { signOut, user } = useContext(AuthContext);
 	const { userIcon } = pageIcons;
 	const navigation = useNavigation();
+	const [showModal, setShowModal] = useState(false);
+	const { checkIcon, cancelIcon } = buttonIcons;
+	const [loading, setLoading] = useState(false);
+
+	async function onPressDeleteAccount() {
+		setLoading(true);
+		setShowModal(false);
+		try {
+			await deleteAccount(user?.id as string);
+			signOut();
+		} catch (error) {
+			console.log(error.response.status);
+			showMessage({
+				message: 'Erro ao tentar excluir a sua conta, pode tentar de novo?',
+				type: 'danger',
+				icon: 'danger',
+			});
+			setLoading(false);
+		}
+	}
 
 	return (
-		<SafeAreaView style={styles.container}>
-			<View style={styles.header}>
-				<View style={globalStyles.iconContainer}>{userIcon}</View>
-				<Text style={styles.title}>{user?.name as string}</Text>
-			</View>
-			<View style={[styles.shadow, styles.content]}>
-				<TouchableWithoutFeedback style={styles.card} onPress={() => navigation.navigate('UserDetails')}>
-					<View style={styles.iconContent}>{<ProfileIcon width='35' height='35' fill='#000' />}</View>
+		<>
+			<SafeAreaView style={styles.container}>
+				{!loading && (
+					<>
+						<View style={styles.header}>
+							<View style={globalStyles.iconContainer}>{userIcon}</View>
+							<Text style={styles.title}>{user?.name as string}</Text>
+						</View>
+						<View style={[styles.shadow, styles.content]}>
+							<TouchableWithoutFeedback style={styles.card} onPress={() => navigation.navigate('UserDetails')}>
+								<View style={styles.iconContent}>{<ProfileIcon width='35' height='35' fill='#000' />}</View>
 
-					<Text style={styles.cardText}>Meus dados</Text>
-				</TouchableWithoutFeedback>
+								<Text style={styles.cardText}>Meus dados</Text>
+							</TouchableWithoutFeedback>
 
-				<TouchableWithoutFeedback style={styles.card}>
-					<View style={styles.iconContent}>{<TermsAndConditionsIcon width='30' height='30' fill='#000' />}</View>
+							<TouchableWithoutFeedback style={styles.card}>
+								<View style={styles.iconContent}>{<TermsAndConditionsIcon width='30' height='30' fill='#000' />}</View>
 
-					<Text style={styles.cardText}>Termos de uso</Text>
-				</TouchableWithoutFeedback>
+								<Text style={styles.cardText}>Termos de uso</Text>
+							</TouchableWithoutFeedback>
 
-				<TouchableWithoutFeedback style={styles.card} onPress={signOut}>
-					<View style={styles.iconContent}>{<LogoutIcon width='35' height='35' fill='#000' />}</View>
+							<TouchableWithoutFeedback style={styles.card} onPress={() => setShowModal(true)}>
+								<View style={styles.iconContent}>{<TrashIcon width='30' height='30' fill='#000' />}</View>
 
-					<Text style={styles.cardText}>Sair</Text>
-				</TouchableWithoutFeedback>
-			</View>
-		</SafeAreaView>
+								<Text style={styles.cardText}>Excluir conta</Text>
+							</TouchableWithoutFeedback>
+
+							<TouchableWithoutFeedback style={styles.card} onPress={signOut}>
+								<View style={styles.iconContent}>{<LogoutIcon width='35' height='35' fill='#000' />}</View>
+
+								<Text style={styles.cardText}>Sair</Text>
+							</TouchableWithoutFeedback>
+						</View>
+					</>
+				)}
+			</SafeAreaView>
+			<ModalComponent showModal={showModal} close={() => setShowModal(false)}>
+				<View style={modalStyles.container}>
+					<Text style={modalStyles.headerText}>Atenção!</Text>
+					<Text style={modalStyles.bodyText}>Quer realmente excluir essa doença?</Text>
+					<View style={modalStyles.buttonsContainer}>
+						<Button
+							onPress={onPressDeleteAccount}
+							buttonText='Sim'
+							style={[modalStyles.button, modalStyles.firstButton]}
+							icon={checkIcon}
+							colorType='danger'
+						/>
+
+						<Button onPress={() => setShowModal(false)} buttonText='Não' style={modalStyles.button} icon={cancelIcon} colorType='success' />
+					</View>
+				</View>
+			</ModalComponent>
+		</>
 	);
 };
 
@@ -95,6 +148,43 @@ const styles = StyleSheet.create({
 		shadowRadius: 4.65,
 
 		elevation: 8,
+	},
+});
+
+const modalStyles = StyleSheet.create({
+	container: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'space-around',
+	},
+
+	headerText: {
+		fontFamily: 'Poppins-SemiBold',
+		textAlign: 'center',
+		fontSize: 27,
+		marginVertical: 20,
+		color: colors.danger,
+	},
+
+	bodyText: {
+		fontFamily: 'Poppins-Regular',
+		textAlign: 'center',
+		fontSize: 20,
+		marginVertical: 20,
+	},
+
+	buttonsContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+
+	button: {
+		width: 170,
+	},
+
+	firstButton: {
+		marginRight: 20,
 	},
 });
 

@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios';
 import { SendMail } from '../interfaces/email';
 import { Auth, NewUser, RedefinePassword, StorageData, User, UserDetails } from '../interfaces/user';
-import api from './api';
+import api, { DeleteResponse } from './api';
 
 const baseURL = '/user';
 
@@ -32,5 +32,10 @@ export async function getDetails(userId: string): Promise<AxiosResponse<UserDeta
 
 export async function update(user: UserDetails): Promise<AxiosResponse<UserDetails>> {
 	const response = await api.put(`${baseURL}/`, user);
+	return response;
+}
+
+export async function deleteAccount(id: string): Promise<AxiosResponse<DeleteResponse>> {
+	const response = await api.delete(`${baseURL}/${id}`);
 	return response;
 }

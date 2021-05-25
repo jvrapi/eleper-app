@@ -250,7 +250,6 @@ const ExamScreen: React.FC = () => {
 							</ScrollView>
 						</View>
 
-						{!multiSelect && <FloatButton icon={newExamIcon} style={styles.floatButton} onPress={onPressFloatButton} />}
 						<ModalComponent showModal={showModal} close={() => setShowModal(false)}>
 							<View style={styles.modalContainer}>
 								<Button buttonText='Baixar Exame' icon={downloadIcon} onPress={onDownloadButtonPressed} />
@@ -260,6 +259,8 @@ const ExamScreen: React.FC = () => {
 					</MultiItems>
 				</>
 			)}
+			{!multiSelect && <FloatButton icon={newExamIcon} style={styles.floatButton} onPress={onPressFloatButton} />}
+
 			{loading && <LoadingComponent />}
 			{hasError && <ErrorComponent />}
 			{!loading && !hasError && items.length === 0 && <NoDataComponent />}

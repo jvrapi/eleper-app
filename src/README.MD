@@ -11,6 +11,7 @@
         <li><a href="https://www.flaticon.com/authors/catkuro" title="catkuro">catkuro</a></li>
         <li><a href="https://www.flaticon.com/authors/mavadee" title="mavadee">mavadee</a></li>
         <li><a href="https://www.flaticon.com/authors/gregor-cresnar" title="Gregor Cresnar">Gregor Cresnar</a></li>
+        <li><a href="https://www.flaticon.com/authors/bqlqn" title="bqlqn">bqlqn</a></li>
     </ul>
     from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
 </div>
