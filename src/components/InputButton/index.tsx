@@ -6,12 +6,12 @@ import { colors } from '../../assets/styles';
 interface Props extends TouchableOpacityProps {
 	icon?: JSX.Element;
 	label: string;
-	errors: string | string[] | FormikErrors<any> | FormikErrors<any>[];
+	errors?: string | string[] | FormikErrors<any> | FormikErrors<any>[];
 	value: string;
 }
 
 const InputButton: React.FC<Props> = ({ label, errors, icon, value, ...props }) => {
-	const { container, card, labelText } = styles(errors, labelColor());
+	const { container, card, labelText } = styles(labelColor(), errors);
 
 	function renderLabel() {
 		if (errors && !value) {
@@ -41,7 +41,7 @@ const InputButton: React.FC<Props> = ({ label, errors, icon, value, ...props }) 
 	);
 };
 
-const styles = (errors: string | string[] | FormikErrors<any> | FormikErrors<any>[], labelColor: string) =>
+const styles = (labelColor: string, errors?: string | string[] | FormikErrors<any> | FormikErrors<any>[]) =>
 	StyleSheet.create({
 		container: {
 			flexDirection: 'row',

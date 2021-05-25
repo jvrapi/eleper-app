@@ -22,7 +22,7 @@ interface DefaultFields {
 }
 
 export interface Save extends DefaultFields {
-	surgery: string;
+	surgeryId: string;
 }
 
 export interface Update extends DefaultFields {

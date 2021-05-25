@@ -148,13 +148,10 @@ const UserSurgeryDetails: React.FC<Props> = ({ route }) => {
 						{({ values, handleChange, handleSubmit, errors, setFieldTouched, touched, setFieldValue }) => (
 							<KeyboardAwareScrollView style={styles.keyboard}>
 								<View style={globalStyles.inputArea}>
-									<InputComponent
+									<InputButton
 										value={values.surgery.name}
 										label='Qual a cigurgia que você realizou?'
-										onChangeText={handleChange('surgery.name')}
-										errors={touched.surgery?.name && errors.surgery?.name ? errors.surgery.name : ''}
-										onBlur={() => setFieldTouched('surgery.name')}
-										editable={!submitLoading}
+										disabled={true}
 										icon={<MedicalToolsIcon fill='#000' width='40' height='40' />}
 									/>
 									<InputComponent
