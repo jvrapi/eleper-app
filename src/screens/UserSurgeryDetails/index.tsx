@@ -67,7 +67,6 @@ const UserSurgeryDetails: React.FC<Props> = ({ route }) => {
 	const { id } = route.params;
 	const { updateIcon } = buttonIcons;
 	const { setShowTabBar } = useContext(BottomTabBarContext);
-
 	const [userSurgery, setUserSurgery] = useState(initialValues);
 	const [loading, setLoading] = useState(true);
 	const [hasError, setHasError] = useState(false);

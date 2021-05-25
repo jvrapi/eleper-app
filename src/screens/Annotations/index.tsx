@@ -187,6 +187,7 @@ const Annotations: React.FC = () => {
 
 	return (
 		<SafeAreaView style={styles.container}>
+			<Text style={styles.title}>Minhas anotações</Text>
 			{!loading && !hasError && items.length > 0 && (
 				<>
 					<MultiItems
@@ -198,7 +199,6 @@ const Annotations: React.FC = () => {
 						itemsAmount={selectedItemsAmount}
 						selectedItemsText={multiItemsText()}
 					>
-						<Text style={styles.title}>Minhas anotações</Text>
 						<View style={styles.scrollContainer}>
 							<ScrollView style={styles.scroll} refreshControl={<RefreshControl refreshing={loading} onRefresh={onRefresh} />}>
 								{items.map((item, i) => (

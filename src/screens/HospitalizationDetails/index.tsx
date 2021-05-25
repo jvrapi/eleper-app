@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/core';
-import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { Keyboard, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 
 import { buttonIcons } from '../../assets/icons';
 import { Button, InputButton, InputComponent, ErrorComponent, LoadingComponent, ModalComponent } from '../../components';
@@ -19,6 +19,7 @@ import { Hospitalization } from '../../interfaces/hospitalization';
 import { getAll } from '../../services/disease';
 import { getById, update } from '../../services/hospitalization';
 import { showMessage } from 'react-native-flash-message';
+import BottomTabBarContext from '../../contexts/bottomTabBar';
 
 type RootStackParamList = {
 	HospitalizationDetails: { id: string };
@@ -49,6 +50,7 @@ const validationSchema = Yup.object().shape({});
 
 const HospitalizationDetails: React.FC<Props> = ({ route }) => {
 	const { id } = route.params;
+	const { setShowTabBar } = useContext(BottomTabBarContext);
 	const { updateIcon, checkIcon } = buttonIcons;
 	const [items, setItems] = useState<MultiSelectItems[]>([]);
 	const [hospitalization, setHospitalization] = useState(initialValues);
@@ -61,6 +63,20 @@ const HospitalizationDetails: React.FC<Props> = ({ route }) => {
 
 	useEffect(() => {
 		getData();
+	}, []);
+
+	useEffect(() => {
+		const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+			setShowTabBar(false);
+		});
+		const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+			setShowTabBar(true);
+		});
+
+		return () => {
+			keyboardDidHideListener.remove();
+			keyboardDidShowListener.remove();
+		};
 	}, []);
 
 	async function getData() {

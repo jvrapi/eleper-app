@@ -1,14 +1,15 @@
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { Formik as Form } from 'formik';
 import mime from 'mime';
-import React, { useEffect, useState } from 'react';
-import { Platform, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { Keyboard, Platform, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import * as Yup from 'yup';
 import { buttonIcons, inputIcons, pageIcons } from '../../assets/icons';
 import { colors, globalStyles } from '../../assets/styles';
 import { Button, ErrorComponent, InputComponent, LoadingComponent, ModalComponent, PickFile } from '../../components';
 import { FileProps } from '../../components/PickFile';
+import BottomTabBarContext from '../../contexts/bottomTabBar';
 import { Exam } from '../../interfaces/exam';
 import { deleteExam, getById, updateExam } from '../../services/exam';
 
@@ -36,6 +37,7 @@ const validationSchema = Yup.object().shape({
 
 const ExamDetails: React.FC<Props> = ({ route }) => {
 	const { id } = route.params;
+	const { setShowTabBar } = useContext(BottomTabBarContext);
 	const navigation = useNavigation();
 	const [exam, setExam] = useState<Exam>(initialValues);
 	const [loading, setLoading] = useState(true);
@@ -49,6 +51,20 @@ const ExamDetails: React.FC<Props> = ({ route }) => {
 
 	useEffect(() => {
 		getData();
+	}, []);
+
+	useEffect(() => {
+		const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+			setShowTabBar(false);
+		});
+		const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+			setShowTabBar(true);
+		});
+
+		return () => {
+			keyboardDidHideListener.remove();
+			keyboardDidShowListener.remove();
+		};
 	}, []);
 
 	async function getData() {

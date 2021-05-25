@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Formik as Form, FormikHelpers } from 'formik';
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { Keyboard, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import * as Yup from 'yup';
@@ -19,6 +19,7 @@ import { getAll } from '../../services/disease';
 import { save } from '../../services/hospitalization';
 import { DateTimeToBrDate } from '../../utils/function';
 import moment from 'moment';
+import BottomTabBarContext from '../../contexts/bottomTabBar';
 
 const initialValues: Save = {
 	userId: '',
@@ -43,6 +44,7 @@ const validationSchema = Yup.object().shape({
 
 const NewHospitalization: React.FC = () => {
 	const { user } = useContext(AuthContext);
+	const { setShowTabBar } = useContext(BottomTabBarContext);
 	const { checkIcon, addIcon } = buttonIcons;
 	const [items, setItems] = useState<MultiSelectItems[]>([]);
 	const [loading, setLoading] = useState(true);
@@ -54,6 +56,20 @@ const NewHospitalization: React.FC = () => {
 
 	useEffect(() => {
 		getData();
+	}, []);
+
+	useEffect(() => {
+		const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+			setShowTabBar(false);
+		});
+		const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+			setShowTabBar(true);
+		});
+
+		return () => {
+			keyboardDidHideListener.remove();
+			keyboardDidShowListener.remove();
+		};
 	}, []);
 
 	async function getData() {

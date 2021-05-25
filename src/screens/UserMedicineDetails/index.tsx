@@ -1,8 +1,8 @@
 import { RouteProp } from '@react-navigation/core';
 import { Formik as Form } from 'formik';
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { Keyboard, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import * as Yup from 'yup';
@@ -15,6 +15,7 @@ import NewMedicineIcon from '../../assets/icons/new-medicine.svg';
 import UserDiseaseIcon from '../../assets/icons/user-disease.svg';
 import { colors, globalStyles } from '../../assets/styles';
 import { Button, ErrorComponent, InputButton, InputComponent, LoadingComponent } from '../../components';
+import BottomTabBarContext from '../../contexts/bottomTabBar';
 import { UserMedicineDetails } from '../../interfaces/user.medicine';
 import { getById, update } from '../../services/user.medicine';
 import { DateTimeToBrDate } from '../../utils/function';
@@ -76,6 +77,8 @@ const validationSchema = Yup.object().shape({
 
 const UserMedicineDetailsScreen: React.FC<Props> = ({ route }) => {
 	const { id } = route.params;
+	const { setShowTabBar } = useContext(BottomTabBarContext);
+
 	const { updateIcon } = buttonIcons;
 	const [userMedicine, setUserMedicine] = useState<UserMedicineDetails>(initialValues);
 	const [loading, setLoading] = useState(true);
@@ -85,6 +88,20 @@ const UserMedicineDetailsScreen: React.FC<Props> = ({ route }) => {
 
 	useEffect(() => {
 		getData();
+	}, []);
+
+	useEffect(() => {
+		const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+			setShowTabBar(false);
+		});
+		const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+			setShowTabBar(true);
+		});
+
+		return () => {
+			keyboardDidHideListener.remove();
+			keyboardDidShowListener.remove();
+		};
 	}, []);
 
 	async function getData() {

@@ -59,12 +59,12 @@ const UserSurgeries: React.FC = () => {
 	async function getData() {
 		try {
 			const { data } = await getAll(user?.id as string);
-			const formattedData = data.map(medicine => ({ ...medicine, selected: false }));
+			const formattedData = data.map(surgery => ({ ...surgery, selected: false }));
 			setItems(formattedData);
 		} catch {
 			setHasError(true);
 			showMessage({
-				message: 'Não consegui listar os seus medicamentos',
+				message: 'Não consegui listar as suas cirurgias',
 				type: 'danger',
 				icon: 'danger',
 			});
@@ -80,13 +80,13 @@ const UserSurgeries: React.FC = () => {
 			await deleteMany(itemsSelected);
 			getData();
 			showMessage({
-				message: 'Medicamentos excluídos com sucesso!',
+				message: 'Cirurgias excluídss com sucesso!',
 				type: 'success',
 				icon: 'success',
 			});
 		} catch {
 			showMessage({
-				message: 'Não consegui excluir os medicamentos, pode tentar de novo?',
+				message: 'Não consegui excluir as cirurgias, pode tentar de novo?',
 				type: 'danger',
 				icon: 'danger',
 			});
@@ -197,6 +197,8 @@ const UserSurgeries: React.FC = () => {
 
 	return (
 		<SafeAreaView style={styles.container}>
+			<Text style={styles.title}>Minhas cirurgias</Text>
+
 			{!loading && !hasError && items.length > 0 && (
 				<>
 					<MultiItems
@@ -208,7 +210,6 @@ const UserSurgeries: React.FC = () => {
 						itemsAmount={selectedItemsAmount}
 						selectedItemsText={multiItemsText()}
 					>
-						<Text style={styles.title}>Meus exames</Text>
 						<View style={styles.scrollContainer}>
 							<ScrollView style={styles.scroll} refreshControl={<RefreshControl refreshing={loading} onRefresh={onRefresh} />}>
 								{items.map((item, i) => (

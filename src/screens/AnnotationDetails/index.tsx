@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, TouchableWithoutFeedback, ScrollView } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { StyleSheet, Text, View, SafeAreaView, TouchableWithoutFeedback, ScrollView, Keyboard } from 'react-native';
 import { Annotation } from '../../interfaces/annotation';
 import { UserDisease } from '../../interfaces/user.disease';
 import { showMessage } from 'react-native-flash-message';
@@ -17,6 +17,7 @@ import { Formik as Form } from 'formik';
 import * as Yup from 'yup';
 import { Button, InputButton, ModalComponent, TextArea } from '../../components';
 import { buttonIcons } from '../../assets/icons';
+import BottomTabBarContext from '../../contexts/bottomTabBar';
 
 type RootStackParamList = {
 	AnnotationDetails: { id: string };
@@ -46,6 +47,7 @@ const validationSchema = Yup.object().shape({
 
 const AnnotationDetails: React.FC<Props> = ({ route }) => {
 	const { id } = route.params;
+	const { setShowTabBar } = useContext(BottomTabBarContext);
 	const { updateIcon } = buttonIcons;
 	const [data, setData] = useState<Annotation>(initialValues);
 	const [items, setItems] = useState<UserDisease[]>([]);
@@ -57,6 +59,20 @@ const AnnotationDetails: React.FC<Props> = ({ route }) => {
 
 	useEffect(() => {
 		getData();
+	}, []);
+
+	useEffect(() => {
+		const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+			setShowTabBar(false);
+		});
+		const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+			setShowTabBar(true);
+		});
+
+		return () => {
+			keyboardDidHideListener.remove();
+			keyboardDidShowListener.remove();
+		};
 	}, []);
 
 	async function getData() {

@@ -1,7 +1,7 @@
 import { Formik as Form, FormikHelpers } from 'formik';
 import moment from 'moment';
 import React, { useContext, useEffect, useState } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Keyboard, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -22,6 +22,7 @@ import { Save } from '../../interfaces/user.surgery';
 import { save } from '../../services/user.surgery';
 import { DateTimeToBrDate } from '../../utils/function';
 import { getSurgeries, getByName } from '../../services/surgery';
+import BottomTabBarContext from '../../contexts/bottomTabBar';
 
 const initialValues: Save = {
 	userId: '',
@@ -53,6 +54,8 @@ const validationSchema = Yup.object().shape({
 
 const NewUserSurgery: React.FC = () => {
 	const { user } = useContext(AuthContext);
+	const { setShowTabBar } = useContext(BottomTabBarContext);
+
 	const { addIcon } = buttonIcons;
 	const { searchIcon } = pageIcons;
 	const [showEntranceDatePicker, setShowEntranceDatePicker] = useState(false);
@@ -67,6 +70,20 @@ const NewUserSurgery: React.FC = () => {
 
 	useEffect(() => {
 		getData();
+	}, []);
+
+	useEffect(() => {
+		const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+			setShowTabBar(false);
+		});
+		const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+			setShowTabBar(true);
+		});
+
+		return () => {
+			keyboardDidHideListener.remove();
+			keyboardDidShowListener.remove();
+		};
 	}, []);
 
 	async function getData() {
@@ -154,7 +171,7 @@ const NewUserSurgery: React.FC = () => {
 											label='Aonde aconteceu a cirurgia?'
 											onChangeText={handleChange('hospitalization.location')}
 											errors={touched.hospitalization?.location && errors.hospitalization?.location ? errors.hospitalization.location : ''}
-											onBlur={() => setFieldTouched('hospitalization.reason')}
+											onBlur={() => setFieldTouched('hospitalization.location')}
 											editable={!submitLoading}
 											icon={<HospitalizationIcon fill='#000' width='35' height='35' />}
 										/>

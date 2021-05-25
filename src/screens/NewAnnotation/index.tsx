@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, TouchableWithoutFeedback, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TouchableWithoutFeedback, ScrollView, Keyboard } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { colors, globalStyles } from '../../assets/styles';
 import AuthContext from '../../contexts/auth';
@@ -16,6 +16,7 @@ import PostItSave from '../../assets/icons/post-it-save.svg';
 import * as Yup from 'yup';
 import { Button, InputButton, ModalComponent, TextArea } from '../../components';
 import { buttonIcons } from '../../assets/icons';
+import BottomTabBarContext from '../../contexts/bottomTabBar';
 
 const validationSchema = Yup.object().shape({
 	description: Yup.string().required('Informe a descrição da anotação'),
@@ -29,6 +30,7 @@ const initialValues: Save = {
 
 const NewAnnotation: React.FC = () => {
 	const { user } = useContext(AuthContext);
+	const { setShowTabBar } = useContext(BottomTabBarContext);
 	const { addIcon } = buttonIcons;
 	const [items, setItems] = useState<UserDisease[]>([]);
 	const [loading, setLoading] = useState(true);
@@ -36,7 +38,6 @@ const NewAnnotation: React.FC = () => {
 	const [hasError, setHasError] = useState(false);
 	const [showModal, setShowModal] = useState(false);
 	const [selectedDiseaseIndex, setSelectedDiseaseIndex] = useState<number | null>(null);
-
 	useEffect(() => {
 		getData();
 	}, []);
@@ -56,6 +57,20 @@ const NewAnnotation: React.FC = () => {
 			setLoading(false);
 		}
 	}
+
+	useEffect(() => {
+		const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+			setShowTabBar(false);
+		});
+		const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+			setShowTabBar(true);
+		});
+
+		return () => {
+			keyboardDidHideListener.remove();
+			keyboardDidShowListener.remove();
+		};
+	}, []);
 
 	async function handleSubmitForm(values: Save, { resetForm }: FormikHelpers<Save>) {
 		setSubmitForm(true);

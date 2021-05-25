@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, StyleSheet, Text, SafeAreaView, ScrollView, TouchableWithoutFeedback } from 'react-native';
+import { View, StyleSheet, Text, SafeAreaView, ScrollView, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { colors, globalStyles } from '../../assets/styles';
 import { Formik as Form, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
@@ -23,6 +23,7 @@ import moment from 'moment';
 import { buttonIcons, pageIcons } from '../../assets/icons';
 import { Medicine } from '../../interfaces/medicine';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import BottomTabBarContext from '../../contexts/bottomTabBar';
 
 const initialValues: Save = {
 	amount: '',
@@ -62,6 +63,8 @@ const validationSchema = Yup.object().shape({
 
 const NewUserMedicine: React.FC = () => {
 	const { user } = useContext(AuthContext);
+	const { setShowTabBar } = useContext(BottomTabBarContext);
+
 	const { addIcon } = buttonIcons;
 	const { searchIcon } = pageIcons;
 	const [showBeginDatePicker, setShowBeginDatePicker] = useState(false);
@@ -80,6 +83,20 @@ const NewUserMedicine: React.FC = () => {
 
 	useEffect(() => {
 		getData();
+	}, []);
+
+	useEffect(() => {
+		const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+			setShowTabBar(false);
+		});
+		const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+			setShowTabBar(true);
+		});
+
+		return () => {
+			keyboardDidHideListener.remove();
+			keyboardDidShowListener.remove();
+		};
 	}, []);
 
 	async function getData() {

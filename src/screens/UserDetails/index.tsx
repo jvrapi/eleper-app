@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, Text, SafeAreaView, View } from 'react-native';
+import { StyleSheet, Text, SafeAreaView, View, Keyboard } from 'react-native';
 import { colors, globalStyles } from '../../assets/styles';
 import ProfileIcon from '../../assets/icons/profile.svg';
 import { UserDetails } from '../../interfaces/user';
@@ -16,6 +16,7 @@ import { getDetails, update } from '../../services/user';
 import AuthContext from '../../contexts/auth';
 import ChangePasswordIcon from '../../assets/icons/change-password.svg';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import BottomTabBarContext from '../../contexts/bottomTabBar';
 
 const initialValues: UserDetails = {
 	id: '',
@@ -41,6 +42,8 @@ const validationSchema = Yup.object().shape({
 
 const UserDetailsScreen: React.FC = () => {
 	const { user } = useContext(AuthContext);
+	const { setShowTabBar } = useContext(BottomTabBarContext);
+
 	const [loading, setLoading] = useState(true);
 	const [hasError, setHasError] = useState(false);
 	const [submitLoading, setSubmitLoading] = useState(false);
@@ -51,6 +54,20 @@ const UserDetailsScreen: React.FC = () => {
 
 	useEffect(() => {
 		getData();
+	}, []);
+
+	useEffect(() => {
+		const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+			setShowTabBar(false);
+		});
+		const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+			setShowTabBar(true);
+		});
+
+		return () => {
+			keyboardDidHideListener.remove();
+			keyboardDidShowListener.remove();
+		};
 	}, []);
 
 	async function getData() {

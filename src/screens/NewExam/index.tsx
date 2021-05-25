@@ -1,7 +1,7 @@
 import { Formik as Form, FormikHelpers } from 'formik';
 import mime from 'mime';
-import React, { useContext, useState } from 'react';
-import { Platform, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { Keyboard, Platform, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import * as Yup from 'yup';
 import { buttonIcons, inputIcons, pageIcons } from '../../assets/icons';
@@ -9,6 +9,7 @@ import { colors, globalStyles } from '../../assets/styles';
 import { Button, InputComponent, PickFile } from '../../components';
 import { FileProps } from '../../components/PickFile';
 import AuthContext from '../../contexts/auth';
+import BottomTabBarContext from '../../contexts/bottomTabBar';
 import { Exam } from '../../interfaces/exam';
 import { save } from '../../services/exam';
 
@@ -27,9 +28,11 @@ const validationSchema = Yup.object().shape({
 
 const NewExam = () => {
 	const { user } = useContext(AuthContext);
+	const { setShowTabBar } = useContext(BottomTabBarContext);
+
 	const { newExamIcon } = pageIcons;
 	const { nameIcon } = inputIcons;
-	const { terminatedEditExamIcon, addIcon } = buttonIcons;
+	const { addIcon } = buttonIcons;
 	const [fileProps, setFileProps] = useState<FileProps>({} as FileProps);
 	const [loading, setLoading] = useState(false);
 
@@ -66,8 +69,21 @@ const NewExam = () => {
 		} finally {
 			setLoading(false);
 		}
-		return;
 	}
+
+	useEffect(() => {
+		const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+			setShowTabBar(false);
+		});
+		const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+			setShowTabBar(true);
+		});
+
+		return () => {
+			keyboardDidHideListener.remove();
+			keyboardDidShowListener.remove();
+		};
+	}, []);
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -75,14 +91,20 @@ const NewExam = () => {
 				<View style={globalStyles.iconContainer}>{newExamIcon}</View>
 				<Text style={styles.title}>Novo Exame</Text>
 			</View>
-			<Form initialValues={initialValues} onSubmit={handleSubmitForm} validationSchema={validationSchema} validateOnChange={false}>
+			<Form
+				initialValues={initialValues}
+				onSubmit={handleSubmitForm}
+				validationSchema={validationSchema}
+				validateOnChange={false}
+				validateOnBlur={false}
+			>
 				{({ values, handleChange, handleSubmit, errors, setFieldTouched, touched, setFieldValue }) => (
 					<>
 						<View style={globalStyles.inputArea}>
 							<InputComponent
+								value={values.name}
 								label='Nome'
 								errors={touched.name && errors.name ? errors.name : ''}
-								value={values.name}
 								onChangeText={handleChange('name')}
 								onBlur={() => setFieldTouched('name')}
 								icon={nameIcon}

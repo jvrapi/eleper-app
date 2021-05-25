@@ -14,7 +14,6 @@ const NewUserRegisterDisease = () => {
 	const [items, setItems] = useState<MultiSelectItems[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [hasError, setHasError] = useState(false);
-	const [loadingText, setLoadingText] = useState('Estou preparando algumas coisas, por favor aguarde');
 	const { addIcon } = buttonIcons;
 	const navigation = useNavigation();
 	const { user } = useContext(AuthContext);
@@ -49,7 +48,6 @@ const NewUserRegisterDisease = () => {
 
 	async function registerDiseasesTerminated() {
 		setLoading(true);
-		setLoadingText('Estou cadastrando essas informações, aguarde alguns instantes');
 		const itemsSelected = items
 			.filter(item => item.selected)
 			.map(disease => ({
@@ -100,7 +98,6 @@ const NewUserRegisterDisease = () => {
 			)}
 			{loading && (
 				<>
-					<Text style={styles.loadingText}>{loadingText}</Text>
 					<LoadingComponent />
 				</>
 			)}

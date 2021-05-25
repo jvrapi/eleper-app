@@ -26,9 +26,13 @@ const Profile = () => {
 		setShowModal(false);
 		try {
 			await deleteAccount(user?.id as string);
+			showMessage({
+				message: 'Conta excluída com sucesso',
+				type: 'success',
+				icon: 'success',
+			});
 			signOut();
-		} catch (error) {
-			console.log(error.response.status);
+		} catch {
 			showMessage({
 				message: 'Erro ao tentar excluir a sua conta, pode tentar de novo?',
 				type: 'danger',
@@ -36,6 +40,15 @@ const Profile = () => {
 			});
 			setLoading(false);
 		}
+	}
+
+	function logout() {
+		showMessage({
+			message: 'Deslogado com sucesso',
+			type: 'success',
+			icon: 'success',
+		});
+		signOut();
 	}
 
 	return (
@@ -54,19 +67,13 @@ const Profile = () => {
 								<Text style={styles.cardText}>Meus dados</Text>
 							</TouchableWithoutFeedback>
 
-							<TouchableWithoutFeedback style={styles.card}>
-								<View style={styles.iconContent}>{<TermsAndConditionsIcon width='30' height='30' fill='#000' />}</View>
-
-								<Text style={styles.cardText}>Termos de uso</Text>
-							</TouchableWithoutFeedback>
-
 							<TouchableWithoutFeedback style={styles.card} onPress={() => setShowModal(true)}>
 								<View style={styles.iconContent}>{<TrashIcon width='30' height='30' fill='#000' />}</View>
 
 								<Text style={styles.cardText}>Excluir conta</Text>
 							</TouchableWithoutFeedback>
 
-							<TouchableWithoutFeedback style={styles.card} onPress={signOut}>
+							<TouchableWithoutFeedback style={styles.card} onPress={logout}>
 								<View style={styles.iconContent}>{<LogoutIcon width='35' height='35' fill='#000' />}</View>
 
 								<Text style={styles.cardText}>Sair</Text>
@@ -78,7 +85,10 @@ const Profile = () => {
 			<ModalComponent showModal={showModal} close={() => setShowModal(false)}>
 				<View style={modalStyles.container}>
 					<Text style={modalStyles.headerText}>Atenção!</Text>
-					<Text style={modalStyles.bodyText}>Quer realmente excluir essa doença?</Text>
+					<Text style={modalStyles.bodyText}>
+						Ao excluir a sua conta, todos os dados e arquivos que foram armazenados aqui serão perdidos permanentemente.{'\n'}Tem certeza
+						que quer excluir a sua conta?
+					</Text>
 					<View style={modalStyles.buttonsContainer}>
 						<Button
 							onPress={onPressDeleteAccount}
@@ -169,7 +179,7 @@ const modalStyles = StyleSheet.create({
 	bodyText: {
 		fontFamily: 'Poppins-Regular',
 		textAlign: 'center',
-		fontSize: 20,
+		fontSize: 17,
 		marginVertical: 20,
 	},
 

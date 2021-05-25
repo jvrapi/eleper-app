@@ -1,29 +1,13 @@
-import React, { useContext, useEffect } from 'react';
-import AuthContext from '../contexts/auth';
-
-import AuthRoutes from '../routes/auth.routes';
-import AppRoutes from '../routes/app.routes';
+import React, { useContext } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { LoadingComponent } from '../components';
-import { View, StyleSheet, Keyboard } from 'react-native';
+import AuthContext from '../contexts/auth';
 import BottomTabBarContext from '../contexts/bottomTabBar';
+import AppRoutes from '../routes/app.routes';
+import AuthRoutes from '../routes/auth.routes';
 
 const Routes: React.FC = () => {
 	const { user, loading } = useContext(AuthContext);
-	const { setShowTabBar } = useContext(BottomTabBarContext);
-
-	useEffect(() => {
-		const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
-			setShowTabBar(false);
-		});
-		const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
-			setShowTabBar(true);
-		});
-
-		return () => {
-			keyboardDidHideListener.remove();
-			keyboardDidShowListener.remove();
-		};
-	}, []);
 
 	if (loading) {
 		return (

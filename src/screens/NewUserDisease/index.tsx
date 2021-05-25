@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Keyboard } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { buttonIcons, pageIcons } from '../../assets/icons';
 import { colors, globalStyles } from '../../assets/styles';
 import { Button, ErrorComponent, LoadingComponent, MultiSelect } from '../../components';
 import { MultiSelectItems } from '../../components/MultiSelect';
 import AuthContext from '../../contexts/auth';
+import BottomTabBarContext from '../../contexts/bottomTabBar';
 import { getUnrecordedDiseases, saveMany } from '../../services/user.disease';
 
 const NewDisease = () => {
@@ -15,6 +16,7 @@ const NewDisease = () => {
 	const { user } = useContext(AuthContext);
 	const { newDiseaseIcon } = pageIcons;
 	const { addIcon } = buttonIcons;
+	const { setShowTabBar } = useContext(BottomTabBarContext);
 
 	function onSelectedItem(itemId: string) {
 		const arrayFormatted = items.map(item => {
@@ -82,6 +84,20 @@ const NewDisease = () => {
 		getDiseases();
 	}, []);
 
+	useEffect(() => {
+		const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+			setShowTabBar(false);
+		});
+		const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+			setShowTabBar(true);
+		});
+
+		return () => {
+			keyboardDidHideListener.remove();
+			keyboardDidShowListener.remove();
+		};
+	}, []);
+
 	return (
 		<SafeAreaView style={styles.container}>
 			{!loading && !hasError && (
@@ -126,7 +142,7 @@ const styles = StyleSheet.create({
 		marginTop: 10,
 	},
 	scroll: {
-		height: 270,
+		height: 370,
 		width: '95%',
 		marginVertical: 30,
 		alignItems: 'center',

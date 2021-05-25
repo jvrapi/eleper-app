@@ -221,6 +221,8 @@ const ExamScreen: React.FC = () => {
 	}
 	return (
 		<SafeAreaView style={styles.container}>
+			<Text style={styles.title}>Meus exames</Text>
+
 			{!loading && !hasError && items.length > 0 && (
 				<>
 					<MultiItems
@@ -232,7 +234,6 @@ const ExamScreen: React.FC = () => {
 						itemsAmount={selectedItemsAmount}
 						selectedItemsText={multiItemsText()}
 					>
-						<Text style={styles.title}>Meus exames</Text>
 						<View style={styles.scrollContainer}>
 							<ScrollView style={styles.scroll} refreshControl={<RefreshControl refreshing={loading} onRefresh={onRefresh} />}>
 								{items.map((item, i) => (

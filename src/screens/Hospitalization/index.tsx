@@ -200,6 +200,7 @@ const HospitalizationList: React.FC = () => {
 
 	return (
 		<SafeAreaView style={styles.container}>
+			<Text style={styles.title}>Minhas internações</Text>
 			{!loading && !hasError && items.length > 0 && (
 				<>
 					<MultiItems
@@ -211,7 +212,6 @@ const HospitalizationList: React.FC = () => {
 						itemsAmount={selectedItemsAmount}
 						selectedItemsText={multiItemsText()}
 					>
-						<Text style={styles.title}>Minhas internações</Text>
 						<View style={styles.scrollContainer}>
 							<ScrollView style={styles.scroll} refreshControl={<RefreshControl refreshing={loading} onRefresh={onRefresh} />}>
 								{items.map((item, i) => (
