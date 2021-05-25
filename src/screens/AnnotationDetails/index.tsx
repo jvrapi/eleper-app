@@ -12,7 +12,6 @@ import { colors, globalStyles } from '../../assets/styles';
 import NewPostItIcon from '../../assets/icons/new-post-it.svg';
 import UserDiseaseIcon from '../../assets/icons/user-disease.svg';
 import PostItEdit from '../../assets/icons/post-it-edit.svg';
-import PostItSave from '../../assets/icons/post-it-save.svg';
 
 import { Formik as Form } from 'formik';
 import * as Yup from 'yup';
@@ -81,6 +80,7 @@ const AnnotationDetails: React.FC<Props> = ({ route }) => {
 				icon: 'danger',
 				type: 'danger',
 			});
+			setHasError(true);
 		} finally {
 			setLoading(false);
 		}

@@ -1,19 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { colors, globalStyles } from '../../assets/styles';
-import { pageIcons, buttonIcons, inputIcons } from '../../assets/icons';
-import { Button, MultiSelect, LoadingComponent, ErrorComponent, ModalComponent, InputComponent } from '../../components';
-import { MultiSelectItems } from '../../components/MultiSelect';
-
-import { getUnrecordedDiseases, saveMany } from '../../services/user.disease';
-import { save } from '../../services/disease';
-
+import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
+import { buttonIcons, pageIcons } from '../../assets/icons';
+import { colors, globalStyles } from '../../assets/styles';
+import { Button, ErrorComponent, LoadingComponent, MultiSelect } from '../../components';
+import { MultiSelectItems } from '../../components/MultiSelect';
 import AuthContext from '../../contexts/auth';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import * as Yup from 'yup';
-import { Formik as Form } from 'formik';
+import { getUnrecordedDiseases, saveMany } from '../../services/user.disease';
 
 const NewDisease = () => {
 	const [items, setItems] = useState<MultiSelectItems[]>([]);
@@ -21,11 +14,7 @@ const NewDisease = () => {
 	const [hasError, setHasError] = useState(false);
 	const { user } = useContext(AuthContext);
 	const { newDiseaseIcon } = pageIcons;
-	const { checkIcon, addIcon } = buttonIcons;
-	const { diseaseIcon } = inputIcons;
-
-	const [showModal, setShowModal] = useState(false);
-	const [savingDisease, setSavingDisease] = useState(false);
+	const { addIcon } = buttonIcons;
 
 	function onSelectedItem(itemId: string) {
 		const arrayFormatted = items.map(item => {
@@ -37,14 +26,6 @@ const NewDisease = () => {
 
 		setItems(arrayFormatted);
 	}
-
-	const initialValues = {
-		name: '',
-	};
-
-	const validationSchema = Yup.object().shape({
-		name: Yup.string().required('Preencha este campo'),
-	});
 
 	async function getDiseases() {
 		try {
@@ -97,28 +78,6 @@ const NewDisease = () => {
 		}
 	}
 
-	async function handleSubmitForm(formValues: { name: string }) {
-		setSavingDisease(true);
-		try {
-			await save(formValues);
-			setShowModal(false);
-			await getDiseases();
-			showMessage({
-				message: 'Obrigado! Acrescentamos essa doença no nossos registros',
-				type: 'success',
-				icon: 'success',
-			});
-		} catch (error) {
-			setSavingDisease(false);
-
-			showMessage({
-				message: 'Não consegui salvar essa doença, pode tentar de novo?',
-				type: 'danger',
-				icon: 'danger',
-			});
-		}
-	}
-
 	useEffect(() => {
 		getDiseases();
 	}, []);
@@ -137,42 +96,13 @@ const NewDisease = () => {
 					</View>
 
 					<View style={styles.Button}>
-						<Button buttonText='Registrar doenças' icon={checkIcon} onPress={onSubmit} />
+						<Button buttonText='Registrar doenças' icon={addIcon} onPress={onSubmit} />
 					</View>
-
-					<TouchableOpacity>
-						<Text style={styles.diseaseNotFoundButtonText} onPress={() => setShowModal(true)}>
-							Não encontrei a doença
-						</Text>
-					</TouchableOpacity>
 				</View>
 			)}
 
 			{loading && <LoadingComponent />}
 			{hasError && <ErrorComponent />}
-			<ModalComponent showModal={showModal} close={() => setShowModal(false)}>
-				<View style={styles.modalBody}>
-					<Text style={styles.text}>
-						Nos ajude a melhorar! {'\n'} Informe qual doença você não encontrou e eu a cadastrarei no meu banco de dados
-					</Text>
-					<Form initialValues={initialValues} onSubmit={handleSubmitForm} validationSchema={validationSchema} validateOnChange={false}>
-						{({ values, handleChange, handleSubmit, errors, setFieldTouched, touched }) => (
-							<>
-								<InputComponent
-									label='Digite o nome da doença'
-									icon={diseaseIcon}
-									value={values.name}
-									onChangeText={handleChange('name')}
-									errors={touched.name && errors.name ? errors.name : ''}
-									onBlur={() => setFieldTouched('name')}
-									editable={!savingDisease}
-								/>
-								<Button buttonText='Finalizado' icon={addIcon} loading={savingDisease} onPress={() => handleSubmit()} />
-							</>
-						)}
-					</Form>
-				</View>
-			</ModalComponent>
 		</SafeAreaView>
 	);
 };

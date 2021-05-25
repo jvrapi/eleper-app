@@ -1,25 +1,23 @@
 import { RouteProp } from '@react-navigation/core';
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, SafeAreaView, View } from 'react-native';
-import { showMessage } from 'react-native-flash-message';
-import { colors, globalStyles } from '../../assets/styles';
-import { Update, UserMedicineDetails } from '../../interfaces/user.medicine';
-import { getById, update } from '../../services/user.medicine';
-import { Button, InputButton, InputComponent, ErrorComponent, LoadingComponent } from '../../components';
 import { Formik as Form } from 'formik';
-import { DateTimeToBrDate } from '../../utils/function';
-import * as Yup from 'yup';
-import MedicineIcon from '../../assets/icons/medicine-icon.svg';
-import MedicineDosageIcon from '../../assets/icons/medicine-dosage.svg';
-import MedicineInstructionIcon from '../../assets/icons/medicine-instructions.svg';
-import UserDiseaseIcon from '../../assets/icons/user-disease.svg';
-import MedicalDateIcon from '../../assets/icons/medical-date.svg';
-import NewMedicineIcon from '../../assets/icons/new-medicine.svg';
-import NewMedicinePlusIcon from '../../assets/icons/medicine-plus.svg';
-
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { showMessage } from 'react-native-flash-message';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import * as Yup from 'yup';
 import { buttonIcons } from '../../assets/icons';
+import MedicalDateIcon from '../../assets/icons/medical-date.svg';
+import MedicineDosageIcon from '../../assets/icons/medicine-dosage.svg';
+import MedicineIcon from '../../assets/icons/medicine-icon.svg';
+import MedicineInstructionIcon from '../../assets/icons/medicine-instructions.svg';
+import NewMedicineIcon from '../../assets/icons/new-medicine.svg';
+import UserDiseaseIcon from '../../assets/icons/user-disease.svg';
+import { colors, globalStyles } from '../../assets/styles';
+import { Button, ErrorComponent, InputButton, InputComponent, LoadingComponent } from '../../components';
+import { UserMedicineDetails } from '../../interfaces/user.medicine';
+import { getById, update } from '../../services/user.medicine';
+import { DateTimeToBrDate } from '../../utils/function';
 
 type RootStackParamList = {
 	MedicineDetails: { id: string };

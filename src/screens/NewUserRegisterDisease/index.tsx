@@ -1,35 +1,21 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useContext, useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
+import { buttonIcons } from '../../assets/icons';
 import { colors } from '../../assets/styles';
-import { ErrorComponent, Button, InputComponent, LoadingComponent, ModalComponent, MultiSelect } from '../../components';
+import { Button, ErrorComponent, LoadingComponent, MultiSelect } from '../../components';
 import { MultiSelectItems } from '../../components/MultiSelect';
+import AuthContext from '../../contexts/auth';
 import * as DiseaseService from '../../services/disease';
 import * as UserDiseaseService from '../../services/user.disease';
-import { inputIcons, buttonIcons } from '../../assets/icons';
-import { Formik as Form } from 'formik';
-import * as Yup from 'yup';
-import { DiseaseSave } from '../../interfaces/disease';
-import { useNavigation } from '@react-navigation/native';
-import AuthContext from '../../contexts/auth';
-
-const initialValues = {
-	name: '',
-};
-
-const validationSchema = Yup.object().shape({
-	name: Yup.string().required('Preencha este campo'),
-});
 
 const NewUserRegisterDisease = () => {
 	const [items, setItems] = useState<MultiSelectItems[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [hasError, setHasError] = useState(false);
-	const [showModal, setShowModal] = useState(false);
-	const [savingDisease, setSavingDisease] = useState(false);
 	const [loadingText, setLoadingText] = useState('Estou preparando algumas coisas, por favor aguarde');
-	const { checkIcon, addIcon } = buttonIcons;
-	const { diseaseIcon } = inputIcons;
+	const { addIcon } = buttonIcons;
 	const navigation = useNavigation();
 	const { user } = useContext(AuthContext);
 
@@ -90,32 +76,6 @@ const NewUserRegisterDisease = () => {
 		}
 	}
 
-	function changeModalVisibility() {
-		setShowModal(!showModal);
-	}
-
-	async function handleSubmitForm(formValues: DiseaseSave) {
-		setSavingDisease(true);
-		try {
-			await DiseaseService.save(formValues);
-			setShowModal(false);
-			await getDiseases();
-			showMessage({
-				message: 'Obrigado! Acrescentamos essa doença no nossos registros',
-				type: 'success',
-				icon: 'success',
-			});
-		} catch (error) {
-			setSavingDisease(false);
-
-			showMessage({
-				message: 'Não consegui salvar essa doença, pode tentar de novo?',
-				type: 'danger',
-				icon: 'danger',
-			});
-		}
-	}
-
 	useEffect(() => {
 		getDiseases();
 	}, []);
@@ -136,11 +96,6 @@ const NewUserRegisterDisease = () => {
 					<View style={styles.Button}>
 						<Button buttonText='Finalizei!' icon={addIcon} onPress={registerDiseasesTerminated} />
 					</View>
-					<TouchableOpacity>
-						<Text style={styles.diseaseNotFoundButtonText} onPress={() => setShowModal(true)}>
-							Não encontrei a doença
-						</Text>
-					</TouchableOpacity>
 				</View>
 			)}
 			{loading && (
@@ -150,31 +105,6 @@ const NewUserRegisterDisease = () => {
 				</>
 			)}
 			{hasError && <ErrorComponent />}
-			{showModal && (
-				<ModalComponent showModal={showModal} close={changeModalVisibility}>
-					<View style={styles.modalBody}>
-						<Text style={styles.text}>
-							Nos ajude a melhorar! {'\n'} Informe qual doença você não encontrou e eu a cadastrarei no meu banco de dados
-						</Text>
-						<Form initialValues={initialValues} onSubmit={handleSubmitForm} validationSchema={validationSchema} validateOnChange={false}>
-							{({ values, handleChange, handleSubmit, errors, setFieldTouched, touched }) => (
-								<>
-									<InputComponent
-										label='Digite o nome da doença'
-										icon={diseaseIcon}
-										value={values.name}
-										onChangeText={handleChange('name')}
-										errors={touched.name && errors.name ? errors.name : ''}
-										onBlur={() => setFieldTouched('name')}
-										editable={!savingDisease}
-									/>
-									<Button buttonText='Finalizado' icon={checkIcon} loading={savingDisease} onPress={() => handleSubmit()} />
-								</>
-							)}
-						</Form>
-					</View>
-				</ModalComponent>
-			)}
 		</SafeAreaView>
 	);
 };
