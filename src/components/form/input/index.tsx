@@ -5,7 +5,7 @@ import { colors } from '../../../assets/styles';
 
 interface Props extends TextInputProps {
 	password?: boolean;
-	errors: string | string[] | FormikErrors<any> | FormikErrors<any>[];
+	errors?: string | string[] | FormikErrors<any> | FormikErrors<any>[];
 	label: string;
 	icon?: JSX.Element;
 }
@@ -27,7 +27,7 @@ const InputComponent: React.FC<Props> = ({ password, errors, label, icon, ...pro
 	);
 };
 
-const styles = (errors: string | string[] | FormikErrors<any> | FormikErrors<any>[]) =>
+const styles = (errors?: string | string[] | FormikErrors<any> | FormikErrors<any>[]) =>
 	StyleSheet.create({
 		container: {
 			width: '100%',

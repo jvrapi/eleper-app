@@ -19,6 +19,11 @@ export async function getById(id: string): Promise<AxiosResponse<Details>> {
 	return response;
 }
 
+export async function getByName(name: string): Promise<AxiosResponse<UserDisease[]>> {
+	const response = await api.get(`${baseUrl}/name/${name}`);
+	return response;
+}
+
 export async function saveMany(userDiseases: Save[]): Promise<AxiosResponse<Save[]>> {
 	const response = await api.post(`${baseUrl}/saveMany`, userDiseases);
 	return response;

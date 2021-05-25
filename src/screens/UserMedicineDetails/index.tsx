@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, SafeAreaView, View } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { colors, globalStyles } from '../../assets/styles';
-import { UserMedicineDetails } from '../../interfaces/user.medicine';
+import { Update, UserMedicineDetails } from '../../interfaces/user.medicine';
 import { getById, update } from '../../services/user.medicine';
 import { Button, InputButton, InputComponent, ErrorComponent, LoadingComponent } from '../../components';
 import { Formik as Form } from 'formik';
@@ -31,13 +31,13 @@ type Props = {
 	route: UserMedicineDetailsScreenRouteProp;
 };
 
-const initialValues = {
+const initialValues: UserMedicineDetails = {
 	id: '',
 	amount: '',
 	instruction: '',
 	beginDate: '',
 	endDate: '',
-	userId: '',
+	userDiseaseId: '',
 	medicine: {
 		id: '',
 		name: '',
@@ -113,8 +113,7 @@ const UserMedicineDetailsScreen: React.FC<Props> = ({ route }) => {
 			instruction: values.instruction,
 			beginDate: values.beginDate,
 			endDate: values.endDate,
-			userId: values.userId,
-			diseaseId: values.disease.id,
+			userDiseaseId: values.userDiseaseId,
 			medicineId: values.medicine.id,
 		};
 		try {

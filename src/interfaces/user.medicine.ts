@@ -8,11 +8,9 @@ interface DefaultFields {
 	endDate: string | null;
 }
 export interface Save extends DefaultFields {
-	diseaseId: string;
+	userDiseaseId: string;
 	userId: string;
-	medicine: {
-		name?: string;
-	};
+	medicineId: string;
 }
 
 export interface UserMedicine {
@@ -31,14 +29,13 @@ export interface Update {
 	instruction: string;
 	beginDate: string;
 	endDate: string | null;
-	userId: string;
-	diseaseId: string;
+	userDiseaseId: string;
 	medicineId: string;
 }
 
 export interface UserMedicineDetails extends DefaultFields {
 	id: string;
-	userId: string;
+	userDiseaseId: string;
 	disease: {
 		id: string;
 		name: string;
