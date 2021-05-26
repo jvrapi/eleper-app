@@ -190,7 +190,13 @@ const NewUserMedicine: React.FC = () => {
 						<View style={globalStyles.iconContainer}>{<NewMedicineIcon fill='#000' width='80' height='80' />}</View>
 						<Text style={styles.title}>Novo Medicamento</Text>
 					</View>
-					<Form initialValues={initialValues} onSubmit={handleSubmitForm} validationSchema={validationSchema} validateOnChange={false}>
+					<Form
+						initialValues={initialValues}
+						onSubmit={handleSubmitForm}
+						validationSchema={validationSchema}
+						validateOnChange={false}
+						validateOnBlur={false}
+					>
 						{({ values, handleChange, handleSubmit, errors, setFieldTouched, touched, setFieldValue }) => (
 							<>
 								<View style={globalStyles.inputArea}>
@@ -344,7 +350,7 @@ const NewUserMedicine: React.FC = () => {
 					</View>
 				</View>
 			</ModalComponent>
-			{loading && <LoadingComponent />}
+			{loading && <LoadingComponent style={styles.loading} />}
 			{hasError && <ErrorComponent />}
 		</SafeAreaView>
 	);
@@ -375,6 +381,9 @@ const styles = StyleSheet.create({
 	},
 	submitLoading: {
 		alignSelf: 'center',
+	},
+	loading: {
+		flex: 1,
 	},
 });
 

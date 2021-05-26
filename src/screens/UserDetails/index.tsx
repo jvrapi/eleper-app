@@ -9,7 +9,7 @@ import moment from 'moment';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { Formik as Form, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
-import { Button, InputButton, InputComponent, ModalComponent } from '../../components';
+import { Button, ErrorComponent, InputButton, InputComponent, LoadingComponent, ModalComponent } from '../../components';
 import { cpfMask } from '../../utils/mask';
 import { showMessage } from 'react-native-flash-message';
 import { getDetails, update } from '../../services/user';
@@ -205,6 +205,8 @@ const UserDetailsScreen: React.FC = () => {
 					</Form>
 				</KeyboardAwareScrollView>
 			)}
+			{loading && <LoadingComponent style={styles.loading} />}
+			{hasError && <ErrorComponent />}
 		</SafeAreaView>
 	);
 };
@@ -233,5 +235,8 @@ const styles = StyleSheet.create({
 	submitButton: {
 		marginTop: 10,
 		alignSelf: 'center',
+	},
+	loading: {
+		flex: 1,
 	},
 });

@@ -130,6 +130,7 @@ const UserDiseaseDetails: React.FC<Props> = ({ route }) => {
 						initialValues={userDisease}
 						onSubmit={handleSubmitForm}
 						validationSchema={validationSchema}
+						validateOnBlur={false}
 						validateOnChange={false}
 					>
 						{({ values, handleSubmit, errors, setFieldTouched, touched, setFieldValue }) => (
@@ -202,7 +203,7 @@ const UserDiseaseDetails: React.FC<Props> = ({ route }) => {
 					</ModalComponent>
 				</>
 			)}
-			{loading && <LoadingComponent />}
+			{loading && <LoadingComponent style={styles.loading} />}
 			{hasError && <ErrorComponent />}
 		</SafeAreaView>
 	);
@@ -266,6 +267,9 @@ const styles = StyleSheet.create({
 
 	firstModalButton: {
 		marginRight: 20,
+	},
+	loading: {
+		flex: 1,
 	},
 });
 export default UserDiseaseDetails;

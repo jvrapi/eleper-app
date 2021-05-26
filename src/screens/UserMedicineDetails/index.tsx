@@ -161,6 +161,7 @@ const UserMedicineDetailsScreen: React.FC<Props> = ({ route }) => {
 				initialValues={userMedicine}
 				onSubmit={handleSubmitForm}
 				validationSchema={validationSchema}
+				validateOnBlur={false}
 				validateOnChange={false}
 			>
 				{({ values, handleChange, handleSubmit, errors, setFieldTouched, touched, setFieldValue }) => (
@@ -251,7 +252,7 @@ const UserMedicineDetailsScreen: React.FC<Props> = ({ route }) => {
 					</>
 				)}
 			</Form>
-			{loading && <LoadingComponent />}
+			{loading && <LoadingComponent style={styles.loading} />}
 			{hasError && <ErrorComponent />}
 		</SafeAreaView>
 	);
@@ -275,5 +276,8 @@ const styles = StyleSheet.create({
 		fontFamily: 'Poppins-SemiBold',
 		fontSize: 20,
 		marginTop: 10,
+	},
+	loading: {
+		flex: 1,
 	},
 });

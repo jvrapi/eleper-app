@@ -1,5 +1,5 @@
 import { FormikErrors } from 'formik';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { StyleSheet, TextInputProps, View, TextInput } from 'react-native';
 import { colors } from '../../../assets/styles';
 
@@ -11,6 +11,14 @@ interface Props extends TextInputProps {
 }
 
 const InputComponent: React.FC<Props> = ({ password, errors, label, icon, ...props }) => {
+	const textInputRef = useRef<TextInput>(null);
+
+	useEffect(() => {
+		textInputRef.current?.setNativeProps({
+			style: input,
+		});
+	}, [password]);
+
 	function renderLabel() {
 		if (errors) {
 			return errors as string;
@@ -22,7 +30,14 @@ const InputComponent: React.FC<Props> = ({ password, errors, label, icon, ...pro
 		<View style={container}>
 			{icon}
 
-			<TextInput style={input} placeholder={renderLabel()} secureTextEntry={password} placeholderTextColor='#8e8e8e' {...props} />
+			<TextInput
+				ref={textInputRef}
+				style={input}
+				placeholder={renderLabel()}
+				secureTextEntry={password}
+				placeholderTextColor='#8e8e8e'
+				{...props}
+			/>
 		</View>
 	);
 };

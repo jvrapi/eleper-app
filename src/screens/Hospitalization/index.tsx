@@ -239,7 +239,7 @@ const HospitalizationList: React.FC = () => {
 					onPress={onPressFloatButton}
 				/>
 			)}
-			{loading && <LoadingComponent />}
+			{loading && <LoadingComponent style={styles.loading} />}
 			{hasError && <ErrorComponent />}
 			{!loading && !hasError && items.length === 0 && <NoDataComponent />}
 		</SafeAreaView>
@@ -318,5 +318,8 @@ const styles = StyleSheet.create({
 	floatButton: {
 		bottom: 100,
 		right: 30,
+	},
+	loading: {
+		flex: 1,
 	},
 });

@@ -28,7 +28,7 @@ const MultiSelectComponent: React.FC<Props> = ({ listItems, inputLabelText, onSe
 
 	function onSearch(value: string) {
 		if (value) {
-			const searchItems = listItems.filter(item => item.name.toLocaleLowerCase().includes(value));
+			const searchItems = listItems.filter(item => item.name.toLocaleLowerCase().includes(value.toLocaleLowerCase()));
 			setItems(searchItems);
 		} else {
 			setItems(listItems);

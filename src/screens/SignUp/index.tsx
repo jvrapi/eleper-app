@@ -72,7 +72,13 @@ const SignUp: React.FC = () => {
 				<Text style={styles.title}> Seja bem-vindo</Text>
 				<Text style={styles.subTitle}>Informe os dados para realizar o cadastro</Text>
 
-				<Form initialValues={initialValues} onSubmit={handleSubmitForm} validationSchema={validationSchema} validateOnChange={false}>
+				<Form
+					initialValues={initialValues}
+					onSubmit={handleSubmitForm}
+					validationSchema={validationSchema}
+					validateOnChange={false}
+					validateOnBlur={false}
+				>
 					{({ values, handleChange, handleSubmit, errors, setFieldTouched, touched, setFieldValue }) => (
 						<>
 							<View style={globalStyles.inputArea}>

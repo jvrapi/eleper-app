@@ -16,7 +16,7 @@ import MedicalToolsIcon from '../../assets/icons/medical-tools.svg';
 import StethoscopeIcon from '../../assets/icons/stethoscope.svg';
 import SurgeryAfterEffectsIcon from '../../assets/icons/surgery-after-effects.svg';
 import UserSurgeryIcons from '../../assets/icons/user-surgery.svg';
-import { Button, InputButton, InputComponent } from '../../components';
+import { Button, ErrorComponent, InputButton, InputComponent, LoadingComponent } from '../../components';
 import { colors, globalStyles } from '../../assets/styles';
 
 import { Formik as Form } from 'formik';
@@ -143,6 +143,7 @@ const UserSurgeryDetails: React.FC<Props> = ({ route }) => {
 						onSubmit={handleSubmitForm}
 						validationSchema={validationSchema}
 						validateOnChange={false}
+						validateOnBlur={false}
 					>
 						{({ values, handleChange, handleSubmit, errors, setFieldTouched, touched, setFieldValue }) => (
 							<KeyboardAwareScrollView style={styles.keyboard}>
@@ -238,6 +239,8 @@ const UserSurgeryDetails: React.FC<Props> = ({ route }) => {
 					</Form>
 				</>
 			)}
+			{loading && <LoadingComponent style={styles.loading} />}
+			{hasError && <ErrorComponent />}
 		</SafeAreaView>
 	);
 };
@@ -273,5 +276,8 @@ const styles = StyleSheet.create({
 	},
 	submitLoading: {
 		alignSelf: 'center',
+	},
+	loading: {
+		flex: 1,
 	},
 });

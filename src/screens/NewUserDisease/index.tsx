@@ -117,7 +117,7 @@ const NewDisease = () => {
 				</View>
 			)}
 
-			{loading && <LoadingComponent />}
+			{loading && <LoadingComponent style={styles.loading} />}
 			{hasError && <ErrorComponent />}
 		</SafeAreaView>
 	);
@@ -175,6 +175,9 @@ const styles = StyleSheet.create({
 		fontSize: 17,
 		textAlign: 'center',
 		marginHorizontal: 10,
+	},
+	loading: {
+		flex: 1,
 	},
 });
 

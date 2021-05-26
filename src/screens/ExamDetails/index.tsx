@@ -154,6 +154,7 @@ const ExamDetails: React.FC<Props> = ({ route }) => {
 						onSubmit={handleSubmitForm}
 						validationSchema={validationSchema}
 						validateOnChange={false}
+						validateOnBlur={false}
 					>
 						{({ values, handleChange, handleSubmit, errors, setFieldTouched, touched, setFieldValue }) => (
 							<>

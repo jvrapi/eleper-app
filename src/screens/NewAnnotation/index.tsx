@@ -14,7 +14,7 @@ import UserDiseaseIcon from '../../assets/icons/user-disease.svg';
 import PostItEdit from '../../assets/icons/post-it-edit.svg';
 import PostItSave from '../../assets/icons/post-it-save.svg';
 import * as Yup from 'yup';
-import { Button, InputButton, ModalComponent, TextArea } from '../../components';
+import { Button, ErrorComponent, InputButton, LoadingComponent, ModalComponent, TextArea } from '../../components';
 import { buttonIcons } from '../../assets/icons';
 import BottomTabBarContext from '../../contexts/bottomTabBar';
 
@@ -111,7 +111,13 @@ const NewAnnotation: React.FC = () => {
 						<View style={globalStyles.iconContainer}>{<NewPostItIcon fill='#000' width='70' height='70' />}</View>
 						<Text style={styles.title}>Nova Anotação</Text>
 					</View>
-					<Form initialValues={initialValues} onSubmit={handleSubmitForm} validationSchema={validationSchema} validateOnChange={false}>
+					<Form
+						initialValues={initialValues}
+						onSubmit={handleSubmitForm}
+						validationSchema={validationSchema}
+						validateOnBlur={false}
+						validateOnChange={false}
+					>
 						{({ values, handleChange, handleSubmit, errors, setFieldTouched, touched, setFieldValue }) => (
 							<>
 								<View style={globalStyles.inputArea}>
@@ -166,6 +172,8 @@ const NewAnnotation: React.FC = () => {
 					</Form>
 				</>
 			)}
+			{loading && <LoadingComponent style={styles.loading} />}
+			{hasError && <ErrorComponent />}
 		</SafeAreaView>
 	);
 };
@@ -188,6 +196,9 @@ const styles = StyleSheet.create({
 		fontFamily: 'Poppins-SemiBold',
 		fontSize: 20,
 		marginTop: 10,
+	},
+	loading: {
+		flex: 1,
 	},
 });
 

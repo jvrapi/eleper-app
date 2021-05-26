@@ -47,7 +47,7 @@ const ForgotPassword: React.FC = () => {
 	const [titles, setTitles] = useState(initialTitlesValues);
 	const [email, setEmail] = useState('');
 
-	const { container, title, subTitle, notReceivedCode, notReceivedCodeText, submitButton } = styles(titles.subTitle.length > 20);
+	const { container, header, title, subTitle, notReceivedCode, notReceivedCodeText, submitButton } = styles(titles.subTitle.length > 20);
 	const { sendEmailIcon, redefinePasswordIcon } = buttonIcons;
 	const { emailIcon, passwordIcon, recoveryCodeIcon } = inputIcons;
 
@@ -165,8 +165,10 @@ const ForgotPassword: React.FC = () => {
 	return (
 		<>
 			<View style={container}>
-				<Text style={title}> {titles.title}</Text>
-				<Text style={subTitle}>{titles.subTitle}</Text>
+				<View style={header}>
+					<Text style={title}> {titles.title}</Text>
+					<Text style={subTitle}>{titles.subTitle}</Text>
+				</View>
 				{!loading && showEmailForm && (
 					<>
 						<Form
@@ -174,6 +176,7 @@ const ForgotPassword: React.FC = () => {
 							onSubmit={handleSubmitEmailForm}
 							validationSchema={validationEmailSchema}
 							validateOnChange={false}
+							validateOnBlur={false}
 						>
 							{({ values, handleChange, handleSubmit, errors, setFieldTouched, touched }) => (
 								<>
@@ -201,13 +204,14 @@ const ForgotPassword: React.FC = () => {
 						onSubmit={handleSubmitRedefinePasswordForm}
 						validationSchema={validationRedefinePasswordSchema}
 						validateOnChange={false}
+						validateOnBlur={false}
 					>
 						{({ values, handleChange, handleSubmit, errors, setFieldTouched, touched }) => (
 							<>
 								<View>
 									<InputComponent
 										errors={touched.code && errors.code ? errors.code : ''}
-										label='Código'
+										label='Insira o código aqui'
 										onChangeText={handleChange('code')}
 										value={values.code}
 										onBlur={() => setFieldTouched('code')}
@@ -217,7 +221,7 @@ const ForgotPassword: React.FC = () => {
 
 									<InputComponent
 										errors={touched.password && errors.password ? errors.password : ''}
-										label='Senha'
+										label='Informe a sua nova senha'
 										onChangeText={handleChange('password')}
 										value={values.password}
 										onBlur={() => setFieldTouched('password')}
@@ -260,13 +264,16 @@ const styles = (textToLong: boolean) =>
 			backgroundColor: colors.screenColor,
 			padding: 15,
 		},
+		header: {
+			marginBottom: 20,
+		},
 		title: {
-			fontFamily: 'Nunito-ExtraBold',
+			fontFamily: 'Poppins-SemiBold',
 			fontSize: 25,
 			color: colors.black,
 		},
 		subTitle: {
-			fontFamily: 'Nunito-ExtraBold',
+			fontFamily: 'Poppins-SemiBold',
 			fontSize: textToLong ? 15 : 16,
 			color: colors.black,
 			width: 245,

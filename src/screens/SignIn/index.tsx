@@ -38,7 +38,13 @@ const SignIn: React.FC = () => {
 				<Text style={styles.title}> Seja bem-vindo de volta</Text>
 				<Text style={styles.subTitle}>Para continuar, informe o seu e-mail e a sua senha</Text>
 			</View>
-			<Form initialValues={initialValues} onSubmit={handleSubmitForm} validationSchema={validationSchema} validateOnChange={false}>
+			<Form
+				initialValues={initialValues}
+				onSubmit={handleSubmitForm}
+				validationSchema={validationSchema}
+				validateOnChange={false}
+				validateOnBlur={false}
+			>
 				{({ values, handleChange, handleSubmit, errors, setFieldTouched, touched }) => (
 					<>
 						<View style={globalStyles.inputArea}>

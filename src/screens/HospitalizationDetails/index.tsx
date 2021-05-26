@@ -158,6 +158,7 @@ const HospitalizationDetails: React.FC<Props> = ({ route }) => {
 						onSubmit={handleSubmitForm}
 						validationSchema={validationSchema}
 						validateOnChange={false}
+						validateOnBlur={false}
 					>
 						{({ values, handleChange, handleSubmit, errors, setFieldTouched, touched, setFieldValue }) => (
 							<>
@@ -272,7 +273,7 @@ const HospitalizationDetails: React.FC<Props> = ({ route }) => {
 					</Form>
 				</>
 			)}
-			{loading && <LoadingComponent />}
+			{loading && <LoadingComponent style={styles.loading} />}
 			{hasError && <ErrorComponent />}
 		</SafeAreaView>
 	);
@@ -302,6 +303,9 @@ const styles = StyleSheet.create({
 	},
 	submitLoading: {
 		alignSelf: 'center',
+	},
+	loading: {
+		flex: 1,
 	},
 });
 

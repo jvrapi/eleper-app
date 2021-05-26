@@ -147,7 +147,13 @@ const NewHospitalization: React.FC = () => {
 						<View style={globalStyles.iconContainer}>{<NewHospitalizationIcon fill='#000' width='80' height='80' />}</View>
 						<Text style={styles.title}>Nova internação</Text>
 					</View>
-					<Form initialValues={initialValues} onSubmit={handleSubmitForm} validationSchema={validationSchema} validateOnChange={false}>
+					<Form
+						initialValues={initialValues}
+						onSubmit={handleSubmitForm}
+						validationSchema={validationSchema}
+						validateOnChange={false}
+						validateOnBlur={false}
+					>
 						{({ values, handleChange, handleSubmit, errors, setFieldTouched, touched, setFieldValue }) => (
 							<>
 								<View style={globalStyles.inputArea}>
@@ -241,7 +247,7 @@ const NewHospitalization: React.FC = () => {
 					</Form>
 				</>
 			)}
-			{loading && <LoadingComponent />}
+			{loading && <LoadingComponent style={styles.loading} />}
 			{hasError && <ErrorComponent />}
 		</SafeAreaView>
 	);
@@ -271,6 +277,9 @@ const styles = StyleSheet.create({
 	},
 	submitLoading: {
 		alignSelf: 'center',
+	},
+	loading: {
+		flex: 1,
 	},
 });
 
