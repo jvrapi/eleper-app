@@ -216,7 +216,7 @@ export default UserDetailsScreen;
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		justifyContent: 'flex-start',
+		justifyContent: 'center',
 		alignItems: 'center',
 		backgroundColor: colors.screenColor,
 	},
@@ -226,6 +226,7 @@ const styles = StyleSheet.create({
 	header: {
 		justifyContent: 'center',
 		alignItems: 'center',
+		marginTop: 20,
 	},
 	title: {
 		fontFamily: 'Poppins-SemiBold',

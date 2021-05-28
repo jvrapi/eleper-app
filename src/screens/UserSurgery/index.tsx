@@ -216,7 +216,7 @@ const UserSurgeries: React.FC = () => {
 									<Card key={i} style={[styles.card, styles.shadow]} onLongPress={() => onLongPressCard(i)} onPress={() => onPressCard(i)}>
 										<View style={styles.textContainer}>
 											<Text style={styles.itemTitle}>{item.surgery.name}</Text>
-											<Text style={styles.itemSubTitle}>{`Tomando para ${item.hospitalization.location}`}</Text>
+											<Text style={styles.itemSubTitle}>{`Re ${item.hospitalization.location}`}</Text>
 											<Text style={styles.itemSubTitle}>
 												{renderDateLabel(item.hospitalization.entranceDate, item.hospitalization.exitDate)}
 											</Text>

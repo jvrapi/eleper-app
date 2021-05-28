@@ -63,7 +63,7 @@ const Annotations: React.FC = () => {
 		} catch {
 			setHasError(true);
 			showMessage({
-				message: 'Não consegui carregar a lista com as suas doenças',
+				message: 'Não consegui carregar a lista com as suas anotações',
 				type: 'danger',
 				icon: 'danger',
 			});
@@ -89,13 +89,13 @@ const Annotations: React.FC = () => {
 			await deleteMany(itemsSelected);
 			getData();
 			showMessage({
-				message: 'Doenças excluídas com sucesso!',
+				message: 'Anotações excluídas com sucesso!',
 				type: 'success',
 				icon: 'success',
 			});
 		} catch {
 			showMessage({
-				message: 'Não consegui excluir as doenças, pode tentar de novo?',
+				message: 'Não consegui excluir as anotações, pode tentar de novo?',
 				type: 'danger',
 				icon: 'danger',
 			});

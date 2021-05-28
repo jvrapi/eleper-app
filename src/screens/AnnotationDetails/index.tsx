@@ -156,7 +156,7 @@ const AnnotationDetails: React.FC<Props> = ({ route }) => {
 								<View style={globalStyles.inputArea}>
 									<TextArea
 										value={values.description}
-										label='Nome do medicamento que você toma'
+										label='Escreva algo...'
 										onChangeText={handleChange('description')}
 										errors={touched.description && errors.description ? errors.description : ''}
 										onBlur={() => setFieldTouched('description')}

@@ -80,6 +80,12 @@ const NewUserMedicine: React.FC = () => {
 	const [selectedMedicine, setSelectedMedicine] = useState<Medicine | null>(null);
 	const [searchDiseaseText, setSearchDiseaseText] = useState('');
 	const [searchMedicineText, setSearchMedicineText] = useState('');
+	const [marginBottom, setMarginBottom] = useState(90);
+	const scrollStyles = StyleSheet.create({
+		scroll: {
+			marginBottom,
+		},
+	});
 
 	useEffect(() => {
 		getData();
@@ -87,10 +93,12 @@ const NewUserMedicine: React.FC = () => {
 
 	useEffect(() => {
 		const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+			setMarginBottom(0);
 			setShowTabBar(false);
 		});
 		const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
 			setShowTabBar(true);
+			setMarginBottom(90);
 		});
 
 		return () => {
@@ -119,6 +127,7 @@ const NewUserMedicine: React.FC = () => {
 
 	async function handleSubmitForm(values: Save, { resetForm }: FormikHelpers<Save>) {
 		setSubmitLoading(true);
+
 		const data = {
 			...values,
 			userId: user?.id as string,
@@ -185,7 +194,7 @@ const NewUserMedicine: React.FC = () => {
 	return (
 		<SafeAreaView style={styles.container}>
 			{!loading && !hasError && (
-				<KeyboardAwareScrollView style={styles.keyboard}>
+				<KeyboardAwareScrollView style={[styles.keyboard, scrollStyles.scroll]}>
 					<View style={styles.header}>
 						<View style={globalStyles.iconContainer}>{<NewMedicineIcon fill='#000' width='80' height='80' />}</View>
 						<Text style={styles.title}>Novo Medicamento</Text>
@@ -315,6 +324,7 @@ const NewUserMedicine: React.FC = () => {
 									onPress={() => {
 										setSelectedUserDisease(userDisease);
 										setShowDiseaseModal(false);
+										setSearchDiseaseText('');
 									}}
 								>
 									<View style={[modalStyles.content, modalStyles.shadow]}>
@@ -339,6 +349,7 @@ const NewUserMedicine: React.FC = () => {
 									onPress={() => {
 										setSelectedMedicine(medicine);
 										setShowMedicineModal(false);
+										setSearchMedicineText('');
 									}}
 								>
 									<View style={[modalStyles.content, modalStyles.shadow]}>
@@ -369,6 +380,7 @@ const styles = StyleSheet.create({
 	header: {
 		justifyContent: 'center',
 		alignItems: 'center',
+		marginTop: 20,
 	},
 
 	title: {
@@ -381,6 +393,7 @@ const styles = StyleSheet.create({
 	},
 	submitLoading: {
 		alignSelf: 'center',
+		marginBottom: 20,
 	},
 	loading: {
 		flex: 1,

@@ -4,6 +4,7 @@ import moment from 'moment';
 import React, { useContext, useEffect, useState } from 'react';
 import { Keyboard, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import * as Yup from 'yup';
 import { buttonIcons } from '../../assets/icons';
@@ -85,6 +86,14 @@ const UserMedicineDetailsScreen: React.FC<Props> = ({ route }) => {
 	const [hasError, setHasError] = useState(false);
 	const [showBeginDatePicker, setShowBeginDatePicker] = useState(false);
 	const [showEndDatePicker, setShowEndDatePicker] = useState(false);
+	const [submitLoading, setSubmitLoading] = useState(false);
+	const [marginBottom, setMarginBottom] = useState(90);
+
+	const scrollStyles = StyleSheet.create({
+		scroll: {
+			marginBottom,
+		},
+	});
 
 	useEffect(() => {
 		getData();
@@ -92,10 +101,12 @@ const UserMedicineDetailsScreen: React.FC<Props> = ({ route }) => {
 
 	useEffect(() => {
 		const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+			setMarginBottom(0);
 			setShowTabBar(false);
 		});
 		const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
 			setShowTabBar(true);
+			setMarginBottom(90);
 		});
 
 		return () => {
@@ -121,7 +132,7 @@ const UserMedicineDetailsScreen: React.FC<Props> = ({ route }) => {
 	}
 
 	async function handleSubmitForm(values: UserMedicineDetails) {
-		setLoading(true);
+		setSubmitLoading(true);
 		const updateMedicine = {
 			id: values.id,
 			amount: values.amount,
@@ -146,112 +157,115 @@ const UserMedicineDetailsScreen: React.FC<Props> = ({ route }) => {
 				icon: 'danger',
 			});
 		} finally {
-			setLoading(false);
+			setSubmitLoading(false);
 		}
 	}
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<View style={styles.header}>
-				<View style={globalStyles.iconContainer}>{<NewMedicineIcon fill='#000' width='80' height='80' />}</View>
-				<Text style={styles.title}>{userMedicine.medicine?.name}</Text>
-			</View>
-			<Form
-				enableReinitialize
-				initialValues={userMedicine}
-				onSubmit={handleSubmitForm}
-				validationSchema={validationSchema}
-				validateOnBlur={false}
-				validateOnChange={false}
-			>
-				{({ values, handleChange, handleSubmit, errors, setFieldTouched, touched, setFieldValue }) => (
-					<>
-						<View style={globalStyles.inputArea}>
-							<InputComponent
-								value={values.medicine?.name}
-								label='Nome do medicamento que você toma'
-								onChangeText={handleChange('medicine.name')}
-								errors={touched.medicine?.name && errors.medicine?.name ? errors.medicine.name : ''}
-								onBlur={() => setFieldTouched('medicine.name')}
-								editable={!loading}
-								icon={<MedicineIcon fill='#000' width='35' height='35' />}
-							/>
+			{!loading && !hasError && (
+				<KeyboardAwareScrollView style={[styles.keyboard, scrollStyles.scroll]}>
+					<View style={styles.header}>
+						<View style={globalStyles.iconContainer}>{<NewMedicineIcon fill='#000' width='80' height='80' />}</View>
+						<Text style={styles.title}>{userMedicine.medicine?.name}</Text>
+					</View>
+					<Form
+						enableReinitialize
+						initialValues={userMedicine}
+						onSubmit={handleSubmitForm}
+						validationSchema={validationSchema}
+						validateOnBlur={false}
+						validateOnChange={false}
+					>
+						{({ values, handleChange, handleSubmit, errors, setFieldTouched, touched, setFieldValue }) => (
+							<>
+								<View style={globalStyles.inputArea}>
+									<InputButton
+										value={values.medicine?.name}
+										label='Nome do medicamento que você toma'
+										errors={touched.medicine?.name && errors.medicine?.name ? errors.medicine.name : ''}
+										onBlur={() => setFieldTouched('medicine.name')}
+										disabled={true}
+										icon={<MedicineIcon fill='#000' width='35' height='35' />}
+									/>
 
-							<InputComponent
-								value={values.amount}
-								label='Quantos você toma?'
-								onChangeText={handleChange('amount')}
-								errors={touched.amount && errors.amount ? errors.amount : ''}
-								onBlur={() => setFieldTouched('amount')}
-								editable={!loading}
-								icon={<MedicineDosageIcon fill='#000' width='35' height='35' />}
-							/>
+									<InputComponent
+										value={values.amount}
+										label='Quantos você toma?'
+										onChangeText={handleChange('amount')}
+										errors={touched.amount && errors.amount ? errors.amount : ''}
+										onBlur={() => setFieldTouched('amount')}
+										editable={!submitLoading}
+										icon={<MedicineDosageIcon fill='#000' width='35' height='35' />}
+									/>
 
-							<InputComponent
-								value={values.instruction}
-								label='Quantas vezes você toma?'
-								onChangeText={handleChange('instruction')}
-								errors={touched.instruction && errors.instruction ? errors.instruction : ''}
-								onBlur={() => setFieldTouched('instruction')}
-								editable={!loading}
-								icon={<MedicineInstructionIcon fill='#000' width='35' height='35' />}
-							/>
+									<InputComponent
+										value={values.instruction}
+										label='Quantas vezes você toma?'
+										onChangeText={handleChange('instruction')}
+										errors={touched.instruction && errors.instruction ? errors.instruction : ''}
+										onBlur={() => setFieldTouched('instruction')}
+										editable={!submitLoading}
+										icon={<MedicineInstructionIcon fill='#000' width='35' height='35' />}
+									/>
 
-							<InputButton
-								label='Quando começou a tomar?'
-								errors={touched.beginDate && errors.beginDate ? errors.beginDate : ''}
-								value={DateTimeToBrDate(values.beginDate)}
-								onBlur={() => setFieldTouched('beginDate')}
-								disabled={loading}
-								onPress={() => setShowBeginDatePicker(true)}
-								icon={<MedicalDateIcon fill='#000' width='35' height='35' />}
-							/>
+									<InputButton
+										label='Quando começou a tomar?'
+										errors={touched.beginDate && errors.beginDate ? errors.beginDate : ''}
+										value={DateTimeToBrDate(values.beginDate)}
+										onBlur={() => setFieldTouched('beginDate')}
+										disabled={submitLoading}
+										onPress={() => setShowBeginDatePicker(true)}
+										icon={<MedicalDateIcon fill='#000' width='35' height='35' />}
+									/>
 
-							<InputButton
-								label='Quando terminou de tomar?'
-								errors={touched.endDate && errors.endDate ? errors.endDate : ''}
-								value={DateTimeToBrDate(values.endDate ? values.endDate : '')}
-								onBlur={() => setFieldTouched('endDate')}
-								disabled={loading}
-								onPress={() => setShowEndDatePicker(true)}
-								icon={<MedicalDateIcon fill='#000' width='35' height='35' />}
-							/>
+									<InputButton
+										label='Quando terminou de tomar?'
+										errors={touched.endDate && errors.endDate ? errors.endDate : ''}
+										value={DateTimeToBrDate(values.endDate ? values.endDate : '')}
+										onBlur={() => setFieldTouched('endDate')}
+										disabled={submitLoading}
+										onPress={() => setShowEndDatePicker(true)}
+										icon={<MedicalDateIcon fill='#000' width='35' height='35' />}
+									/>
 
-							<InputButton
-								label='Para qual doença é esse medicamento?'
-								errors={touched.disease?.id && errors.disease?.id ? errors.disease?.id : ''}
-								value={values.disease?.name as string}
-								disabled={true}
-								icon={<UserDiseaseIcon fill='#000' width='35' height='35' />}
-							/>
+									<InputButton
+										label='Para qual doença é esse medicamento?'
+										errors={touched.disease?.id && errors.disease?.id ? errors.disease?.id : ''}
+										value={values.disease?.name as string}
+										disabled={true}
+										icon={<UserDiseaseIcon fill='#000' width='35' height='35' />}
+									/>
 
-							<DateTimePickerModal
-								isVisible={showBeginDatePicker}
-								mode='date'
-								onConfirm={date => {
-									setShowBeginDatePicker(false);
-									setFieldValue('beginDate', date);
-								}}
-								onCancel={() => setShowBeginDatePicker(false)}
-								date={moment(values.beginDate, 'YYYY-MM-DD').toDate()}
-							/>
+									<DateTimePickerModal
+										isVisible={showBeginDatePicker}
+										mode='date'
+										onConfirm={date => {
+											setShowBeginDatePicker(false);
+											setFieldValue('beginDate', date);
+										}}
+										onCancel={() => setShowBeginDatePicker(false)}
+										date={moment(values.beginDate, 'YYYY-MM-DD').toDate()}
+									/>
 
-							<DateTimePickerModal
-								isVisible={showEndDatePicker}
-								mode='date'
-								onConfirm={date => {
-									setShowEndDatePicker(false);
-									setFieldValue('endDate', date);
-								}}
-								onCancel={() => setShowEndDatePicker(false)}
-								date={values.endDate ? moment(values.endDate, 'YYYY-MM-DD').toDate() : new Date()}
-							/>
-						</View>
+									<DateTimePickerModal
+										isVisible={showEndDatePicker}
+										mode='date'
+										onConfirm={date => {
+											setShowEndDatePicker(false);
+											setFieldValue('endDate', date);
+										}}
+										onCancel={() => setShowEndDatePicker(false)}
+										date={values.endDate ? moment(values.endDate, 'YYYY-MM-DD').toDate() : new Date()}
+									/>
+								</View>
 
-						<Button loading={loading} onPress={handleSubmit} buttonText='Atualizar' icon={updateIcon} />
-					</>
-				)}
-			</Form>
+								<Button loading={loading} onPress={handleSubmit} buttonText='Atualizar' icon={updateIcon} style={styles.submitLoading} />
+							</>
+						)}
+					</Form>
+				</KeyboardAwareScrollView>
+			)}
 			{loading && <LoadingComponent style={styles.loading} />}
 			{hasError && <ErrorComponent />}
 		</SafeAreaView>
@@ -267,9 +281,17 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		backgroundColor: colors.screenColor,
 	},
+	keyboard: {
+		flex: 1,
+	},
 	header: {
 		justifyContent: 'center',
 		alignItems: 'center',
+		marginTop: 20,
+	},
+	submitLoading: {
+		alignSelf: 'center',
+		marginBottom: 20,
 	},
 
 	title: {

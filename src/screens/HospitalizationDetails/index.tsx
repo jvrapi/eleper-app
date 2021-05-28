@@ -111,11 +111,12 @@ const HospitalizationDetails: React.FC<Props> = ({ route }) => {
 
 	async function handleSubmitForm(values: Hospitalization) {
 		setSubmitLoading(true);
+		values.diseases = items.filter(item => item.selected);
 		try {
 			const { data } = await update(values);
 			setHospitalization(data);
 			showMessage({
-				message: 'Informações salvas com sucesso!',
+				message: 'Informações atualizadas com sucesso!',
 				type: 'success',
 				icon: 'success',
 			});

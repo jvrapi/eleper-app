@@ -73,6 +73,12 @@ const UserSurgeryDetails: React.FC<Props> = ({ route }) => {
 	const [showEntranceDatePicker, setShowEntranceDatePicker] = useState(false);
 	const [showExitDatePicker, setShowExitDatePicker] = useState(false);
 	const [submitLoading, setSubmitLoading] = useState(false);
+	const [marginBottom, setMarginBottom] = useState(90);
+	const scrollStyles = StyleSheet.create({
+		scroll: {
+			marginBottom,
+		},
+	});
 
 	useEffect(() => {
 		getData();
@@ -80,10 +86,12 @@ const UserSurgeryDetails: React.FC<Props> = ({ route }) => {
 
 	useEffect(() => {
 		const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+			setMarginBottom(0);
 			setShowTabBar(false);
 		});
 		const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
 			setShowTabBar(true);
+			setMarginBottom(90);
 		});
 
 		return () => {
@@ -118,7 +126,7 @@ const UserSurgeryDetails: React.FC<Props> = ({ route }) => {
 				type: 'success',
 				icon: 'success',
 			});
-		} catch {
+		} catch (error) {
 			showMessage({
 				message: 'Erro ao tentar salvar as informações, pode tentar de novo?',
 				type: 'danger',
@@ -132,7 +140,7 @@ const UserSurgeryDetails: React.FC<Props> = ({ route }) => {
 	return (
 		<SafeAreaView style={styles.container}>
 			{!loading && !hasError && (
-				<>
+				<KeyboardAwareScrollView style={[styles.keyboard, scrollStyles.scroll]}>
 					<View style={styles.header}>
 						<View style={globalStyles.iconContainer}>{<UserSurgeryIcons fill='#000' width='80' height='80' />}</View>
 						<Text style={styles.title}>Detalhes cirurgia</Text>
@@ -146,7 +154,7 @@ const UserSurgeryDetails: React.FC<Props> = ({ route }) => {
 						validateOnBlur={false}
 					>
 						{({ values, handleChange, handleSubmit, errors, setFieldTouched, touched, setFieldValue }) => (
-							<KeyboardAwareScrollView style={styles.keyboard}>
+							<>
 								<View style={globalStyles.inputArea}>
 									<InputButton
 										value={values.surgery.name}
@@ -234,10 +242,10 @@ const UserSurgeryDetails: React.FC<Props> = ({ route }) => {
 									style={styles.submitLoading}
 									icon={updateIcon}
 								/>
-							</KeyboardAwareScrollView>
+							</>
 						)}
 					</Form>
-				</>
+				</KeyboardAwareScrollView>
 			)}
 			{loading && <LoadingComponent style={styles.loading} />}
 			{hasError && <ErrorComponent />}
@@ -264,6 +272,7 @@ const styles = StyleSheet.create({
 	header: {
 		justifyContent: 'center',
 		alignItems: 'center',
+		marginTop: 20,
 	},
 
 	title: {
@@ -276,6 +285,7 @@ const styles = StyleSheet.create({
 	},
 	submitLoading: {
 		alignSelf: 'center',
+		marginBottom: 20,
 	},
 	loading: {
 		flex: 1,

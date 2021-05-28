@@ -15,6 +15,8 @@ import { buttonIcons, inputIcons } from '../../assets/icons';
 import { DateTimeToBrDate } from '../../utils/function';
 import moment from 'moment';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import BottomTabBarContext from '../../contexts/bottomTabBar';
 
 const validationSchema = Yup.object().shape({
 	name: Yup.string().required('Preencha o campo nome'),
@@ -41,6 +43,7 @@ const SignUp: React.FC = () => {
 	const [loading, setLoading] = useState(false);
 
 	const { setUser } = useContext(AuthContext);
+	const { setShowTabBar } = useContext(BottomTabBarContext);
 
 	const { signUpIcon } = buttonIcons;
 	const { userIcon, emailIcon, cpfIcon, dateIcon, passwordIcon } = inputIcons;
@@ -48,6 +51,7 @@ const SignUp: React.FC = () => {
 
 	async function handleSubmitForm(values: NewUser) {
 		setLoading(true);
+		setShowTabBar(false);
 
 		try {
 			const { data } = await signUp({
@@ -67,10 +71,12 @@ const SignUp: React.FC = () => {
 		}
 	}
 	return (
-		<>
-			<SafeAreaView style={styles.container}>
-				<Text style={styles.title}> Seja bem-vindo</Text>
-				<Text style={styles.subTitle}>Informe os dados para realizar o cadastro</Text>
+		<SafeAreaView style={styles.container}>
+			<KeyboardAwareScrollView style={styles.scroll}>
+				<View style={styles.header}>
+					<Text style={styles.title}> Seja bem-vindo</Text>
+					<Text style={styles.subTitle}>Informe os dados para realizar o cadastro</Text>
+				</View>
 
 				<Form
 					initialValues={initialValues}
@@ -155,8 +161,8 @@ const SignUp: React.FC = () => {
 						</>
 					)}
 				</Form>
-			</SafeAreaView>
-		</>
+			</KeyboardAwareScrollView>
+		</SafeAreaView>
 	);
 };
 
@@ -164,9 +170,13 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		justifyContent: 'center',
-		backgroundColor: colors.screenColor,
 		alignItems: 'center',
+		backgroundColor: colors.screenColor,
 		padding: 10,
+	},
+	header: {
+		justifyContent: 'center',
+		alignItems: 'center',
 	},
 	scroll: {
 		flex: 1,
@@ -180,8 +190,14 @@ const styles = StyleSheet.create({
 		fontFamily: 'Poppins-SemiBold',
 		color: colors.black,
 	},
+	content: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		flex: 1,
+	},
 	submitButton: {
 		marginTop: 40,
+		alignSelf: 'center',
 	},
 });
 

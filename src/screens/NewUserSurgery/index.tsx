@@ -67,6 +67,12 @@ const NewUserSurgery: React.FC = () => {
 	const [surgeries, setSurgeries] = useState<Surgery[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [hasError, setHasError] = useState(false);
+	const [marginBottom, setMarginBottom] = useState(90);
+	const scrollStyles = StyleSheet.create({
+		scroll: {
+			marginBottom,
+		},
+	});
 
 	useEffect(() => {
 		getData();
@@ -74,10 +80,12 @@ const NewUserSurgery: React.FC = () => {
 
 	useEffect(() => {
 		const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+			setMarginBottom(0);
 			setShowTabBar(false);
 		});
 		const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
 			setShowTabBar(true);
+			setMarginBottom(90);
 		});
 
 		return () => {
@@ -148,7 +156,7 @@ const NewUserSurgery: React.FC = () => {
 		<SafeAreaView style={styles.container}>
 			{!loading && !hasError && (
 				<>
-					<KeyboardAwareScrollView style={styles.keyboard}>
+					<KeyboardAwareScrollView style={[styles.keyboard, scrollStyles.scroll]}>
 						<View style={styles.header}>
 							<View style={globalStyles.iconContainer}>{<UserSurgeryIcons fill='#000' width='80' height='80' />}</View>
 							<Text style={styles.title}>Nova cirurgia</Text>
@@ -310,13 +318,11 @@ const styles = StyleSheet.create({
 	keyboard: {
 		flex: 1,
 	},
-	scroll: {
-		backgroundColor: 'red',
-	},
 
 	header: {
 		justifyContent: 'center',
 		alignItems: 'center',
+		marginTop: 20,
 	},
 
 	title: {
@@ -329,6 +335,7 @@ const styles = StyleSheet.create({
 	},
 	submitLoading: {
 		alignSelf: 'center',
+		marginBottom: 20,
 	},
 	loading: {
 		flex: 1,

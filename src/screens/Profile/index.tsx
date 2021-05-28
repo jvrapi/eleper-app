@@ -179,8 +179,7 @@ const modalStyles = StyleSheet.create({
 	bodyText: {
 		fontFamily: 'Poppins-Regular',
 		textAlign: 'center',
-		fontSize: 17,
-		marginVertical: 20,
+		fontSize: 15,
 	},
 
 	buttonsContainer: {
@@ -190,7 +189,7 @@ const modalStyles = StyleSheet.create({
 	},
 
 	button: {
-		width: 170,
+		width: 150,
 	},
 
 	firstButton: {

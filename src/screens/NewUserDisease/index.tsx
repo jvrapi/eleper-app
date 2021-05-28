@@ -60,23 +60,23 @@ const NewDisease = () => {
 				type: 'warning',
 				icon: 'warning',
 			});
-		}
-
-		try {
-			await saveMany(itemsSelected);
-			showMessage({
-				message: 'Suas doenças foram atualizadas!',
-				type: 'success',
-				icon: 'success',
-			});
-			getDiseases();
-		} catch (error) {
-			setLoading(false);
-			showMessage({
-				message: 'Ops! Ocorreu algum erro quando eu tentei cadastrar seus dados. Pode tentar de novo?',
-				type: 'danger',
-				icon: 'danger',
-			});
+		} else {
+			try {
+				await saveMany(itemsSelected);
+				showMessage({
+					message: 'Suas doenças foram atualizadas!',
+					type: 'success',
+					icon: 'success',
+				});
+				getDiseases();
+			} catch (error) {
+				setLoading(false);
+				showMessage({
+					message: 'Ops! Ocorreu algum erro quando eu tentei cadastrar seus dados. Pode tentar de novo?',
+					type: 'danger',
+					icon: 'danger',
+				});
+			}
 		}
 	}
 
@@ -104,7 +104,7 @@ const NewDisease = () => {
 				<View style={styles.container}>
 					<View style={styles.header}>
 						<View style={globalStyles.iconContainer}>{newDiseaseIcon}</View>
-						<Text style={styles.title}>Atualizar Doenças</Text>
+						<Text style={styles.title}>Registrar Doenças</Text>
 					</View>
 
 					<View style={styles.scroll}>
@@ -130,6 +130,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		backgroundColor: colors.screenColor,
 		width: '100%',
+		paddingVertical: 10,
 	},
 	header: {
 		justifyContent: 'center',
@@ -142,7 +143,7 @@ const styles = StyleSheet.create({
 		marginTop: 10,
 	},
 	scroll: {
-		height: 370,
+		height: 340,
 		width: '95%',
 		marginVertical: 30,
 		alignItems: 'center',
