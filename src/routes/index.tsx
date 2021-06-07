@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { LoadingComponent } from '../components';
 import AuthContext from '../contexts/auth';
-import BottomTabBarContext from '../contexts/bottomTabBar';
 import AppRoutes from '../routes/app.routes';
 import AuthRoutes from '../routes/auth.routes';
 

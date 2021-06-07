@@ -4,11 +4,11 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { FloatButton } from '..';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 interface Props {
 	multiSelect: boolean;
 	allSelected: boolean;
-	itemsAmount: number;
 	selectedItemsText: string;
 	onPressSelectAllItems(): void;
 	onPressCancel(): void;
@@ -23,7 +23,6 @@ const MultiItems: React.FC<Props> = ({
 	onPressSelectAllItems,
 	onPressCancel,
 	onPressDelete,
-	itemsAmount,
 	selectedItemsText,
 	children,
 }) => {
@@ -32,13 +31,16 @@ const MultiItems: React.FC<Props> = ({
 			{multiSelect && (
 				<View style={styles.multiSelectContainer}>
 					<View style={styles.iconsContainer}>
-						<FontAwesome5 name='times' size={40} onPress={onPressCancel} />
-						<MaterialCommunityIcons
-							name='checkbox-multiple-marked-circle-outline'
-							size={40}
-							color={allSelected ? '#1064f9' : '#000000'}
-							onPress={onPressSelectAllItems}
-						/>
+						<TouchableOpacity onPress={onPressCancel}>
+							<FontAwesome5 name='times' size={40} />
+						</TouchableOpacity>
+						<TouchableOpacity onPress={onPressSelectAllItems}>
+							<MaterialCommunityIcons
+								name='checkbox-multiple-marked-circle-outline'
+								size={40}
+								color={allSelected ? '#1064f9' : '#000000'}
+							/>
+						</TouchableOpacity>
 					</View>
 					<Text style={styles.multiSelectText}>{selectedItemsText}</Text>
 				</View>

@@ -187,7 +187,6 @@ const ForgotPassword: React.FC = () => {
 											onChangeText={handleChange('email')}
 											value={values.email}
 											onBlur={() => setFieldTouched('email')}
-											keyboardType='email-address'
 											icon={emailIcon}
 											editable={!loading}
 										/>

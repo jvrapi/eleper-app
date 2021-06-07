@@ -51,7 +51,6 @@ const SignIn: React.FC = () => {
 							<InputComponent
 								value={values.username}
 								label='Email'
-								keyboardType='email-address'
 								onChangeText={handleChange('username')}
 								errors={touched.username && errors.username ? errors.username : ''}
 								onBlur={() => setFieldTouched('username')}
