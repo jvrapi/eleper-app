@@ -231,7 +231,7 @@ const ForgotPassword: React.FC = () => {
 								</View>
 								<Button
 									onPress={() => handleSubmit()}
-									buttonText='RedefinirSenha'
+									buttonText='Redefinir Senha'
 									loading={loading}
 									icon={redefinePasswordIcon}
 									style={submitButton}
