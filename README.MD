@@ -11,7 +11,6 @@
 		<a href="#funcionalidades">Funcionalidades</a> • 
 		<a href="#tecnologias">Tecnologias</a> • 
 		<a href="#como-usar">Como usar</a> • 
-		<a href="#outras-informações">Outras Informações</a> • 
 		<a href="#obrigado">Obrigado</a> • 
 		<a href="#licenca">Licença</a> 
 	</p>
@@ -117,12 +116,6 @@ A API do aplicativo se encontra disponivel também no [GitHub](https://github.co
 
 <br><br>
 
-<h1 id="outras-informacoes"> 📓 Outras Informações </h1>
-
-
-
-<br><br>
-
 <h1 id="obrigado"> 📄 Obrigado </h1>
 
 Alguns dos icones utilizados no aplicativo, foram retirados do site [flaticon](https://www.flaticon.com) e seus criadores são:
@@ -143,6 +136,7 @@ Alguns dos icones utilizados no aplicativo, foram retirados do site [flaticon](h
 <br><br>
 
 <h1 id="licenca">📝 Licenca</h1>
+
 Este projeto está sob a licença do MIT. Consulte a [licença](LICENSE) para obter mais informações.
 <br><br>
 
