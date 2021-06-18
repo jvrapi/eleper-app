@@ -77,7 +77,7 @@ O meu trabalho de conclusão de curso está disponível no [Google Drive](https:
 
 <br><br>
 
-<h1 id='como-user'>📱 Como usar</h1>
+<h1 id='como-usar'>📱 Como usar</h1>
 
 Para clonar e executar este aplicativo, você precisará do [Git](https://git-scm.com), [Node.js v14.16](nodejs.org/) ou superior. Se você quiser, pode utilizar o [Yarn v1.22](https://yarnpkg.com) ou superior instalado no seu computador. Você precisará de um emulador de android ou de ios para testar o aplicativo no seu computador. Você também pode usar o seu dispotivo fisíco para rodar o aplicativo.
 
