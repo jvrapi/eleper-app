@@ -1,8 +1,5 @@
-
-
-
 <div align="center" >
-	<h1>Eliper</h1>
+	<h1 class="eliper">Eliper</h1>
 	<h3> 
 		Aplicativo de prontuario médico pessoal 
 	</h3>
@@ -143,12 +140,7 @@ Este projeto está sob a licença do MIT. Consulte a [licença](LICENSE) para ob
 <hr>
 <br><br>
 <div align="center">
-
-<img 
-	src="https://avatars.githubusercontent.com/u/55202424?s=400&u=f1585ff7030e58ddbd45f5d39e35f3725d689210&v=4"
-	style="width: 200px; border-radius: 100px;"
- />
-
+<a>
 
 Feito com  ❤ por João Vitor Santos 👋 Entre em contato!
 
