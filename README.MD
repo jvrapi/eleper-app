@@ -85,29 +85,19 @@ Para clonar e executar este aplicativo, você precisará do [Git](https://git-sc
 
 ```
 2. cd eliper-app
-3. yarn install
+3. yarn install ou npm install
 ```
-Ou se você não estiver usando o yarn:
-```
-2. cd eliper-app
-3. npm install
-```
+
 - Para rodar o aplicativo, basta executar:
 ```
 # para rodar em dispositivos android
-4. yarn android
+4. yarn android ou npm run android
 
 # para rodar em dispositivos iOS
-5. yarn ios
+5. yarn ios ou npm run ios
 ```
-ou
-```
-# para rodar em dispositivos android
-4. npm run android
 
-# para rodar em dispositivos iOS
-5. npm run ios
-```
+
 
 A API do aplicativo se encontra disponivel também no [GitHub](https://github.com/jvrapi/eliper-server).
 
