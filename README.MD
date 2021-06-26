@@ -130,7 +130,7 @@ Este projeto está sob a licença do MIT. Consulte a [licença](LICENSE) para ob
 <hr>
 <br><br>
 <div align="center">
-<a>
+
 
 Feito com  ❤ por [João Vitor Santos](https://github.com/jvrapi) 👋 Entre em contato!
 
